@@ -14,7 +14,7 @@
   
   .main {
     padding: 20px;
-    background-image: url('../../public/images/kid.jpg');
+    background-image: url('../../images/kid.jpg');
     background-size:cover;
     background-position: center;
   }

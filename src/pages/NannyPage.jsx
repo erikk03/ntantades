@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { MyButton } from '../components/MyButton';
 
 
-const HomePage = () => {
+const NannyPage = () => {
     const location = useLocation();
 
     // Determine if the current route is the parent route
@@ -44,4 +44,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default NannyPage;

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { MyButton } from '../components/MyButton';
 
 
-const ParentPage = () => {
+const ParentPaymentsPage = () => {
     const location = useLocation();
 
     // Determine if the current route is the parent route
@@ -30,18 +30,12 @@ const ParentPage = () => {
         </header>
 
         <main className="">
-
-            <section className="">
-                <div>
-                    
-                </div>
-                <div>
-                    
-                </div>
-            </section>
+            <div>
+                <h1>Parent Payments Page</h1>
+                <p>This is the payments page under /parent.</p>
+            </div>
         </main>
     </div>
   );
 };
-
-export default ParentPage;
+export default ParentPaymentsPage;
