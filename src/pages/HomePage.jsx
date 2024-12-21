@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div>
       <header className="header">
-        <h1>ntantades.gr</h1>
+        <Link to="/">ntantades.gr</Link>
       </header>
 
       <main className="main">
@@ -24,12 +24,12 @@ const HomePage = () => {
         <section className="button-section">
           <div>
             <Button color='default' variant='solid'>
-              <Link to="/parent" className="button">Συνέχεια ως γονέας/κηδεμόνας</Link>
+              <Link to="/parent">Συνέχεια ως γονέας/κηδεμόνας</Link>
             </Button>
           </div>
           <div>
             <Button color='default' variant='solid'>
-              <Link to="/nanny" className="button">Συνέχεια ως επιμελητής/τρια</Link>
+              <Link to="/nanny">Συνέχεια ως επιμελητής/τρια</Link>
             </Button>
           </div>
         </section>
