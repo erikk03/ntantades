@@ -1,43 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/HomePage.css';
+import {Card, CardBody} from "@nextui-org/react"
+import { Button } from '@nextui-org/react';
 
 
 const HomePage = () => {
   return (
     <div>
       <header className="header">
-        <h1>Neighborhood Nannies</h1>
-        <nav className="nav">
-          <Link to="/login" className="link">Login</Link>
-          <Link to="/register" className="link">Register</Link>
-          <Link to="/contact" className="link">Contact Us</Link>
-        </nav>
+        <h1>ntantades.gr</h1>
       </header>
 
       <main className="main">
-        <section className="announcement-section">
-          <h2>Announcements</h2>
-          <div className="announcement-box">
-            <p>Important: New guidelines for nannies available now!</p>
-          </div>
+        <section>
+          <Card radius='md' shadow='md'>
+            <CardBody>
+            <p className="text-center">Καλώς ήρθατε στην πλατφόρμα κατ’οίκον φροντίδας παιδιών ηλικίας απο 2 μηνών έως 2,5 ετών </p>
+            </CardBody>
+          </Card>
         </section>
 
-        <section className="login-section">
-          <h2>Get Started</h2>
+        <section className="button-section">
           <div>
-            <p>Are you a parent/guardian looking for a nanny?</p>
-            <Link to="/parent" className="button">Proceed as a Parent</Link>
+            <Button color='default' variant='solid'>
+              <Link to="/parent" className="button">Συνέχεια ως γονέας/κηδεμόνας</Link>
+            </Button>
           </div>
           <div>
-            <p>Are you a nanny looking for work?</p>
-            <Link to="/nanny" className="button">Proceed as a Nanny</Link>
+            <Button color='default' variant='solid'>
+              <Link to="/nanny" className="button">Συνέχεια ως επιμελητής/τρια</Link>
+            </Button>
           </div>
         </section>
       </main>
 
       <footer className="footer">
-        <p>© 2024 Neighborhood Nannies. All Rights Reserved.</p>
+        <p>© 2024 ntantades.gr - All Rights Reserved.</p>
       </footer>
     </div>
   );

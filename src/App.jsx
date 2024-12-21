@@ -4,10 +4,10 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import ParentPage from './pages/ParentPage';
 import NannyPage from './pages/NannyPage';
-
+import "./App.css";
 const App = () => {
   return (
-    <div>
+    <div className='App'>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />

@@ -1,54 +1,41 @@
 .header {
-    background-color: #4CAF50;
+    background-color: #DD8EA4;
     color: white;
     padding: 10px 20px;
-  }
-  
-  .nav {
-    display: flex;
-    justify-content: space-around;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
   }
   
   .link {
-    color: white;
+    color: #DD8EA4;
     text-decoration: none;
-    margin: 0 10px;
   }
   
   .main {
     padding: 20px;
+    background-image: url('../../public/images/kid.jpg');
+    background-size:cover;
+    background-position: center;
   }
   
-  .announcement-section {
-    margin-bottom: 20px;
-  }
-  
-  .announcement-box {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .login-section {
+  .button-section {
     text-align: center;
-  }
-  
-  .button {
-    display: inline-block;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    gap: 30px;
   }
   
   .footer {
     text-align: center;
     margin-top: 20px;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #31383F;
     color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
   }
   
