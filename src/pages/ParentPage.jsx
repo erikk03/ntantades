@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { MyButton } from '../components/MyButton';
+import { Button, ButtonGroup } from '@nextui-org/react';
+import { HomeIcon, Wallet, NotepadText } from "lucide-react";
 
 
 const ParentPage = () => {
@@ -25,8 +27,27 @@ const ParentPage = () => {
                 </MyButton>
             </div>
         </header>
-        <header className="header">
-            <Link to="/">ntantades.gr</Link>
+        <header className="parentHeader flex items-center px-4 py-2">  
+            <Link to="/" className=' text-left'>ntantades.gr</Link>
+            <div className='flex flex-1 justify-center items-center gap-4'>
+                {/* <ButtonGroup> */}
+                    <Button color='default' variant='light' size='sm'>
+                        <Link to="/" title='ΠΛΗΡΩΜΕΣ'>
+                            <Wallet />
+                        </Link>
+                    </Button>
+                    <Button color='default' variant='light' size='sm'>
+                        <Link to="/" title='ΑΡΧΙΚΗ'>
+                            <HomeIcon />
+                        </Link>
+                    </Button>
+                    <Button color='default' variant='light' size='sm'>
+                        <Link to="/" title='ΑΙΤΗΣΕΙΣ'>
+                            <NotepadText />
+                        </Link>
+                    </Button>
+                {/* </ButtonGroup> */}
+            </div>
         </header>
 
         <main className="">

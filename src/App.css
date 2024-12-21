@@ -6,3 +6,10 @@
   /* padding: 2rem; */
   /* text-align: center; */
 }
+
+.parentHeader {
+  background-color: #DD8EA4;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
