@@ -8,6 +8,9 @@ import ParentPage from './pages/ParentPage';
 import NannyPage from './pages/NannyPage';
 import ParentPaymentsPage from './pages/ParentPaymentsPage';
 import ParentApplicationsPage from './pages/ParentApplicationsPage';
+import NannyPaymentsPage from './pages/NannyPaymentsPage';
+import NannyApplicationsPage from './pages/NannyApplicationsPage';
+import NannyAdvertismentsPage from './pages/NannyAdvertismentsPage';
 
 
 const App = () => {
@@ -23,6 +26,9 @@ const App = () => {
         <Route path="/nanny" element={<ProtectedRoute> <NannyPage /> </ProtectedRoute>} />
         <Route path="/parent/payments" element={<ProtectedRoute> <ParentPaymentsPage /> </ProtectedRoute>} />
         <Route path="/parent/applications" element={<ProtectedRoute> <ParentApplicationsPage /> </ProtectedRoute>} />
+        <Route path="/nanny/payments" element={<ProtectedRoute> <NannyPaymentsPage /> </ProtectedRoute>} />
+        <Route path="/nanny/applications" element={<ProtectedRoute> <NannyApplicationsPage /> </ProtectedRoute>} />
+        <Route path="/nanny/advertisments" element={<ProtectedRoute> <NannyAdvertismentsPage /> </ProtectedRoute>} />
       </Routes>
     </div>
   );
