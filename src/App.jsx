@@ -1,20 +1,28 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import {BrowserRouter as Router , Routes, Route } from 'react-router-dom';
+import "./App.css";
+import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import ParentPage from './pages/ParentPage';
 import NannyPage from './pages/NannyPage';
 import ParentPaymentsPage from './pages/ParentPaymentsPage';
-import "./App.css";
+import ParentApplicationsPage from './pages/ParentApplicationsPage';
+
+
 const App = () => {
   return (
     <div className='App'>
       <Routes>
+        {/* Public Route */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/parent" element={<ParentPage />} />
-        <Route path="/nanny" element={<NannyPage />} />
-        <Route path="/parent/payments" element={<ParentPaymentsPage />} />
+
+        {/* Protected Route */}
+        <Route path="/parent" element={ <ProtectedRoute> <ParentPage /> </ProtectedRoute>} />
+        <Route path="/nanny" element={<ProtectedRoute> <NannyPage /> </ProtectedRoute>} />
+        <Route path="/parent/payments" element={<ProtectedRoute> <ParentPaymentsPage /> </ProtectedRoute>} />
+        <Route path="/parent/applications" element={<ProtectedRoute> <ParentApplicationsPage /> </ProtectedRoute>} />
       </Routes>
     </div>
   );

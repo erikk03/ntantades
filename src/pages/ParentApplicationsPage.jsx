@@ -19,7 +19,7 @@ export const AcmeLogo = () => {
     );
   };
 
-const ParentPage = () => {
+const ParentApplicationsPage = () => {
     const location = useLocation();
     const { user } = useAuth();
 
@@ -131,4 +131,4 @@ const ParentPage = () => {
   );
 };
 
-export default ParentPage;
+export default ParentApplicationsPage;
