@@ -1,9 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/HomePage.css';
 import { Card, CardBody} from "@nextui-org/react"
 import { Button } from '@nextui-org/react';
 import { Navbar, NavbarBrand} from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
+import LoginPage from './LoginPage';
+import { useAuth } from '../config/AuthContext';
 
 export const AcmeLogo = () => {
     return (
@@ -19,6 +22,25 @@ export const AcmeLogo = () => {
   };
 
 const HomePage = () => {
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Close modal and redirect to a specific page
+  const handleLoginSuccess = (redirectPath) => {
+      onOpenChange(false); // Close the modal
+      navigate(redirectPath); // Redirect to the desired page
+  };
+
+    // Handle button click and set the corresponding redirect path
+    const handleButtonClick = (path) => {
+      if (user) {
+          navigate(path);  // If user is already authenticated, navigate immediately
+      } else {
+          onOpen();  // Open the modal
+      }
+    };
+
   return (
     <div>
       <Navbar>
@@ -39,14 +61,44 @@ const HomePage = () => {
 
         <section className="button-section">
           <div>
-            <Button color='default' variant='solid'>
-              <Link to="/parent">Συνέχεια ως γονέας/κηδεμόνας</Link>
-            </Button>
+            <Button className="font-semibold" color='default' variant='solid' onPress={() => handleButtonClick('/parent')}>Συνέχεια ως γονέας/κηδεμόνας</Button>
+            <Modal isOpen={isOpen} onClose={onOpenChange}>
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader>Είσοδος με διαπιστευτήρια</ModalHeader>
+                    <ModalBody>
+                      <LoginPage onLoginSuccess={() => handleLoginSuccess('/parent')} />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" variant="light" onPress={onClose}>
+                        Close
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
           </div>
           <div>
-            <Button color='default' variant='solid'>
-              <Link to="/nanny">Συνέχεια ως επιμελητής/τρια</Link>
-            </Button>
+            <Button className="font-semibold" color='default' variant='solid' onPress={() => handleButtonClick('/nanny')}>Συνέχεια ως επιμελητής/τρια</Button>
+            <Modal isOpen={isOpen} onClose={onOpenChange}>
+              <ModalContent>
+                {(onClose) => (
+                  <>
+                    <ModalHeader>Είσοδος με διαπιστευτήρια</ModalHeader>
+                    <ModalBody>
+                      <LoginPage onLoginSuccess={() => handleLoginSuccess('/nanny')} />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" variant="light" onPress={onClose}>
+                        Close
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )}
+              </ModalContent>
+            </Modal>
           </div>
         </section>
       </main>

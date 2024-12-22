@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { onLog } from 'firebase/app';
 
-const LoginPage = () => {
+const LoginPage = ({onLoginSuccess}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,6 +13,7 @@ const LoginPage = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Login successful!');
+      onLoginSuccess(); // Call the onLoginSuccess function passed as a prop
     } catch (err) {
       alert('Error logging in: ' + err.message);
     }
@@ -24,6 +26,7 @@ const LoginPage = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       alert(`Login successful with Google! Welcome, ${user.displayName}`);
+      onLoginSuccess(); // Call the onLoginSuccess function passed as a prop
     } catch (err) {
       alert('Error logging in with Google: ' + err.message);
     }
