@@ -1,40 +1,48 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from '../config/firebase';
-import { onLog } from 'firebase/app';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../config/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const LoginPage = ({onLoginSuccess}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   // Handle email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert('Login successful!');
-      onLoginSuccess(); // Call the onLoginSuccess function passed as a prop
+      // Authenticate user
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      console.log('User logged in:', user);
+
+      // Get user data from Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        console.log('User profile data:', userData);
+        onLoginSuccess(userData); // Pass user data to the parent component
+        alert('Login successful!');
+      } else {
+        console.log('No user profile found in Firestore!');
+        alert('No additional user profile found!');
+      }
     } catch (err) {
       alert('Error logging in: ' + err.message);
-    }
-  };
-
-  // Handle Google login
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      alert(`Login successful with Google! Welcome, ${user.displayName}`);
-      onLoginSuccess(); // Call the onLoginSuccess function passed as a prop
-    } catch (err) {
-      alert('Error logging in with Google: ' + err.message);
+      setError('Error logging in: ' + err.message);
     }
   };
 
   return (
     <div>
       <h1>Login Page</h1>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <input
           type="email"
@@ -50,11 +58,6 @@ const LoginPage = ({onLoginSuccess}) => {
         />
         <button type="submit">Login</button>
       </form>
-      
-      <div>
-        <p>Or</p>
-        <button onClick={handleGoogleLogin}>Login with Google</button>
-      </div>
     </div>
   );
 };

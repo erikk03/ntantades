@@ -39,7 +39,7 @@ const NannyForm1 = () => {
                     <h1 className="text-xl font-bold mb-4">
                         ΠΡΟΣΩΠΙΚΑ ΣΤΟΙΧΕΙΑ
                     </h1>
-                    <div className="grid grid-cols-1 md:grid-cols-9 gap-4">
+                    <div className="grid grid-cols-12 gap-4">
                         {/* Όνομα Field */}
                         <div className="col-span-3">
                             <label className="block text-sm font-medium text-gray-700">

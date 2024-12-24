@@ -1,6 +1,7 @@
 import React from 'react';
-import { useAuth } from '../config/AuthContext';
-import ParentNavBar from '../components/ParentNavBar';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../config/AuthContext';
+import ParentNavBar from '../../components/ParentNavBar';
 import { Button } from '@nextui-org/react';
 
 const ParentPage = () => {
@@ -53,7 +54,7 @@ const ParentPage = () => {
                 {/* Registration Section */}
                 <div className="flex justify-center items-center m-2 -translate-x-[130px] translate-y-[40px]">
                     {/* Text */}
-                    <p className="font-bold text-lg mb-4 -translate-y-[40px]">ΕΙΣΑΙ ΔΙΚΑΙΟΥΧΟΣ;</p>
+                    <p className="font-bold text-lg mb-4 translate-x-[70px] -translate-y-[40px]">ΕΙΣΑΙ ΔΙΚΑΙΟΥΧΟΣ;</p>
 
                     {/* png Arrow */}
                     <div className="">
@@ -61,8 +62,8 @@ const ParentPage = () => {
                     </div>
 
                     {/* Button */}
-                    <Button color="success" variant="solid" size='md'>
-                        ΔΗΜΙΟΥΡΓΙΑ ΑΙΤΗΣΗΣ
+                    <Button color="danger" variant="solid" size='md'>
+                        <Link to="/parent/applications/form1">ΔΗΜΙΟΥΡΓΙΑ ΑΙΤΗΣΗΣ</Link>
                     </Button>
                 </div>
             </main>

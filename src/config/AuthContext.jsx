@@ -1,16 +1,33 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userData, setUserData] = useState(null); // State to hold Firestore user data
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
+            if (currentUser) {
+                // Fetch user data from Firestore when the user is authenticated
+                try {
+                    const userDocRef = doc(db, 'users', currentUser.uid);  // Get the user document
+                    const userDoc = await getDoc(userDocRef);
+
+                    if (userDoc.exists()) {
+                        setUserData(userDoc.data()); // Store the Firestore user data
+                    } else {
+                        console.log("No such document!");
+                    }
+                } catch (error) {
+                    console.error("Error fetching user data: ", error);
+                }
+            }
             setLoading(false);
         });
 
@@ -31,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, logout }}>
+        <AuthContext.Provider value={{ user, userData, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../config/AuthContext';
-import ParentNavBar from '../components/ParentNavBar';
+import { useAuth } from '../../config/AuthContext';
+import ParentNavBar from '../../components/ParentNavBar';
 
 const ParentPaymentsPage = () => {
     const { user } = useAuth();
