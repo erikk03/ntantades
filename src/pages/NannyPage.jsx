@@ -1,6 +1,9 @@
 import React from 'react';
 import { useAuth } from '../config/AuthContext';
 import NannyNavBar from '../components/NannyNavBar';
+import { Button } from '@nextui-org/react';
+import { Link } from 'react-router-dom';
+
 
 const NannyPage = () => {
     const { user } = useAuth();
@@ -45,45 +48,19 @@ const NannyPage = () => {
                 </div>
 
                 {/* Registration Section */}
-                <div className="absolute bottom-[70px] left-[50%] transform -translate-x-1/2 text-center">
+                <div className="flex justify-center items-center m-2 -translate-x-[130px] translate-y-[450px]">
                     {/* Text */}
-                    <p className="font-bold text-lg mb-4"
-                    style={{ transform: 'translate(-180px, 40px)' }}
-                    >ΕΙΣΑΙ ΔΙΚΑΙΟΥΧΟΣ;</p>
+                    <p className="font-bold text-lg mb-4 -translate-y-[40px]">ΕΙΣΑΙ ΔΙΚΑΙΟΥΧΟΣ;</p>
 
-                    {/* SVG Arrow */}
-                    <div className="relative w-full h-16">
-                        <svg
-                            className="absolute top-[20px] right-[100px] transform"
-                            width="200"
-                            height="120"
-                            viewBox="0 0 200 120"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {/* Dotted Arrow Line */}
-                            <path 
-                                d="M0 20 C30 90, 12 90, 140 50"
-                                stroke="black"
-                                strokeWidth="4"
-                                fill="none"
-                                strokeDasharray="5,5"
-                            />
-                            
-                            {/* Arrowhead */}
-                            <polygon
-                                points="140,50 130,40 130,60"
-                                fill="black"
-                            />
-
-                        </svg>
+                    {/* png Arrow */}
+                    <div className="">
+                        <img src="../../public/icons/arrow.png" alt="Eligible" className="w-15 h-12 -translate-x-[10px] -translate-y-[10px]"/>
                     </div>
 
                     {/* Button */}
-                    <button className="bg-pink-500 text-white font-bold py-2 px-4 rounded shadow hover:bg-pink-600 mt-4"
-                    style={{ transform: 'translate(-10px, -30px)' }}
-                    >
-                        ΕΓΓΡΑΦΗ
-                    </button>
+                    <Button color="success" variant="solid" size="md" onClick={() => (window.location.href = '/nanny/form1')}>
+                        ΔΗΜΙΟΥΡΓΙΑ ΑΙΤΗΣΗΣ
+                    </Button>
                 </div>
             </main>
 

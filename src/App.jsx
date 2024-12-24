@@ -11,6 +11,7 @@ import ParentApplicationsPage from './pages/ParentApplicationsPage';
 import NannyPaymentsPage from './pages/NannyPaymentsPage';
 import NannyApplicationsPage from './pages/NannyApplicationsPage';
 import NannyAdvertismentsPage from './pages/NannyAdvertismentsPage';
+import NannyForm1 from './pages/NannyForm1';
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/nanny/payments" element={<ProtectedRoute> <NannyPaymentsPage /> </ProtectedRoute>} />
         <Route path="/nanny/applications" element={<ProtectedRoute> <NannyApplicationsPage /> </ProtectedRoute>} />
         <Route path="/nanny/advertisments" element={<ProtectedRoute> <NannyAdvertismentsPage /> </ProtectedRoute>} />
+        <Route path="/nanny/form1" element={<ProtectedRoute> <NannyForm1 /> </ProtectedRoute>} />
       </Routes>
     </div>
   );
