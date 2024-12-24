@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../config/AuthContext';
-import NannyNavBar from '../components/NannyNavBar';
+import { useAuth } from '../../config/AuthContext';
+import NannyNavBar from '../../components/NannyNavBar';
 import { Button } from '@nextui-org/react';
 import { Link } from 'react-router-dom';
 

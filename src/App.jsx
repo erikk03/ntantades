@@ -14,11 +14,11 @@ import ParentApplicationsPage from './pages/parent/ParentApplicationsPage';
 import ParentForm1 from './pages/parent/ParentForm1';
 
 // Nanny Pages
-import NannyPage from './pages/NannyPage';
-import NannyPaymentsPage from './pages/NannyPaymentsPage';
-import NannyApplicationsPage from './pages/NannyApplicationsPage';
-import NannyAdvertismentsPage from './pages/NannyAdvertismentsPage';
-import NannyForm1 from './pages/NannyForm1';
+import NannyPage from './pages/nanny/NannyPage';
+import NannyPaymentsPage from './pages/nanny/NannyPaymentsPage';
+import NannyApplicationsPage from './pages/nanny/NannyApplicationsPage';
+import NannyAdvertismentsPage from './pages/nanny/NannyAdvertismentsPage';
+import NannyForm1 from './pages/nanny/NannyForm1';
 
 
 const App = () => {
