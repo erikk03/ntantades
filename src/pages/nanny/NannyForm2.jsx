@@ -20,6 +20,11 @@ const NannyForm1 = () => {
             'pathologistCertificate',
             'dermatologistCertificate',
             'psychologistCertificate',
+            'courseCertificate',
+            'languageCertificate',
+            'firstAidCertificate',
+            'criminalRecordCertificate',
+            'letterCertificate'
         ];
 
 
@@ -34,11 +39,6 @@ const NannyForm1 = () => {
             setErrors(newErrors); 
             return;
         }
-    
-        const data = Object.fromEntries(new FormData(e.currentTarget));
-
-        setSubmitted(data);
-
         window.location.href = '/nanny/form1';
     }
 
@@ -139,8 +139,8 @@ const NannyForm1 = () => {
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.dermatologistCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.dermatologistCertificate}</p>
                             )}
                         </div>
                          {/* Input with Attachment */}
@@ -155,7 +155,7 @@ const NannyForm1 = () => {
                                 label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΨΥΧΙΚΗΣ ΥΓΕΙΑΣ"
                                 name="psychologistCertificate"
                                 readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                value={fileAttachments.psychologistCertificate?.name || ''}
                                 placeholder="Επιλέξτε αρχείο"
                             />
                             <div className="absolute inset-y-9 right-11 flex items-center">
@@ -169,8 +169,8 @@ const NannyForm1 = () => {
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.psychologistCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.psychologistCertificate}</p>
                             )}
                         </div>
                     </div>
@@ -185,25 +185,25 @@ const NannyForm1 = () => {
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΑΘΟΛΟΓΟΥ"
-                                name="pathologistCertificate"
+                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΕΚΠΑΙΔΕΥΣΗΣ"
+                                name="courseCertificate"
                                 readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                value={fileAttachments.courseCertificate?.name || ''}
                                 placeholder="Επιλέξτε αρχείο"
                             />
                             <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="pathologist-upload" className="cursor-pointer">
+                                <label htmlFor="course-upload" className="cursor-pointer">
                                     <Paperclip />
                                     <input
-                                        id="pathologist-upload"
+                                        id="course-upload"
                                         type="file"
                                         className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'pathologistCertificate')}
+                                        onChange={(e) => handleFileChange(e, 'courseCertificate')}
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.courseCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.courseCertificate}</p>
                             )}
                         </div>
                         {/* Input with Attachment */}
@@ -215,25 +215,25 @@ const NannyForm1 = () => {
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΑΘΟΛΟΓΟΥ"
-                                name="pathologistCertificate"
+                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΓΛΩΣΣΟΜΑΘΕΙΑΣ"
+                                name="languageCertificate"
                                 readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                value={fileAttachments.languageCertificate?.name || ''}
                                 placeholder="Επιλέξτε αρχείο"
                             />
                             <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="pathologist-upload" className="cursor-pointer">
+                                <label htmlFor="language-upload" className="cursor-pointer">
                                     <Paperclip />
                                     <input
-                                        id="pathologist-upload"
+                                        id="language-upload"
                                         type="file"
                                         className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'pathologistCertificate')}
+                                        onChange={(e) => handleFileChange(e, 'languageCertificate')}
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.languageCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.languageCertificate}</p>
                             )}
                         </div>
                          {/* Input with Attachment */}
@@ -245,25 +245,25 @@ const NannyForm1 = () => {
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΑΘΟΛΟΓΟΥ"
-                                name="pathologistCertificate"
+                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΡΩΤΩΝ ΒΟΗΘΕΙΩΝ"
+                                name="firstAidCertificate"
                                 readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                value={fileAttachments.firstAidCertificate?.name || ''}
                                 placeholder="Επιλέξτε αρχείο"
                             />
                             <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="pathologist-upload" className="cursor-pointer">
+                                <label htmlFor="firstAid-upload" className="cursor-pointer">
                                     <Paperclip />
                                     <input
-                                        id="pathologist-upload"
+                                        id="firstAid-upload"
                                         type="file"
                                         className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'pathologistCertificate')}
+                                        onChange={(e) => handleFileChange(e, 'firstAidCertificate')}
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.firstAidCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.firstAidCertificate}</p>
                             )}
                         </div>
                     </div>
@@ -277,29 +277,29 @@ const NannyForm1 = () => {
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΑΘΟΛΟΓΟΥ"
-                                name="pathologistCertificate"
+                                label="ΑΠΟΣΠΑΣΜΑ ΠΟΙΝΙΚΟΥ ΜΗΤΡΩΟΥ"
+                                name="criminalRecordCertificate"
                                 readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                value={fileAttachments.criminalRecordCertificate?.name || ''}
                                 placeholder="Επιλέξτε αρχείο"
                             />
                             <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="pathologist-upload" className="cursor-pointer">
+                                <label htmlFor="criminalRecord-upload" className="cursor-pointer">
                                     <Paperclip />
                                     <input
-                                        id="pathologist-upload"
+                                        id="criminalRecord-upload"
                                         type="file"
                                         className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'pathologistCertificate')}
+                                        onChange={(e) => handleFileChange(e, 'criminalRecordCertificate')}
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.criminalRecordCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.criminalRecordCertificate}</p>
                             )}
                         </div>
                     </div>
-                    <h1 className="text-sm font-bold mt-4">ΑΠΟΣΠΑΣΜΑ ΠΟΙΝΙΚΟΥ ΜΗΤΡΩΟΥ</h1>
+                    <h1 className="text-sm font-bold mt-4">ΣΥΣΤΑΤΙΚΕΣ ΕΠΙΣΤΟΛΕΣ</h1>
                     <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <div className="relative w-full">
                             <Input
@@ -309,25 +309,25 @@ const NannyForm1 = () => {
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΑΘΟΛΟΓΟΥ"
-                                name="pathologistCertificate"
+                                label="ΣΥΣΤΑΤΙΚΗ ΕΠΙΣΤΟΛΗ"
+                                name="letterCertificate"
                                 readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                value={fileAttachments.letterCertificate?.name || ''}
                                 placeholder="Επιλέξτε αρχείο"
                             />
                             <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="pathologist-upload" className="cursor-pointer">
+                                <label htmlFor="letter-upload" className="cursor-pointer">
                                     <Paperclip />
                                     <input
-                                        id="pathologist-upload"
+                                        id="letter-upload"
                                         type="file"
                                         className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'pathologistCertificate')}
+                                        onChange={(e) => handleFileChange(e, 'letterCertificate')}
                                     />
                                 </label>
                             </div>
-                            {errors.pathologistCertificate && (
-                                <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
+                            {errors.letterCertificate && (
+                                <p className="text-red-500 text-xs mt-1">{errors.letterCertificate}</p>
                             )}
                         </div>
                     </div>
