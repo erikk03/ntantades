@@ -248,9 +248,11 @@ const NannyForm1 = () => {
                             name="zipcode"
                         />
                     </div>
-                    <Button type="submit" variant="solid" color='danger'>
-                        ΣΥΝΕΧΕΙΑ
-                    </Button>
+                    <div className="flex py-9 justify-end w-full">
+                        <Button type="submit" variant="solid" color='danger' className="ml-auto" onClick={() => (window.location.href = '/nanny/form2')}>
+                            ΣΥΝΕΧΕΙΑ
+                        </Button>
+                    </div>
                 </Form>
             </main>
 
