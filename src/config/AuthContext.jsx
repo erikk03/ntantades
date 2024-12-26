@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { CircularProgress } from '@nextui-org/react';
 
 const AuthContext = createContext();
 
@@ -44,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     if (loading) {
-        return <div>Loading...</div>; // Show a loader while checking auth state
+        return<div className='flex flex-1 justify-center items-center h-screen bg-gray-100'> <CircularProgress color="danger" label="Φορτώνει..."/> </div>; // Show a loader while checking auth state
     }
 
     return (

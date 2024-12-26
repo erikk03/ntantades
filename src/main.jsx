@@ -5,13 +5,16 @@ import {NextUIProvider} from '@nextui-org/react'
 import App from './App'
 import './index.css'
 import { AuthProvider } from './config/AuthContext'
+import { FormProvider } from './config/FormContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <NextUIProvider>
         <AuthProvider>
-          <App />
+          <FormProvider>
+            <App />
+          </FormProvider>
         </AuthProvider>
       </NextUIProvider>
     </BrowserRouter>

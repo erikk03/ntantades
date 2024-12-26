@@ -1,20 +1,22 @@
 import React from 'react';
 import { useAuth } from '../../config/AuthContext';
+import { useFormContext } from '../../config/FormContext';
 import ParentNavBar from '../../components/ParentNavBar';
 import { Progress } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
-import { DatePicker } from '@nextui-org/react';
 import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
 
 const ParentForm1 = () => {
-    const { user } = useAuth();
+    const { user, userData } = useAuth();
+    const { formData, updateForm } = useFormContext();
     const [submitted, setSubmitted] = React.useState(null);
 
     const onSubmit = (e) => {
         e.preventDefault();
     
         const data = Object.fromEntries(new FormData(e.currentTarget));
+        updateForm('form1', data);
 
         setSubmitted(data);
     }
@@ -57,7 +59,7 @@ const ParentForm1 = () => {
                             labelPlacement="outside"
                             label="ΟΝΟΜΑ"
                             name="name"
-                            defaultValue={user?.name}
+                            defaultValue={userData?.name}
                         />
                         <Input
                             isReadOnly
@@ -67,17 +69,17 @@ const ParentForm1 = () => {
                             labelPlacement="outside"
                             label="ΕΠΩΝΥΜΟ"
                             name="surname"
-                            defaultValue={user?.surname}
+                            defaultValue={userData?.surname}
                         />
-                        <DatePicker
-                            // isReadOnly
+                        <Input
+                            isReadOnly
                             size='sm'
                             variant='faded'
                             radius='sm'
                             labelPlacement="outside"
                             label="ΗΜΕΡΟΜΗΝΙΑ ΓΕΝΝΗΣΗΣ"
                             name="birthdate"
-                            defaultValue={user?.birthdate}
+                            defaultValue={userData?.birthdate}
                         />
                         <Input
                             isReadOnly
@@ -87,7 +89,7 @@ const ParentForm1 = () => {
                             labelPlacement="outside"
                             label="ΑΡΙΘΜΟΣ ΤΑΥΤΟΤΗΤΑΣ"
                             name="am"
-                            defaultValue={user?.AM}
+                            defaultValue={userData?.AT}
                         />
                         <Input
                             isReadOnly
@@ -97,7 +99,7 @@ const ParentForm1 = () => {
                             labelPlacement="outside"
                             label="ΑΦΜ"
                             name="afm"
-                            defaultValue={user?.AFM}
+                            defaultValue={userData?.AFM}
                         />
                         <Input
                             isReadOnly
@@ -107,7 +109,7 @@ const ParentForm1 = () => {
                             labelPlacement="outside"
                             label="ΑΜΚΑ"
                             name="amka"
-                            defaultValue={user?.AMKA}
+                            defaultValue={userData?.AMKA}
                         />
                         <Autocomplete
                             isRequired
@@ -118,9 +120,9 @@ const ParentForm1 = () => {
                             label="ΦΥΛΟ"
                             labelPlacement="outside"
                             name="gender"
-                            defaultValue={user?.gender}
+                            defaultInputValue={ formData?.form1?.gender || user?.gender}
                         >
-                            {(perifereia) => <AutocompleteItem key={perifereia.key}>{perifereia.label}</AutocompleteItem>}
+                            {(gender) => <AutocompleteItem key={gender.key}>{gender.label}</AutocompleteItem>}
                         </Autocomplete>
                     </div>
                     <h1 className="text-sm font-bold mt-4">ΣΤΟΙΧΕΙΑ ΕΠΙΚΟΙΝΩΝΙΑΣ</h1>
@@ -134,6 +136,7 @@ const ParentForm1 = () => {
                             label="ΣΤΑΘΕΡΟ ΤΗΛΕΦΩΝΟ"
                             labelPlacement="outside"
                             name="homephone"
+                            defaultValue={formData?.form1?.homephone || ''}
                         />
                         <Input
                             isRequired
@@ -144,6 +147,7 @@ const ParentForm1 = () => {
                             label="ΚΙΝΗΤΟ ΤΗΛΕΦΩΝΟ 1"
                             labelPlacement="outside"
                             name="cellphone1"
+                            defaultValue={formData?.form1?.cellphone1 || ''}
                         />
                         <Input
                             size='sm'
@@ -153,6 +157,7 @@ const ParentForm1 = () => {
                             label="ΚΙΝΗΤΟ ΤΗΛΕΦΩΝΟ 2"
                             labelPlacement="outside"
                             name="cellphone2"
+                            defaultValue={formData?.form1?.cellphone2 || ''}
                         />
                         <Input
                             isRequired
@@ -163,7 +168,7 @@ const ParentForm1 = () => {
                             label="EMAIL"
                             labelPlacement="outside"
                             name="EMAIL"
-                            defaultValue={user?.email}
+                            defaultValue={ formData?.form1?.EMAIL || user?.email || ''}
                             type="email"
                         />
                     </div>
@@ -178,6 +183,7 @@ const ParentForm1 = () => {
                             label="ΠΕΡΙΦΕΡΕΙΑ"
                             labelPlacement="outside"
                             name="perifereia"
+                            defaultInputValue={formData?.form1?.perifereia || ''}
                         >
                             {(perifereia) => <AutocompleteItem key={perifereia.key}>{perifereia.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -190,6 +196,7 @@ const ParentForm1 = () => {
                             label="ΝΟΜΟΣ"
                             labelPlacement="outside"
                             name="nomos"
+                            defaultInputValue={formData?.form1?.nomos || ''}
                         >
                             {(nomos) => <AutocompleteItem key={nomos.key}>{nomos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -202,6 +209,7 @@ const ParentForm1 = () => {
                             label="ΔΗΜΟΣ"
                             labelPlacement="outside"
                             name="dimos"
+                            defaultInputValue={formData?.form1?.dimos || ''}
                         >
                             {(dimos) => <AutocompleteItem key={dimos.key}>{dimos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -214,6 +222,7 @@ const ParentForm1 = () => {
                             label="ΠΟΛΗ"
                             labelPlacement="outside"
                             name="city"
+                            defaultInputValue={formData?.form1?.city || ''}
                         >
                             {(city) => <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -226,6 +235,7 @@ const ParentForm1 = () => {
                             label="ΟΔΟΣ"
                             labelPlacement="outside"
                             name="street"
+                            defaultInputValue={formData?.form1?.street || ''}
                         >
                             {(street) => <AutocompleteItem key={street.key}>{street.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -237,6 +247,7 @@ const ParentForm1 = () => {
                             label="ΑΡΙΘΜΟΣ"
                             labelPlacement="outside"
                             name="streetnumber"
+                            defaultValue={formData?.form1?.streetnumber || ''}
                         />
                         <Input
                             isRequired
@@ -247,11 +258,31 @@ const ParentForm1 = () => {
                             label="ΤΑΧΥΔΡΟΜΙΚΟΣ ΚΩΔΙΚΑΣ"
                             labelPlacement="outside"
                             name="zipcode"
+                            defaultValue={formData?.form1?.zipcode || ''}
                         />
                     </div>
-                    <Button type="submit" variant="solid" color='danger'>
+                    <div className="flex py-9 justify-end w-full">
+                    <Button
+                        type="submit"
+                        variant="solid"
+                        color="danger"
+                        size='sm'
+                        radius='md'
+                        className="ml-auto"
+                        onClick={(e) => {
+                            const formElement = e.currentTarget.closest('form'); // Get the form element
+                            if (formElement.checkValidity()) {
+                                // If the form is valid, navigate to the next page
+                                window.location.href = "/parent/applications/form2"; // Or use navigate if using React Router
+                            } else {
+                                // If the form is invalid, trigger the browser's native validation UI
+                                formElement.reportValidity();
+                            }
+                        }}
+                    >
                         ΣΥΝΕΧΕΙΑ
                     </Button>
+                    </div>
                 </Form>
             </main>
 
