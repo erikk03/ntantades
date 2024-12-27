@@ -10,7 +10,7 @@ import { genders } from '../../data/formData';
 import { KidCheckbox } from '../../components/KidCheckBox';
 
 const ParentForm2 = () => {
-    const { user, userData } = useAuth();
+    const { user, userData, kidsData } = useAuth();
     const { formData, updateForm } = useFormContext();
     const [groupSelected, setGroupSelected] = React.useState([]);
     const [selectedKidId, setSelectedKidId] = React.useState([]);
