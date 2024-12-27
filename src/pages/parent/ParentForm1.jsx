@@ -27,10 +27,10 @@ const ParentForm1 = () => {
             <ParentNavBar />
 
             {/* Main Content */}
-            <main className="flex-grow p-4 rounded-lg">
+            <main className="flex-grow ml-4 mr-4 rounded-lg">
                 {/* Progress Bar */}
                 <div className="w-full mb-2">
-                    <h1 className="text-xs font-bold text-center mb-2">
+                    <h1 className="text-[10px] font-bold text-center mb-2">
                         ΠΡΟΟΔΟΣ ΑΙΤΗΣΗΣ
                     </h1>
                     <Progress
