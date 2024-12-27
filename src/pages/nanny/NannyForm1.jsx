@@ -249,9 +249,26 @@ const NannyForm1 = () => {
                         />
                     </div>
                     <div className="flex py-9 justify-end w-full">
-                        <Button type="submit" variant="solid" color='danger' className="ml-auto" onClick={() => (window.location.href = '/nanny/form2')}>
-                            ΣΥΝΕΧΕΙΑ
-                        </Button>
+                    <Button
+                        type="submit"
+                        variant="solid"
+                        color="danger"
+                        size='sm'
+                        radius='md'
+                        className="ml-auto"
+                        onClick={(e) => {
+                            const formElement = e.currentTarget.closest('form'); // Get the form element
+                            if (formElement.checkValidity()) {
+                                // If the form is valid, navigate to the next page
+                                window.location.href = "/nanny/form2"; // Or use navigate if using React Router
+                            } else {
+                                // If the form is invalid, trigger the browser's native validation UI
+                                formElement.reportValidity();
+                            }
+                        }}
+                    >
+                    ΣΥΝΕΧΕΙΑ
+                    </Button>  
                     </div>
                 </Form>
             </main>

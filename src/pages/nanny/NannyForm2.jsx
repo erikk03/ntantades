@@ -39,7 +39,7 @@ const NannyForm1 = () => {
             setErrors(newErrors); 
             return;
         }
-        window.location.href = '/nanny/form1';
+        window.location.href = '/nanny/form3';
     }
 
     const handleFileChange = (e, fieldName) => {
