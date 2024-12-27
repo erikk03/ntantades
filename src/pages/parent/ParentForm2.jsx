@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import ParentNavBar from '../../components/ParentNavBar';
-import { CheckboxGroup, form, Progress, Textarea } from "@nextui-org/react";
+import { CheckboxGroup, Progress, Textarea } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { genders } from '../../data/formData';
@@ -12,14 +12,25 @@ import { KidCheckbox } from '../../components/KidCheckBox';
 const ParentForm2 = () => {
     const { user, userData } = useAuth();
     const { formData, updateForm } = useFormContext();
-    const [submitted, setSubmitted] = React.useState(null);
     const [groupSelected, setGroupSelected] = React.useState([]);
+    const [selectedKidId, setSelectedKidId] = React.useState([]);
+    const [selectedKid, setSelectedKid] = React.useState(null);
+
+    // Update selectedKid when selectedKidId changes
+    React.useEffect(() => {
+        const kid = kidsData?.find((kid) => selectedKidId.includes(kid.id)); // Check if kid.id is in selectedKidId array
+        setSelectedKid(kid); // Set the selectedKid based on selectedKidId
+    }, [selectedKidId, kidsData]); // Re-run this effect when selectedKidId or kidsData changes
+
+    React.useEffect(() => {
+        console.log(selectedKid);
+    }, [selectedKid]);
 
     const onSubmit = (e) => {
         e.preventDefault();
     
         const data = Object.fromEntries(new FormData(e.currentTarget));
-        updateForm('form2', data);
+        updateForm('form2', { ...data, selectedKid: selectedKidId }); // Include selected kid in form data
 
         setSubmitted(data);
     }
@@ -30,10 +41,10 @@ const ParentForm2 = () => {
             <ParentNavBar />
 
             {/* Main Content */}
-            <main className="flex-grow p-4 rounded-lg">
+            <main className="flex-grow ml-4 mr-4 rounded-lg">
                 {/* Progress Bar */}
                 <div className="w-full mb-2">
-                    <h1 className="text-xs font-bold text-center mb-2">
+                    <h1 className="text-[10px] font-bold text-center mb-2">
                         ΠΡΟΟΔΟΣ ΑΙΤΗΣΗΣ
                     </h1>
                     <Progress
@@ -46,7 +57,7 @@ const ParentForm2 = () => {
                 </div>
 
                 {/* Form Title */}
-                <h1 className="text-xl font-bold text-center mb-4">
+                <h1 className="text-xl font-bold text-center mb-2">
                     ΕΠΙΛΟΓΗ ΚΑΙ ΣΥΜΠΛΗΡΩΣΗ ΣΤΟΙΧΕΙΩΝ ΠΑΙΔΙΟΥ
                 </h1>
 
@@ -55,174 +66,158 @@ const ParentForm2 = () => {
                     <h1 className="text-sm font-bold">ΕΠΙΛΟΓΗ ΠΑΙΔΙΟΥ</h1>
                     <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                         <CheckboxGroup
-                            classNames={{base: "w-full",}}
+                            classNames={{ base: "w-full" }}
                             orientation="horizontal"
-                            value={groupSelected}
-                            onChange={setGroupSelected}
+                            value={selectedKidId}
+                            onChange={setSelectedKidId}
                         >
-                            {/* {userData?.kids?.map((kid) => ( */}
+                            {kidsData?.map((kid) => (
                                 <KidCheckbox
-                                    key={user?.id}
+                                    key={kid?.id}
                                     statusColor="secondary"
                                     user={{
-                                        name: userData?.name,
-                                        surname: userData?.surname,
-                                        avatar: "",
-                                        AT: userData?.AT,
-                                        birthdate: userData?.birthdate,
+                                        name: kid?.name,
+                                        surname: kid?.surname,
+                                        avatar: kid?.avatar || '', // Add avatar URL if available
+                                        AT: kid?.AT,
+                                        birthdate: kid?.birthdate,
                                     }}
-                                    value={user?.id}
+                                    value={kid?.id} // Set the checkbox value to the kid's ID
                                 />
-                                <KidCheckbox
-                                    key={user?.id}
-                                    statusColor="secondary"
-                                    user={{
-                                        name: userData?.name,
-                                        surname: userData?.surname,
-                                        avatar: "",
-                                        AT: userData?.AT,
-                                        birthdate: userData?.birthdate,
-                                    }}
-                                    value={user?.id}
-                                />
-                            {/* ))} */}
+                            ))}
                         </CheckboxGroup>
                     </div>
                     <h1 className="text-sm font-bold">ΠΡΟΣΩΠΙΚΑ ΣΤΟΙΧΕΙΑ</h1>
-                    <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <Input
-                            isReadOnly
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΟΝΟΜΑ"
-                            name="name"
-                            defaultValue={userData?.name}
-                        />
-                        <Input
-                            isReadOnly
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΕΠΩΝΥΜΟ"
-                            name="surname"
-                            defaultValue={userData?.surname}
-                        />
-                        <Input
-                            isReadOnly
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΗΜΕΡΟΜΗΝΙΑ ΓΕΝΝΗΣΗΣ"
-                            name="birthdate"
-                            defaultValue={userData?.birthdate}
-                        />
-                        <Input
-                            isReadOnly
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΑΡΙΘΜΟΣ ΤΑΥΤΟΤΗΤΑΣ"
-                            name="am"
-                            defaultValue={userData?.AT}
-                        />
-                        <Input
-                            isReadOnly
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΑΦΜ"
-                            name="afm"
-                            defaultValue={userData?.AFM}
-                        />
-                        <Input
-                            isReadOnly
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΑΜΚΑ"
-                            name="amka"
-                            defaultValue={userData?.AMKA}
-                        />
-                        <Autocomplete
-                            isRequired
-                            defaultItems={genders}
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            label="ΦΥΛΟ"
-                            labelPlacement="outside"
-                            name="gender"
-                            defaultInputValue={ formData?.form2?.gender || user?.gender}
-                        >
-                            {(gender) => <AutocompleteItem key={gender.key}>{gender.label}</AutocompleteItem>}
-                        </Autocomplete>
-                    </div>
-                    <h1 className="text-sm font-bold">ΙΔΙΑΙΤΕΡΟΤΗΤΕΣ</h1>
-                    <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <Input
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΑΛΛΕΡΓΙΕΣ"
-                            name="allergies"
-                            defaultValue={formData?.form2?.allergies || ''}
-                        />
-                        <Input
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΔΥΣΚΟΛΙΕΣ"
-                            name="difficulties"
-                            defaultValue={formData?.form2?.difficulties || ''}
-                        />
-                        <Input
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΔΥΣΑΡΕΣΚΕΙΕΣ"
-                            name="dislikes"
-                            defaultValue={formData?.form2?.dislikes || ''}
-                        />
-                        <Input
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΑΡΕΣΚΕΙΕΣ"
-                            name="likes"
-                            defaultValue={formData?.form2?.likes || ''}
-                        />
-                        <Input
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΔΙΑΤΡΟΦΗ"
-                            name="diet"
-                            defaultValue={formData?.form2?.diet || ''}
-                        />
-                    </div>
-                    <div className='flex flex-wrap w-full md:flex-nowrap md:mb-0 gap-4'>
-                        <Textarea
-                            size='sm'
-                            variant='faded'
-                            radius='sm'
-                            labelPlacement="outside"
-                            label="ΕΠΙΠΛΕΟΝ ΧΡΗΣΙΜΕΣ ΠΛΗΡΟΦΟΡΙΕΣ"
-                            name="extra"
-                            defaultValue={formData?.form2?.extra || ''}
-                        />
-                    </div>
+                    {selectedKid ? (
+                    <>    
+                        <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                            <Input
+                                isReadOnly
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΟΝΟΜΑ"
+                                name="name"
+                                defaultValue={selectedKid?.name}
+                            />
+                            <Input
+                                isReadOnly
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΕΠΩΝΥΜΟ"
+                                name="surname"
+                                defaultValue={selectedKid?.surname}
+                            />
+                            <Input
+                                isReadOnly
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΗΜΕΡΟΜΗΝΙΑ ΓΕΝΝΗΣΗΣ"
+                                name="birthdate"
+                                defaultValue={selectedKid?.birthdate}
+                            />
+                            <Input
+                                isReadOnly
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΑΡΙΘΜΟΣ ΤΑΥΤΟΤΗΤΑΣ"
+                                name="am"
+                                defaultValue={selectedKid?.AT}
+                            />
+                            <Input
+                                isReadOnly
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΑΜΚΑ"
+                                name="amka"
+                                defaultValue={selectedKid?.AMKA}
+                            />
+                            <Autocomplete
+                                isRequired
+                                defaultItems={genders}
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                label="ΦΥΛΟ"
+                                labelPlacement="outside"
+                                name="gender"
+                                defaultInputValue={ formData?.form2?.gender || user?.gender}
+                            >
+                                {(gender) => <AutocompleteItem key={gender.key}>{gender.label}</AutocompleteItem>}
+                            </Autocomplete>
+                        </div>
+                        <h1 className="text-sm font-bold">ΙΔΙΑΙΤΕΡΟΤΗΤΕΣ</h1>
+                        <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                            <Input
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΑΛΛΕΡΓΙΕΣ"
+                                name="allergies"
+                                defaultValue={formData?.form2?.allergies || ''}
+                            />
+                            <Input
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΔΥΣΚΟΛΙΕΣ"
+                                name="difficulties"
+                                defaultValue={formData?.form2?.difficulties || ''}
+                            />
+                            <Input
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΔΥΣΑΡΕΣΚΕΙΕΣ"
+                                name="dislikes"
+                                defaultValue={formData?.form2?.dislikes || ''}
+                            />
+                            <Input
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΑΡΕΣΚΕΙΕΣ"
+                                name="likes"
+                                defaultValue={formData?.form2?.likes || ''}
+                            />
+                            <Input
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΔΙΑΤΡΟΦΗ"
+                                name="diet"
+                                defaultValue={formData?.form2?.diet || ''}
+                            />
+                        </div>
+                        <div className='flex flex-wrap w-full md:flex-nowrap md:mb-0 gap-4'>
+                            <Textarea
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                labelPlacement="outside"
+                                label="ΕΠΙΠΛΕΟΝ ΧΡΗΣΙΜΕΣ ΠΛΗΡΟΦΟΡΙΕΣ"
+                                name="extra"
+                                defaultValue={formData?.form2?.extra || ''}
+                            />
+                        </div>
+                    </>
+                    ) : (
+                        <p className='text-sm'>Επιλέξτε το παιδί για το οποίο επιθυμείτε να υποβάλλετε την αίτηση</p> // You can add a loading message if selectedKid is still null
+                    )}
                     <div className="flex justify-end items-end w-full">
                         <Button variant="solid" color="default" size='sm' radius='md'>
                             <Link to="/parent/applications/form1">ΠΙΣΩ</Link>

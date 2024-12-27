@@ -1,32 +1,39 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from './firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore'; // Import getDocs for collections
 import { CircularProgress } from '@nextui-org/react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [userData, setUserData] = useState(null); // State to hold Firestore user data
+    const [userData, setUserData] = useState(null); // Parent data
+    const [kidsData, setKidsData] = useState([]); // Kids' data
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
             if (currentUser) {
-                // Fetch user data from Firestore when the user is authenticated
                 try {
-                    const userDocRef = doc(db, 'users', currentUser.uid);  // Get the user document
+                    // Fetch parent data
+                    const userDocRef = doc(db, 'users', currentUser.uid);
                     const userDoc = await getDoc(userDocRef);
 
                     if (userDoc.exists()) {
-                        setUserData(userDoc.data()); // Store the Firestore user data
+                        setUserData(userDoc.data());
                     } else {
-                        console.log("No such document!");
+                        console.log("No parent document found!");
                     }
+
+                    // Fetch kids data
+                    const kidsCollectionRef = collection(db, "users", currentUser.uid, "kids")
+                    const kidsSnapshot = await getDocs(kidsCollectionRef);
+                    const kids = kidsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    setKidsData(kids);
                 } catch (error) {
-                    console.error("Error fetching user data: ", error);
+                    console.error("Error fetching user or kids data: ", error);
                 }
             }
             setLoading(false);
@@ -45,11 +52,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     if (loading) {
-        return<div className='flex flex-1 justify-center items-center h-screen bg-gray-100'> <CircularProgress color="danger" label="Φορτώνει..."/> </div>; // Show a loader while checking auth state
+        return (
+            <div className='flex flex-1 justify-center items-center h-screen bg-gray-100'>
+                <CircularProgress color="danger" label="Φορτώνει..." />
+            </div>
+        ); // Loader while data is fetched
     }
 
     return (
-        <AuthContext.Provider value={{ user, userData, logout }}>
+        <AuthContext.Provider value={{ user, userData, kidsData, logout }}>
             {children}
         </AuthContext.Provider>
     );
