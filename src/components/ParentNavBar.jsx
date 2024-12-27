@@ -22,7 +22,7 @@ export const AcmeLogo = () => {
 const ParentNavBar = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { user, logout } = useAuth();
+    const { user, userData, logout } = useAuth();
 
     const handleLogout = async () => {
         try {
@@ -106,12 +106,12 @@ const ParentNavBar = () => {
                                 color="danger"
                                 size="sm"
                                 radius='md'
-                                src={user?.photoURL}
+                                src={userData?.avatar}
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="profile" className="h-14 gap-2">
-                                <p className="font-semibold">{user?.displayName || "No Name"}</p>
+                                <p className="font-semibold">{(userData?.name + " " + userData.surname)  || "No Name"}</p>
                                 <p className="font-semibold">{user?.email}</p>
                             </DropdownItem>
                             <DropdownItem key="settings">Ρυθμίσεις</DropdownItem>
