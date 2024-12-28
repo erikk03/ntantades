@@ -6,6 +6,7 @@ import { Progress } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
+import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 
 const ParentForm1 = () => {
     const { user, userData } = useAuth();
@@ -29,16 +30,16 @@ const ParentForm1 = () => {
             {/* Main Content */}
             <main className="flex-grow ml-4 mr-4 rounded-lg">
                 {/* Progress Bar */}
-                <div className="w-full mb-2">
-                    <h1 className="text-[10px] font-bold text-center mb-2">
-                        ΠΡΟΟΔΟΣ ΑΙΤΗΣΗΣ
-                    </h1>
+                <div className="w-full mb-2 flex flex-col items-center justify-center">
+                    <Breadcrumbs className='m-1' size="sm" >
+                        <BreadcrumbItem href="/parent/applications/form1">Γονέας</BreadcrumbItem>
+                    </Breadcrumbs>
                     <Progress
                         aria-label="Progress"
                         color="danger"
                         size="sm"
-                        value={20}
-                        className="w-1/4 mx-auto"
+                        value={80}
+                        className="w-1/4"
                     />
                 </div>
 

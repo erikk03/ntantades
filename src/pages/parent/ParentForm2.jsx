@@ -8,6 +8,7 @@ import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { genders } from '../../data/formData';
 import { KidCheckbox } from '../../components/KidCheckBox';
+import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 
 const ParentForm2 = () => {
     const { user, userData, kidsData } = useAuth();
@@ -21,10 +22,6 @@ const ParentForm2 = () => {
         const kid = kidsData?.find((kid) => selectedKidId.includes(kid.id)); // Check if kid.id is in selectedKidId array
         setSelectedKid(kid); // Set the selectedKid based on selectedKidId
     }, [selectedKidId, kidsData]); // Re-run this effect when selectedKidId or kidsData changes
-
-    React.useEffect(() => {
-        console.log(selectedKid);
-    }, [selectedKid]);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -43,16 +40,17 @@ const ParentForm2 = () => {
             {/* Main Content */}
             <main className="flex-grow ml-4 mr-4 rounded-lg">
                 {/* Progress Bar */}
-                <div className="w-full mb-2">
-                    <h1 className="text-[10px] font-bold text-center mb-2">
-                        ΠΡΟΟΔΟΣ ΑΙΤΗΣΗΣ
-                    </h1>
+                <div className="w-full mb-2 flex flex-col items-center justify-center">
+                    <Breadcrumbs className='m-1' size="sm" >
+                        <BreadcrumbItem href="/parent/applications/form1">Γονέας</BreadcrumbItem>
+                        <BreadcrumbItem href="/parent/applications/form2">Παιδί</BreadcrumbItem>
+                    </Breadcrumbs>
                     <Progress
                         aria-label="Progress"
                         color="danger"
                         size="sm"
-                        value={40}
-                        className="w-1/4 mx-auto"
+                        value={80}
+                        className="w-1/4"
                     />
                 </div>
 
@@ -66,6 +64,7 @@ const ParentForm2 = () => {
                     <h1 className="text-sm font-bold">ΕΠΙΛΟΓΗ ΠΑΙΔΙΟΥ</h1>
                     <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                         <CheckboxGroup
+                            isRequired
                             classNames={{ base: "w-full" }}
                             orientation="horizontal"
                             value={selectedKidId}
@@ -233,7 +232,7 @@ const ParentForm2 = () => {
                                 const formElement = e.currentTarget.closest('form'); // Get the form element
                                 if (formElement.checkValidity()) {
                                     // If the form is valid, navigate to the next page
-                                    window.location.href = "/parent/applications/form2"; // Or use navigate if using React Router
+                                    window.location.href = "/parent/applications/form3"; // Or use navigate if using React Router
                                 } else {
                                     // If the form is invalid, trigger the browser's native validation UI
                                     formElement.reportValidity();
