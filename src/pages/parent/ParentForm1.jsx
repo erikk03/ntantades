@@ -89,7 +89,7 @@ const ParentForm1 = () => {
                             radius='sm'
                             labelPlacement="outside"
                             label="ΑΡΙΘΜΟΣ ΤΑΥΤΟΤΗΤΑΣ"
-                            name="am"
+                            name="AT"
                             defaultValue={userData?.AT}
                         />
                         <Input
@@ -99,7 +99,7 @@ const ParentForm1 = () => {
                             radius='sm'
                             labelPlacement="outside"
                             label="ΑΦΜ"
-                            name="afm"
+                            name="AFM"
                             defaultValue={userData?.AFM}
                         />
                         <Input
@@ -109,7 +109,7 @@ const ParentForm1 = () => {
                             radius='sm'
                             labelPlacement="outside"
                             label="ΑΜΚΑ"
-                            name="amka"
+                            name="AMKA"
                             defaultValue={userData?.AMKA}
                         />
                         <Autocomplete
