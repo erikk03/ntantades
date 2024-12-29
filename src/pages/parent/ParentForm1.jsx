@@ -1,12 +1,14 @@
 import React from 'react';
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
+import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
+
+// Components
 import ParentNavBar from '../../components/ParentNavBar';
+import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import { Progress } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
-import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
-import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 
 const ParentForm1 = () => {
     const { user, userData } = useAuth();

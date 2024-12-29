@@ -2,13 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
+import { genders } from '../../data/formData';
+
+// Components
 import ParentNavBar from '../../components/ParentNavBar';
+import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import { CheckboxGroup, Progress, Textarea } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
-import { genders } from '../../data/formData';
 import { KidCheckbox } from '../../components/KidCheckBox';
-import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
+
 
 const ParentForm2 = () => {
     const { user, userData, kidsData } = useAuth();

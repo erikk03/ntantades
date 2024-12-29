@@ -1,12 +1,18 @@
+// General
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {Time} from "@internationalized/date";
+
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
-import ParentNavBar from '../../components/ParentNavBar';
+import { db } from '../../config/firebase';  // Import Firebase Firestore
+import { collection, addDoc } from 'firebase/firestore';
+
+// Components
 import {  Progress } from "@nextui-org/react";
 import { Input, TimeInput, Button } from '@nextui-org/react';
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
-import {Time} from "@internationalized/date";
+import ParentNavBar from '../../components/ParentNavBar';
 
 const parseTimeString = (timeString) => {
     if (!timeString) return null; // Handle null or empty values
@@ -15,17 +21,112 @@ const parseTimeString = (timeString) => {
 };
 
 const ParentForm5 = () => {
-    const { user, userData, kidsData } = useAuth();
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-    
-        const data = Object.fromEntries(new FormData(e.currentTarget));
-        updateForm('form4', {...data} );
+    const onSubmit = async (e) => {
+        
+        try {
+            // Prevent the default form submission
+            e.preventDefault();
 
-        setSubmitted(data);
-    }
+            // Submit the data to Firestore
+            const docRef = await addDoc(collection(db, "applications"), {
+                parent: {
+                    uid: user.uid, // Example: parent uid from authentication
+                    name: formData?.form1?.name,
+                    surname: formData?.form1?.surname,
+                    birthdate: formData?.form1?.birthdate,
+                    AT: formData?.form1?.AT,
+                    AFM: formData?.form1?.AFM,
+                    AMKA: formData?.form1?.AMKA,
+                    gender: formData?.form1?.gender,
+                    homephone: formData?.form1?.homephone,
+                    cellphone1: formData?.form1?.cellphone1,
+                    cellphone2: formData?.form1?.cellphone2,
+                    EMAIL: formData?.form1?.EMAIL,
+                    perifereia: formData?.form1?.perifereia,
+                    nomos: formData?.form1?.nomos,
+                    dimos: formData?.form1?.dimos,
+                    address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
+                    city: formData?.form1?.city,
+                    zipcode: formData?.form1?.zipcode,
+                },
+                child: {
+                    selectedKid: formData?.form2?.selectedKid,
+                    name: formData?.form2?.name,
+                    surname: formData?.form2?.surname,
+                    birthdate: formData?.form2?.birthdate,
+                    AMKA: formData?.form2?.AMKA,
+                    AT: formData?.form2?.AT,
+                    gender: formData?.form2?.gender,
+                    allergies: formData?.form2?.allergies,
+                    difficulties: formData?.form2?.difficulties,
+                    dislikes: formData?.form2?.dislikes,
+                    likes: formData?.form2?.likes,
+                    diet: formData?.form2?.diet,
+                    extra: formData?.form2?.extra,
+                },
+                schedule: {
+                    monday: {
+                        from: formData?.form3?.δευτερα_from,
+                        to: formData?.form3?.δευτερα_to,
+                    },
+                    tuesday: {
+                        from: formData?.form3?.τριτη_from,
+                        to: formData?.form3?.τριτη_to,
+                    },
+                    wednesday: {
+                        from: formData?.form3?.τεταρτη_from,
+                        to: formData?.form3?.τεταρτη_to,
+                    },
+                    thursday: {
+                        from: formData?.form3?.πεμπτη_from,
+                        to: formData?.form3?.πεμπτη_to,
+                    },
+                    friday: {
+                        from: formData?.form3?.παρασκευη_from,
+                        to: formData?.form3?.παρασκευη_to,
+                    },
+                    saturday: {
+                        from: formData?.form3?.σαββατο_from,
+                        to: formData?.form3?.σαββατο_to,
+                    },
+                    sunday: {
+                        from: formData?.form3?.κυριακη_from,
+                        to: formData?.form3?.κυριακη_to,
+                    },
+                    extra: formData?.form3?.extra,
+                },
+                nanny: {
+                    name: "ΚΟΥΚΟΥΛΗ ΜΑΙΡΑ",
+                    age: "21 Έτη",
+                    education: "ΔΕΥΤ/ΒΑΘΜΙΑ",
+                    firstAid: "ΝΑΙ",
+                    maritalStatus: "ΑΓΑΜΗ",
+                    employment: "ΠΛΗΡΗΣ",
+                    contact: "69788488388",
+                    fee: "5$/ΩΡΑ"
+                },
+                createdAt: new Date(),
+            });
+
+        
+            console.log("Document written with ID: ", docRef.id);
+            // setSubmitted(data); // Update the form submission status
+
+            // Optionally, clear the local storage after submitting
+            localStorage.removeItem("formData");
+
+            // Redirect to the applications page
+            navigate("/parent/applications");
+            
+        } catch (error) {
+            console.error("Error submitting application: ", error);
+            // Handle submission error (show a message to the user)
+        }
+    };
 
     return (
         <div className="h-screen bg-pink-100 flex flex-col">
@@ -147,24 +248,14 @@ const ParentForm5 = () => {
                         <Link to="/parent/applications/form4">ΠΙΣΩ</Link>
                     </Button>
                     <Button
-                        type="submit"
                         variant="solid"
                         color="danger"
                         size='sm'
                         radius='md'
                         className="ml-auto"
-                        onClick={(e) => {
-                            const formElement = e.currentTarget.closest('form'); // Get the form element
-                            if (formElement.checkValidity()) {
-                                // If the form is valid, navigate to the next page
-                                window.location.href = "/parent/applications/form5"; // Or use navigate if using React Router
-                            } else {
-                                // If the form is invalid, trigger the browser's native validation UI
-                                formElement.reportValidity();
-                            }
-                        }}
+                        onClick={onSubmit}
                     >
-                        ΣΥΝΕΧΕΙΑ
+                        ΥΠΟΒΟΛΗ
                     </Button>
                 </div>
             </main>

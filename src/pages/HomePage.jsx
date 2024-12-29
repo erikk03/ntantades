@@ -1,12 +1,15 @@
+// General
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/HomePage.css';
+import { useAuth } from '../config/AuthContext';
+
+// Components
 import { Card, CardBody} from "@nextui-org/react"
 import { Button } from '@nextui-org/react';
 import { Navbar, NavbarBrand} from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
 import LoginPage from './LoginPage';
-import { useAuth } from '../config/AuthContext';
 
 export const AcmeLogo = () => {
     return (
