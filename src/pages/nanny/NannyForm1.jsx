@@ -5,15 +5,18 @@ import { Progress } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
+import { useFormContext } from '../../config/FormContext';
 
 const NannyForm1 = () => {
     const { user, userData } = useAuth();
+    const { formData, updateForm } = useFormContext();
     const [submitted, setSubmitted] = React.useState(null);
 
     const onSubmit = (e) => {
         e.preventDefault();
     
         const data = Object.fromEntries(new FormData(e.currentTarget));
+        updateForm('form1', data);
 
         setSubmitted(data);
     }
@@ -117,7 +120,7 @@ const NannyForm1 = () => {
                             label="ΦΥΛΟ"
                             labelPlacement="outside"
                             name="gender"
-                            defaultValue={userData?.gender}
+                            defaultInputValue={ formData?.form1?.gender || user?.gender}
                         >
                             {(genders) => <AutocompleteItem key={genders.key}>{genders.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -133,6 +136,7 @@ const NannyForm1 = () => {
                             label="ΣΤΑΘΕΡΟ ΤΗΛΕΦΩΝΟ"
                             labelPlacement="outside"
                             name="homephone"
+                            defaultValue={formData?.form1?.homephone || ''}
                         />
                         <Input
                             isRequired
@@ -143,6 +147,7 @@ const NannyForm1 = () => {
                             label="ΚΙΝΗΤΟ ΤΗΛΕΦΩΝΟ 1"
                             labelPlacement="outside"
                             name="cellphone1"
+                            defaultValue={formData?.form1?.cellphone1 || ''}
                         />
                         <Input
                             size='sm'
@@ -152,6 +157,7 @@ const NannyForm1 = () => {
                             label="ΚΙΝΗΤΟ ΤΗΛΕΦΩΝΟ 2"
                             labelPlacement="outside"
                             name="cellphone2"
+                            defaultValue={formData?.form1?.cellphone2 || ''}
                         />
                         <Input
                             isRequired
@@ -162,7 +168,7 @@ const NannyForm1 = () => {
                             label="EMAIL"
                             labelPlacement="outside"
                             name="EMAIL"
-                            defaultValue={user?.email}
+                            defaultValue={ formData?.form1?.EMAIL || user?.email || ''}
                             type="email"
                         />
                     </div>
@@ -177,6 +183,7 @@ const NannyForm1 = () => {
                             label="ΠΕΡΙΦΕΡΕΙΑ"
                             labelPlacement="outside"
                             name="perifereia"
+                            defaultInputValue={formData?.form1?.perifereia || ''}
                         >
                             {(perifereia) => <AutocompleteItem key={perifereia.key}>{perifereia.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -189,6 +196,7 @@ const NannyForm1 = () => {
                             label="ΝΟΜΟΣ"
                             labelPlacement="outside"
                             name="nomos"
+                            defaultInputValue={formData?.form1?.nomos || ''}
                         >
                             {(nomos) => <AutocompleteItem key={nomos.key}>{nomos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -201,6 +209,7 @@ const NannyForm1 = () => {
                             label="ΔΗΜΟΣ"
                             labelPlacement="outside"
                             name="dimos"
+                            defaultInputValue={formData?.form1?.dimos || ''}
                         >
                             {(dimos) => <AutocompleteItem key={dimos.key}>{dimos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -213,6 +222,7 @@ const NannyForm1 = () => {
                             label="ΠΟΛΗ"
                             labelPlacement="outside"
                             name="city"
+                            defaultInputValue={formData?.form1?.city || ''}
                         >
                             {(city) => <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -225,6 +235,7 @@ const NannyForm1 = () => {
                             label="ΟΔΟΣ"
                             labelPlacement="outside"
                             name="street"
+                            defaultInputValue={formData?.form1?.street || ''}
                         >
                             {(street) => <AutocompleteItem key={street.key}>{street.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -236,6 +247,7 @@ const NannyForm1 = () => {
                             label="ΑΡΙΘΜΟΣ"
                             labelPlacement="outside"
                             name="streetnumber"
+                            defaultValue={formData?.form1?.streetnumber || ''}
                         />
                         <Input
                             isRequired
@@ -246,6 +258,7 @@ const NannyForm1 = () => {
                             label="ΤΑΧΥΔΡΟΜΙΚΟΣ ΚΩΔΙΚΑΣ"
                             labelPlacement="outside"
                             name="zipcode"
+                            defaultValue={formData?.form1?.zipcode || ''}
                         />
                     </div>
                     <div className="flex py-9 justify-end w-full">

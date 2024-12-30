@@ -5,13 +5,15 @@ import { Progress } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { Paperclip } from 'lucide-react';
-import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
+import { useFormContext } from '../../config/FormContext';
+import { Link } from 'react-router-dom';
 
 const NannyForm1 = () => {
     const { user, userData } = useAuth();
     const [submitted, setSubmitted] = React.useState(null);
     const [fileAttachments, setFileAttachments] = useState({});
     const [errors, setErrors] = useState({}); 
+    const { formData, updateForm } = useFormContext();
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -30,7 +32,7 @@ const NannyForm1 = () => {
 
         const newErrors = {};
         requiredFields.forEach((field) => {
-            if (!fileAttachments[field]) {
+            if (!fileAttachments[field] && !formData?.form2?.[field]) {
                 newErrors[field] = 'This field is required.';
             }
         });
@@ -39,19 +41,32 @@ const NannyForm1 = () => {
             setErrors(newErrors); 
             return;
         }
+
+        const data = Object.fromEntries(new FormData(e.currentTarget));
+        updateForm('form2', data);
+
+        setSubmitted(data);
+
         window.location.href = '/nanny/form3';
     }
 
     const handleFileChange = (e, fieldName) => {
+        const file = e.target.files[0];
+    
+        // Update the state
         setFileAttachments((prev) => ({
             ...prev,
-            [fieldName]: e.target.files[0],
+            [fieldName]: file || '', // Store the selected file or reset if empty
         }));
         setErrors((prev) => ({
             ...prev,
-            [fieldName]: false, 
+            [fieldName]: false, // Clear the error for the field
         }));
+    
+        e.target.value = '';
     };
+    
+    
 
     return (
         <div className="h-screen bg-pink-100 flex flex-col">
@@ -84,31 +99,37 @@ const NannyForm1 = () => {
                     <h1 className="text-sm font-bold">ΠΙΣΤΟΠΟΙΗΤΙΚΑ ΥΓΕΙΑΣ</h1>
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
                      {/* Input with Attachment */}
-                        <div className="relative w-full">
+                        <div className="relative w-full ">
                             <Input
                                 isRequired
+                                isClearable
                                 className="w-full pr-10"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΑΘΟΛΟΓΟΥ"
+                                label="Πιστοποιητικό Παθολόγου"
                                 name="pathologistCertificate"
-                                readOnly
-                                value={fileAttachments.pathologistCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="pathologist-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="pathologist-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'pathologistCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.pathologistCertificate?.name}
+                                defaultValue={formData?.form2?.pathologistCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        pathologistCertificate: '', // Clear the value in the state
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="pathologist-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="pathologist-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'pathologistCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.pathologistCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.pathologistCertificate}</p>
                             )}
@@ -117,28 +138,33 @@ const NannyForm1 = () => {
                         <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΔΕΡΜΑΤΟΛΟΓΟΥ"
+                                label="Πιστοποιητικό Δερματολόγου"
                                 name="dermatologistCertificate"
-                                readOnly
-                                value={fileAttachments.dermatologistCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="dermatologist-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="dermatologist-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'dermatologistCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.dermatologistCertificate?.name}
+                                defaultValue={formData?.form2?.dermatologistCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        dermatologistCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="dermatologist-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="dermatologist-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'dermatologistCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.dermatologistCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.dermatologistCertificate}</p>
                             )}
@@ -147,28 +173,33 @@ const NannyForm1 = () => {
                          <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΨΥΧΙΚΗΣ ΥΓΕΙΑΣ"
+                                label="Πιστοποιητικό ψυχικής υγείας"
                                 name="psychologistCertificate"
-                                readOnly
-                                value={fileAttachments.psychologistCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="psychologist-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="psychologist-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'psychologistCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.psychologistCertificate?.name}
+                                defaultValue={formData?.form2?.psychologistCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        psychologistCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="psychologist-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="psychologist-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'psychologistCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.psychologistCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.psychologistCertificate}</p>
                             )}
@@ -180,28 +211,33 @@ const NannyForm1 = () => {
                         <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΕΚΠΑΙΔΕΥΣΗΣ"
+                                label="Πιστοποιητικό Εκπαίδευσης"
                                 name="courseCertificate"
-                                readOnly
-                                value={fileAttachments.courseCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="course-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="course-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'courseCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.courseCertificate?.name}
+                                defaultValue={formData?.form2?.courseCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        courseCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="course-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="course-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'courseCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.courseCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.courseCertificate}</p>
                             )}
@@ -210,28 +246,33 @@ const NannyForm1 = () => {
                         <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΓΛΩΣΣΟΜΑΘΕΙΑΣ"
+                                label="Πιστοποιητικό Γλωσσομάθειας"
                                 name="languageCertificate"
-                                readOnly
-                                value={fileAttachments.languageCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="language-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="language-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'languageCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.languageCertificate?.name}
+                                defaultValue={formData?.form2?.languageCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        languageCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="language-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="language-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'languageCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.languageCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.languageCertificate}</p>
                             )}
@@ -240,28 +281,33 @@ const NannyForm1 = () => {
                          <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΠΙΣΤΟΠΟΙΗΤΙΚΟ ΠΡΩΤΩΝ ΒΟΗΘΕΙΩΝ"
+                                label="Πιστοποιητικό Πρώτων Βοηθειών"
                                 name="firstAidCertificate"
-                                readOnly
-                                value={fileAttachments.firstAidCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="firstAid-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="firstAid-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'firstAidCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.firstAidCertificate?.name}
+                                defaultValue={formData?.form2?.firstAidCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        firstAidCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="firstAid-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="firstAid-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'firstAidCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.firstAidCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.firstAidCertificate}</p>
                             )}
@@ -272,28 +318,33 @@ const NannyForm1 = () => {
                     <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΑΠΟΣΠΑΣΜΑ ΠΟΙΝΙΚΟΥ ΜΗΤΡΩΟΥ"
+                                label="Απόσπασμα Ποινικού Μητρώου"
                                 name="criminalRecordCertificate"
-                                readOnly
-                                value={fileAttachments.criminalRecordCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="criminalRecord-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="criminalRecord-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'criminalRecordCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.criminalRecordCertificate?.name}
+                                defaultValue={formData?.form2?.criminalRecordCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        criminalRecordCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="criminalRecord-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="criminalRecord-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'criminalRecordCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.criminalRecordCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.criminalRecordCertificate}</p>
                             )}
@@ -304,35 +355,53 @@ const NannyForm1 = () => {
                     <div className="relative w-full">
                             <Input
                                 isRequired
-                                className="w-full pr-10"
+                                className="w-full pr-10 mr-2"
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
-                                label="ΣΥΣΤΑΤΙΚΗ ΕΠΙΣΤΟΛΗ"
+                                label="Συστατική Επιστολή"
                                 name="letterCertificate"
-                                readOnly
-                                value={fileAttachments.letterCertificate?.name || ''}
+                                startContent={
+                                    <label htmlFor="letter-upload" className="cursor-pointer">
+                                        <Paperclip className="w-4 h-4 text-default-400 pointer-events-none" />
+                                            <input
+                                            id="letter-upload"
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => handleFileChange(e, 'letterCertificate')} />
+                                    </label>
+                                }
+                                value={fileAttachments.letterCertificate?.name}
+                                defaultValue={formData?.form2?.letterCertificate || ''}
                                 placeholder="Επιλέξτε αρχείο"
+                                onClear={() => {
+                                    setFileAttachments((prev) => ({
+                                        ...prev,
+                                        letterCertificate: '', 
+                                    }));
+                                }}
                             />
-                            <div className="absolute inset-y-9 right-11 flex items-center">
-                                <label htmlFor="letter-upload" className="cursor-pointer">
-                                    <Paperclip />
-                                    <input
-                                        id="letter-upload"
-                                        type="file"
-                                        className="hidden"
-                                        onChange={(e) => handleFileChange(e, 'letterCertificate')}
-                                    />
-                                </label>
-                            </div>
                             {errors.letterCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.letterCertificate}</p>
                             )}
                         </div>
                     </div>
-                    <div className="flex -mt-8 justify-end w-full">
-                        <Button type="submit" variant="solid" color='danger' className="ml-auto">
+                    <div className="flex justify-end items-end w-full">
+                        <Button variant="solid" color="default" size='sm' radius='md'>
+                            <Link to="/nanny/form1">ΠΙΣΩ</Link>
+                        </Button>
+                        <Button
+                            type="submit"
+                            variant="solid"
+                            color="danger"
+                            size='sm'
+                            radius='md'
+                            className="ml-auto"
+                            onClick={(e) => {
+                                const formElement = e.currentTarget.closest('form'); // Get the form element
+                            }}
+                        >
                             ΣΥΝΕΧΕΙΑ
                         </Button>
                     </div>
