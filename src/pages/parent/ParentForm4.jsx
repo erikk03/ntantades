@@ -1,23 +1,53 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from '../../config/firebase';
 
 // Components
 import ParentNavBar from '../../components/ParentNavBar';
 import {  Progress } from "@nextui-org/react";
 import { Form, Button } from '@nextui-org/react';
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
-
+import { Card, Checkbox, RadioGroup, Radio } from "@nextui-org/react";
 
 
 const ParentForm4 = () => {
-    const { user, userData, kidsData } = useAuth();
+    const { user } = useAuth();
     const { formData, updateForm } = useFormContext();
+    const [nannies, setNannies] = useState([]);
+    const [selectedNanny, setSelectedNanny] = useState(null);
+    const navigate = useNavigate();
+
+    // Fetch nannies from Firebase
+    useEffect(() => {
+        const fetchNannies = async () => {
+            try {
+                const q = query(collection(db, "users"), where("professional", "==", true));
+                const querySnapshot = await getDocs(q);
+
+                const fetchedNannies = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setNannies(fetchedNannies);
+            } catch (error) {
+                console.error("Error fetching nannies:", error);
+            }
+        };
+
+        fetchNannies();
+    }, []);
 
     const onSubmit = (e) => {
         e.preventDefault();
     
+        if (!selectedNanny) {
+            alert("Please select a nanny to proceed.");
+            return;
+        }
+
         const data = Object.fromEntries(new FormData(e.currentTarget));
         updateForm('form4', {...data} );
 
@@ -53,35 +83,52 @@ const ParentForm4 = () => {
                     ΕΠΙΛΟΓΗ ΕΠΙΜΕΛΗΤΗ/ΤΡΙΑΣ
                 </h1>
 
-                {/* Form Content */}
-                <Form className="flex flex-col gap-4" validationBehavior="native" onSubmit={onSubmit}>
-                    
+                {/* List of Nannies */}
+                <form onSubmit={onSubmit} className="flex flex-col gap-4">
+                    <RadioGroup
+                        orientation="vertical"
+                        value={selectedNanny}
+                        onChange={(value) => setSelectedNanny(value)}
+                    >
+                        {nannies.map((nanny) => (
+                            <Card key={nanny?.id} variant="bordered" className="p-4 mb-2">
+                                <div className="flex items-center justify-between text-sm">
+                                    <div>
+                                        <p className="font-bold">{ `${nanny?.name} ${nanny?.surname}`}</p>
+                                        <p>ΗΛΙΚΙΑ: {nanny?.age}</p>
+                                        <p>ΕΚΠΑΙΔΕΥΣΗ: {nanny?.certificates?.course}</p>
+                                        <p>ΠΡΩΤΕΣ ΒΟΗΘΕΙΕΣ: {nanny?.certificates?.firstAid ? "NAI" : "OXI"}</p>
+                                        <p>ΚΑΤΑΣΤΑΣΗ {""}</p>
+                                        <p>ΤΟΠΟΘΕΣΙΑ ΠΑΡΟΧΗΣ: {""}</p>
+                                        <p>ΕΜΠΕΙΡΙΑ: {""}</p>
+                                        <p>ΑΠΑΣΧΟΛΗΣΗ: {""}</p>
+                                        <p>ΑΜΟΙΒΗ: {nanny?.pay}</p>
+                                        <p>ΔΙΑΘΕΣΙΜΟΤΗΤΑ: {"ΔΙΑΘΕΣΙΜΗ"}</p>
+                                        <p>ΕΠΙΚΟΙΝΩΝΙΑ: {`${nanny.homephone} ${nanny.cellphone1} ${nanny.EMAIL}`}</p>
+                                    </div>
+                                    <Radio value={nanny?.id}>Επιλογή</Radio>
+                                </div>
+                            </Card>
+                        ))}
+                    </RadioGroup>
+
+                    {/* Form Actions */}
                     <div className="flex justify-end items-end w-full">
-                        <Button variant="solid" color="default" size='sm' radius='md'>
+                        <Button variant="solid" color="default" size="sm" radius="md">
                             <Link to="/parent/applications/form3">ΠΙΣΩ</Link>
                         </Button>
                         <Button
                             type="submit"
                             variant="solid"
                             color="danger"
-                            size='sm'
-                            radius='md'
+                            size="sm"
+                            radius="md"
                             className="ml-auto"
-                            onClick={(e) => {
-                                const formElement = e.currentTarget.closest('form'); // Get the form element
-                                if (formElement.checkValidity()) {
-                                    // If the form is valid, navigate to the next page
-                                    window.location.href = "/parent/applications/form5"; // Or use navigate if using React Router
-                                } else {
-                                    // If the form is invalid, trigger the browser's native validation UI
-                                    formElement.reportValidity();
-                                }
-                            }}
                         >
                             ΣΥΝΕΧΕΙΑ
                         </Button>
                     </div>
-                </Form>
+                </form>
             </main>
 
         </div>

@@ -6,7 +6,7 @@ import {Time} from "@internationalized/date";
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';  // Import Firebase Firestore
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 
 // Components
@@ -41,8 +41,23 @@ const NannyForm4 = () => {
             // Prevent the default form submission
             e.preventDefault();
 
-            // Submit the data to Firestore
-            const docRef = await addDoc(collection(db, "applications"), {
+            // Reference the user's specific document
+            const userDocRef = doc(db, "users", user.uid);
+    
+            // Save data in Firestore under the specific user document
+            await setDoc(userDocRef, {
+                gender: formData?.form1?.gender,
+                homephone: formData?.form1?.homephone,
+                cellphone1: formData?.form1?.cellphone1,
+                cellphone2: formData?.form1?.cellphone2,
+                EMAIL: formData?.form1?.EMAIL,
+                perifereia: formData?.form1?.perifereia,
+                nomos: formData?.form1?.nomos,
+                dimos: formData?.form1?.dimos,
+                address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
+                city: formData?.form1?.city,
+                zipcode: formData?.form1?.zipcode,
+                pay: formData?.form4?.pay,
                 certificates: {
                     pathologist: formData?.form2?.pathologistCertificate,
                     dermatologist: formData?.form2?.dermatologistCertificate,
@@ -52,27 +67,6 @@ const NannyForm4 = () => {
                     firstAid: formData?.form2?.firstAidCertificate,
                     criminalRecord: formData?.form2?.criminalRecordCertificate,
                     letter: formData?.form2?.letterCertificate, 
-                },
-                nanny: {
-                    uid: user.uid, // Example: parent uid from authentication
-                    name: formData?.form1?.name,
-                    surname: formData?.form1?.surname,
-                    birthdate: formData?.form1?.birthdate,
-                    AT: formData?.form1?.am,
-                    AFM: formData?.form1?.afm,
-                    AMKA: formData?.form1?.amka,
-                    gender: formData?.form1?.gender,
-                    homephone: formData?.form1?.homephone,
-                    cellphone1: formData?.form1?.cellphone1,
-                    cellphone2: formData?.form1?.cellphone2,
-                    EMAIL: formData?.form1?.EMAIL,
-                    perifereia: formData?.form1?.perifereia,
-                    nomos: formData?.form1?.nomos,
-                    dimos: formData?.form1?.dimos,
-                    address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
-                    city: formData?.form1?.city,
-                    zipcode: formData?.form1?.zipcode,
-                    pay: formData?.form4?.pay,
                 },
                 schedule: {
                     monday: {
@@ -104,23 +98,20 @@ const NannyForm4 = () => {
                         to: formData?.form3?.κυριακη_to,
                     },
                     extra: formData?.form3?.extra,
-                },
-                createdAt: new Date(),
-            });
-
-        
-            console.log("Document written with ID: ", docRef.id);
-            // setSubmitted(data); // Update the form submission status
-
+                }
+            }, { merge: true }); // Use merge to update only the specified fields
+    
+            console.log("User data successfully saved!");
+    
             // Optionally, clear the local storage after submitting
             localStorage.removeItem("formData");
-
+    
             // Redirect to the applications page
             navigate("/nanny/applications");
-            
+    
         } catch (error) {
             console.error("Error submitting application: ", error);
-            // Handle submission error (show a message to the user)
+            // Handle submission error (e.g., show a message to the user)
         }
     };
 
