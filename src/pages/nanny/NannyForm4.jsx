@@ -7,6 +7,7 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';  // Import Firebase Firestore
 import { collection, addDoc } from 'firebase/firestore';
+import { useState } from 'react';
 
 // Components
 import {  Progress } from "@nextui-org/react";
@@ -21,9 +22,18 @@ const parseTimeString = (timeString) => {
 };
 
 const NannyForm4 = () => {
-    const { user } = useAuth();
+    const { user, userData } = useAuth();
     const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
+
+    const [pay, setPay] = useState(formData?.form4?.pay || '5$'); // Default pay value
+
+    const onPayChange = (e) => {
+        const value = e.target.value;
+        setPay(value);
+        updateForm('form4', { pay: value }); // Update the form context with pay
+    };
+
 
     const onSubmit = async (e) => {
         
@@ -33,14 +43,24 @@ const NannyForm4 = () => {
 
             // Submit the data to Firestore
             const docRef = await addDoc(collection(db, "applications"), {
-                parent: {
+                certificates: {
+                    pathologist: formData?.form2?.pathologistCertificate,
+                    dermatologist: formData?.form2?.dermatologistCertificate,
+                    psychologist: formData?.form2?.psychologistCertificate,
+                    course: formData?.form2?.courseCertificate,
+                    language: formData?.form2?.languageCertificate,
+                    firstAid: formData?.form2?.firstAidCertificate,
+                    criminalRecord: formData?.form2?.criminalRecordCertificate,
+                    letter: formData?.form2?.letterCertificate, 
+                },
+                nanny: {
                     uid: user.uid, // Example: parent uid from authentication
                     name: formData?.form1?.name,
                     surname: formData?.form1?.surname,
                     birthdate: formData?.form1?.birthdate,
-                    AT: formData?.form1?.AT,
-                    AFM: formData?.form1?.AFM,
-                    AMKA: formData?.form1?.AMKA,
+                    AT: formData?.form1?.am,
+                    AFM: formData?.form1?.afm,
+                    AMKA: formData?.form1?.amka,
                     gender: formData?.form1?.gender,
                     homephone: formData?.form1?.homephone,
                     cellphone1: formData?.form1?.cellphone1,
@@ -52,21 +72,7 @@ const NannyForm4 = () => {
                     address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
                     city: formData?.form1?.city,
                     zipcode: formData?.form1?.zipcode,
-                },
-                child: {
-                    selectedKid: formData?.form2?.selectedKid,
-                    name: formData?.form2?.name,
-                    surname: formData?.form2?.surname,
-                    birthdate: formData?.form2?.birthdate,
-                    AMKA: formData?.form2?.AMKA,
-                    AT: formData?.form2?.AT,
-                    gender: formData?.form2?.gender,
-                    allergies: formData?.form2?.allergies,
-                    difficulties: formData?.form2?.difficulties,
-                    dislikes: formData?.form2?.dislikes,
-                    likes: formData?.form2?.likes,
-                    diet: formData?.form2?.diet,
-                    extra: formData?.form2?.extra,
+                    pay: formData?.form4?.pay,
                 },
                 schedule: {
                     monday: {
@@ -99,16 +105,6 @@ const NannyForm4 = () => {
                     },
                     extra: formData?.form3?.extra,
                 },
-                nanny: {
-                    name: "ΚΟΥΚΟΥΛΗ ΜΑΙΡΑ",
-                    age: "21 Έτη",
-                    education: "ΔΕΥΤ/ΒΑΘΜΙΑ",
-                    firstAid: "ΝΑΙ",
-                    maritalStatus: "ΑΓΑΜΗ",
-                    employment: "ΠΛΗΡΗΣ",
-                    contact: "69788488388",
-                    fee: "5$/ΩΡΑ"
-                },
                 createdAt: new Date(),
             });
 
@@ -120,7 +116,7 @@ const NannyForm4 = () => {
             localStorage.removeItem("formData");
 
             // Redirect to the applications page
-            navigate("/parent/applications");
+            navigate("/nanny/applications");
             
         } catch (error) {
             console.error("Error submitting application: ", error);
@@ -138,10 +134,9 @@ const NannyForm4 = () => {
                 {/* Progress Bar */}
                 <div className="w-full mb-2 flex flex-col items-center justify-center">
                     <Breadcrumbs className='m-1' size="sm" >
-                        <BreadcrumbItem href="/parent/applications/form1">Γονέας</BreadcrumbItem>
-                        <BreadcrumbItem href="/parent/applications/form2">Παιδί</BreadcrumbItem>
-                        <BreadcrumbItem href="/parent/applications/form3">Πρόγραμμα</BreadcrumbItem>
-                        <BreadcrumbItem href="/parent/applications/form4">Επιμελητής</BreadcrumbItem>
+                        <BreadcrumbItem href="/nanny/form1">Στοιχεία</BreadcrumbItem>
+                        <BreadcrumbItem href="/nanny/form2">Πιστοποιητικά</BreadcrumbItem>
+                        <BreadcrumbItem href="/nanny/form3">Πρόγραμμα</BreadcrumbItem>
                         <BreadcrumbItem href="/parent/applications/form5">Υποβολή</BreadcrumbItem>
                     </Breadcrumbs>
                     <Progress
@@ -162,26 +157,27 @@ const NannyForm4 = () => {
                     {/* Parent Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΠΙΣΤΟΠΟΙΗΤΙΚΑ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${formData?.form2?.pathologistCertificate}`}/>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={formData?.form1?.birthdate} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αριθμός Αστυνομικής Ταυτότητας" readOnly defaultValue={formData?.form1?.AT} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑΦΜ" readOnly defaultValue={formData?.form1?.AFM} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Διεύθυνση" readOnly defaultValue={`${formData?.form1?.street} ${formData?.form1?.streetnumber}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={formData?.form1?.city} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ταχυδρομικός Κώδικας." readOnly defaultValue={formData?.form1?.zipcode} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Παθολόγου" readOnly defaultValue={formData?.form2?.pathologistCertificate}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Δερματολόγου" readOnly defaultValue={formData?.form2?.dermatologistCertificate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ψυχικής Υγείας" readOnly defaultValue={formData?.form2?.psychologistCertificate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Εκπαίδευσης" readOnly defaultValue={formData?.form2?.courseCertificate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Γλωσσομάθειας" readOnly defaultValue={formData?.form2?.languageCertificate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πρώτων Βοηθειών" readOnly defaultValue={formData?.form2?.firstAidCertificate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ποινικού Μητρώου" readOnly defaultValue={formData?.form2?.criminalRecordCertificate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Συστατική Επιστολή" readOnly defaultValue={formData?.form2?.letterCertificate} />
                     </div>
 
                     {/* Nanny Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΣΤΟΙΧΕΙΑ ΕΠΙΜΕΛΗΤΗ/ΤΡΙΑΣ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue="ΚΟΥΚΟΥΛΗ ΜΑΙΡΑ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue="21 Έτη" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Εκπαίδευση" readOnly defaultValue="ΔΕΥΤ/ΒΑΘΜΙΑ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πρώτες Βοήθειες" readOnly defaultValue="ΝΑΙ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Κατάσταση" readOnly defaultValue="ΑΓΑΜΗ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Απασχόληση" readOnly defaultValue="ΠΛΗΡΗΣ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Επικοινωνία" readOnly defaultValue="69788488388" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή" readOnly defaultValue="5$/ΩΡΑ" />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${formData?.form1?.name} ${formData?.form1?.surname} `}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={formData?.form1?.birthdate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Email" readOnly defaultValue={formData?.form1?.EMAIL} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Επικοινωνία" readOnly defaultValue={formData?.form1?.cellphone1}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={formData?.form1?.city}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Οδός" readOnly defaultValue={formData?.form1?.streetnumber}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΤΚ" readOnly defaultValue={formData?.form1?.zipcode}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" value={pay} onChange={onPayChange} />
                     </div>
 
                     {/* Days and Hours */}

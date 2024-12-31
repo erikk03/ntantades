@@ -24,6 +24,20 @@ export const streets = [
     {label: "Π.ΚΟΥΝΤΟΥΡΙΩΤΟΥ", key: "Π.ΚΟΥΝΤΟΥΡΙΩΤΟΥ"},
 ];
 
+export const placeOfWork = [
+    {label: "ΟΙΚΙΑ ΜΟΥ", key: "ΟΙΚΙΑ ΜΟΥ"},
+    {label: "ΟΙΚΕΙΑ ΚΗΔΕΜΟΝΑ", key: "ΟΙΚΕΙΑ ΚΗΔΕΜΟΝΑ"},
+];
+
+export const meetingDay = [
+    {label: "ΔΕΥΤΕΡΑ", key: "ΔΕΥΤΕΡΑ"},
+    {label: "ΤΡΙΤΗ", key: "ΤΡΙΤΗ"},
+    {label: "ΤΕΤΑΡΤΗ", key: "ΤΕΤΑΡΤΗ"},
+    {label: "ΠΕΜΠΤΗ", key: "ΠΕΜΠΤΗ"},
+    {label: "ΠΑΡΑΣΚΕΥΗ", key: "ΠΑΡΑΣΚΕΥΗ"},
+    {label: "ΣΑΒΒΑΤΟ", key: "ΣΑΒΒΑΤΟ"},
+    {label: "ΚΥΡΙΑΚΗ", key: "ΚΥΡΙΑΚΗ"},
+];
 
 
 export const animals = [
