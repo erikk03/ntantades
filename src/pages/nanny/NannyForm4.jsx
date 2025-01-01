@@ -29,10 +29,20 @@ const NannyForm4 = () => {
         try {
             // Prevent the default form submission
             e.preventDefault();
-
+    
             // Reference the "adv" subcollection for the logged-in user
             const advCollectionRef = collection(db, `users/${user.uid}/adv`);
-
+    
+            // Fetch all documents with status "ΕΝΕΡΓΗ"
+            const activeAdsQuery = query(advCollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
+            const activeAdsSnapshot = await getDocs(activeAdsQuery);
+    
+            // Update the status of each active advertisement to "ΙΣΤΟΡΙΚΟ"
+            const updatePromises = activeAdsSnapshot.docs.map(doc => {
+                return doc.ref.update({ status: "ΙΣΤΟΡΙΚΟ" });
+            });
+            await Promise.all(updatePromises);
+    
             // Create a new ad document in the "adv" subcollection
             await addDoc(advCollectionRef, {
                 bio: formData?.form1?.bio,
@@ -92,21 +102,21 @@ const NannyForm4 = () => {
                 status: "ΕΝΕΡΓΗ", // Default status for a new ad
                 createdAt: new Date(),
             });
-
-            console.log("Advertisement successfully created!");
-
+    
+            console.log("Advertisement successfully created and previous active ads updated to history!");
+    
             // Optionally, clear the local storage after submitting
             localStorage.removeItem("formData");
-
+    
             // Redirect to the advertisements page
             navigate("/nanny/advertisments");
-
+    
         } catch (error) {
             console.error("Error submitting advertisement: ", error);
             // Handle submission error (e.g., show a message to the user)
         }
     };
-
+    
     return (
         <div className="h-screen bg-pink-100 flex flex-col">
             {/* Navigation */}
