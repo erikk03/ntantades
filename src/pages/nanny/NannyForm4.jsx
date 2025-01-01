@@ -46,7 +46,7 @@ const NannyForm4 = () => {
                 address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
                 city: formData?.form1?.city,
                 zipcode: formData?.form1?.zipcode,
-                pay: formData?.form4?.pay || "5$",
+                payment: formData?.form3?.payment,
                 certificates: {
                     pathologist: formData?.form2?.pathologistCertificate,
                     dermatologist: formData?.form2?.dermatologistCertificate,
@@ -159,7 +159,7 @@ const NannyForm4 = () => {
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={formData?.form1?.city}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Οδός" readOnly defaultValue={formData?.form1?.streetnumber}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΤΚ" readOnly defaultValue={formData?.form1?.zipcode}/>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" readOnly defaultValue={formData?.form3?.payment} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" readOnly defaultValue={`${formData?.form3?.payment} €`} />
                     </div>
 
                     {/* Days and Hours */}
@@ -208,7 +208,7 @@ const NannyForm4 = () => {
                 {/* Buttons */}
                 <div className="flex justify-end items-end w-full">
                     <Button variant="solid" color="default" size='sm' radius='md'>
-                        <Link to="/nanny/form4">ΠΙΣΩ</Link>
+                        <Link to="/nanny/form3">ΠΙΣΩ</Link>
                     </Button>
                     <Button
                         variant="solid"

@@ -326,7 +326,7 @@ const NannyForm2 = () => {
                                 label="Εκπαίδευση"
                                 labelPlacement="outside"
                                 name="educationLevel"
-                                defaultInputValue={formData?.form3?.educationLevel || ''}
+                                defaultInputValue={formData?.form2?.educationLevel || ''}
                             >
                                 {(educationLevel) => <AutocompleteItem key={educationLevel.key}>{educationLevel.label}</AutocompleteItem>}
                             </Autocomplete>
