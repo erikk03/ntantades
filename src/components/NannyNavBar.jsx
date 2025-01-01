@@ -27,13 +27,11 @@ const NannyNavBar = ({ handleNavigation }) => {
 
     const handleNavClick = (e, path) => {
         e.preventDefault();
-        // Check if the current page is a nanny form
         const isNannyFormPage = nannyFormPaths.some((formPath) => location.pathname.startsWith(formPath));
         if (isNannyFormPage) {
             handleNavigation(path); // Trigger modal logic
         } else {
-            // Navigate directly for other pages
-            window.location.href = path;
+            window.location.href = path; // Direct navigation
         }
     };
 
@@ -46,17 +44,28 @@ const NannyNavBar = ({ handleNavigation }) => {
         }
     };
 
+    const isParentRoute = location.pathname.startsWith('/parent');
+    const isNannyRoute = location.pathname.startsWith('/nanny');
+
     return (
         <div>
             {/* Navigation */}
             <div className="flex justify-center items-center h-5 gap-4 bg-gray-400">
                 <div>
-                    <MyButton color="default" size="xs" onClick={(e) => handleNavClick(e, '/parent')}>
+                    <MyButton
+                        color={isParentRoute ? 'default' : 'light'}
+                        size="xs"
+                        onClick={(e) => handleNavClick(e, '/parent')}
+                    >
                         ΓΟΝΕΑΣ
                     </MyButton>
                 </div>
                 <div>
-                    <MyButton color="default" size="xs" onClick={(e) => handleNavClick(e, '/nanny')}>
+                    <MyButton
+                        color={isNannyRoute ? 'default' : 'light'}
+                        size="xs"
+                        onClick={(e) => handleNavClick(e, '/nanny')}
+                    >
                         ΕΠΙΜΕΛΗΤΗΣ/ΤΡΙΑ
                     </MyButton>
                 </div>
