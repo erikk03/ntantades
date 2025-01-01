@@ -3,7 +3,7 @@ import { useAuth } from '../../config/AuthContext';
 import NannyNavBar from '../../components/NannyNavBar';
 import { Button } from '@nextui-org/react';
 import { db } from '../../config/firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 
 const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
@@ -11,8 +11,8 @@ const renderStars = (rating) => {
     ));
 };
 
-const Section = ({ title, ads }) => (
-    <div className="bg-pink-100 p-4 rounded-lg mb-4">
+const Section = ({ title, ads, userDetails }) => (
+    <div className="p-4 rounded-lg mb-4">
         <h2 className="text-lg font-bold mb-4">{title}</h2>
         {ads.map((ad, index) => (
             <div
@@ -20,7 +20,9 @@ const Section = ({ title, ads }) => (
                 className="bg-white p-4 rounded-lg shadow-sm mb-4 flex justify-between items-center"
             >
                 <div>
-                    <h3 className="text-md font-bold">{ad.name}</h3>
+                    <h3 className="text-md font-bold mb-2">
+                        {userDetails?.name} {userDetails?.surname}
+                    </h3>
                     <p className="text-sm">
                         ΗΜΕΡΟΜΗΝΙΑ ΔΗΜΙΟΥΡΓΙΑΣ: {ad.createdDate || ad.submittedDate}
                     </p>
@@ -53,29 +55,48 @@ const Section = ({ title, ads }) => (
 const NannyAdvertismentsPage = () => {
     const { user } = useAuth();
     const [advertisements, setAdvertisements] = useState({ active: [], saved: [], history: [] });
+    const [userDetails, setUserDetails] = useState({ name: '', surname: '' });
 
     useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setUserDetails({ name: userData.name, surname: userData.surname });
+                } else {
+                    console.error("No user document found!");
+                }
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
         const fetchAdvertisements = async () => {
             try {
                 const advCollectionRef = collection(db, `users/${user.uid}/adv`);
                 const advSnapshot = await getDocs(advCollectionRef);
 
-                const fetchedAds = advSnapshot.docs.map(doc => {
+                const fetchedAds = advSnapshot.docs.map((doc) => {
                     const data = doc.data();
                     return {
                         id: doc.id,
                         ...data,
-                        createdDate: data.createdAt ? data.createdAt.toDate().toLocaleString('el-GR', { 
-                            dateStyle: 'long', 
-                            timeStyle: 'short' 
-                        }) : null,
+                        createdDate: data.createdAt
+                            ? data.createdAt.toDate().toLocaleString('el-GR', {
+                                  dateStyle: 'long',
+                                  timeStyle: 'short',
+                              })
+                            : null,
                     };
                 });
 
                 const groupedAds = {
-                    active: fetchedAds.filter(ad => ad.status === "ΕΝΕΡΓΗ"),
-                    saved: fetchedAds.filter(ad => ad.status === "ΑΠΟΘΗΚΕΥΜΕΝΗ"),
-                    history: fetchedAds.filter(ad => ad.status === "ΙΣΤΟΡΙΚΟ"),
+                    active: fetchedAds.filter((ad) => ad.status === "ΕΝΕΡΓΗ"),
+                    saved: fetchedAds.filter((ad) => ad.status === "ΑΠΟΘΗΚΕΥΜΕΝΗ"),
+                    history: fetchedAds.filter((ad) => ad.status === "ΙΣΤΟΡΙΚΟ"),
                 };
 
                 setAdvertisements(groupedAds);
@@ -84,6 +105,7 @@ const NannyAdvertismentsPage = () => {
             }
         };
 
+        fetchUserData();
         fetchAdvertisements();
     }, [user.uid]);
 
@@ -100,9 +122,9 @@ const NannyAdvertismentsPage = () => {
                     ΔΗΜΙΟΥΡΓΙΑ ΑΓΓΕΛΙΑΣ
                 </Button>
 
-                <Section title="ΕΝΕΡΓΗ ΑΓΓΕΛΙΑ" ads={advertisements.active} />
-                <Section title="ΠΡΟΣΩΡΙΝΑ ΑΠΟΘΗΚΕΥΜΕΝΕΣ" ads={advertisements.saved} />
-                <Section title="ΙΣΤΟΡΙΚΟ ΑΓΓΕΛΙΩΝ" ads={advertisements.history} />
+                <Section title="ΕΝΕΡΓΗ ΑΓΓΕΛΙΑ" ads={advertisements.active} userDetails={userDetails} />
+                <Section title="ΠΡΟΣΩΡΙΝΑ ΑΠΟΘΗΚΕΥΜΕΝΕΣ" ads={advertisements.saved} userDetails={userDetails} />
+                <Section title="ΙΣΤΟΡΙΚΟ ΑΓΓΕΛΙΩΝ" ads={advertisements.history} userDetails={userDetails} />
             </main>
         </div>
     );
