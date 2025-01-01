@@ -35,6 +35,7 @@ const NannyForm4 = () => {
 
             // Create a new ad document in the "adv" subcollection
             await addDoc(advCollectionRef, {
+                bio: formData?.form1?.bio,
                 gender: formData?.form1?.gender,
                 homephone: formData?.form1?.homephone,
                 cellphone1: formData?.form1?.cellphone1,
@@ -136,7 +137,7 @@ const NannyForm4 = () => {
                 </h1>
 
                 <div className="grid grid-cols-3 gap-4 m-2">
-                    {/* Parent Info */}
+                    {/* Certificates */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΠΙΣΤΟΠΟΙΗΤΙΚΑ</h2>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Παθολόγου" readOnly defaultValue={formData?.form2?.pathologistCertificate}/>
