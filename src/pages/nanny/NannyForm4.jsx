@@ -1,18 +1,17 @@
-// General
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {Time} from "@internationalized/date";
+import { Time } from '@internationalized/date';
 
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
-import { db } from '../../config/firebase';  // Import Firebase Firestore
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import { collection, addDoc } from 'firebase/firestore';
 import { useState } from 'react';
 
 // Components
-import {  Progress } from "@nextui-org/react";
+import { Progress } from '@nextui-org/react';
 import { Input, TimeInput, Button } from '@nextui-org/react';
-import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react';
 import NannyNavBar from '../../components/NannyNavBar';
 
 const parseTimeString = (timeString) => {
@@ -22,7 +21,7 @@ const parseTimeString = (timeString) => {
 };
 
 const NannyForm4 = () => {
-    const { user, userData } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
 
@@ -34,18 +33,16 @@ const NannyForm4 = () => {
         updateForm('form4', { pay: value }); // Update the form context with pay
     };
 
-
     const onSubmit = async (e) => {
-        
         try {
             // Prevent the default form submission
             e.preventDefault();
 
-            // Reference the user's specific document
-            const userDocRef = doc(db, "users", user.uid);
-    
-            // Save data in Firestore under the specific user document
-            await setDoc(userDocRef, {
+            // Reference the "adv" subcollection for the logged-in user
+            const advCollectionRef = collection(db, `users/${user.uid}/adv`);
+
+            // Create a new ad document in the "adv" subcollection
+            await addDoc(advCollectionRef, {
                 gender: formData?.form1?.gender,
                 homephone: formData?.form1?.homephone,
                 cellphone1: formData?.form1?.cellphone1,
@@ -57,7 +54,7 @@ const NannyForm4 = () => {
                 address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
                 city: formData?.form1?.city,
                 zipcode: formData?.form1?.zipcode,
-                pay: formData?.form4?.pay,
+                pay: formData?.form4?.pay || "5$",
                 certificates: {
                     pathologist: formData?.form2?.pathologistCertificate,
                     dermatologist: formData?.form2?.dermatologistCertificate,
@@ -98,19 +95,21 @@ const NannyForm4 = () => {
                         to: formData?.form3?.κυριακη_to,
                     },
                     extra: formData?.form3?.extra,
-                }
-            }, { merge: true }); // Use merge to update only the specified fields
-    
-            console.log("User data successfully saved!");
-    
+                },
+                status: "ΕΝΕΡΓΗ", // Default status for a new ad
+                createdAt: new Date(),
+            });
+
+            console.log("Advertisement successfully created!");
+
             // Optionally, clear the local storage after submitting
             localStorage.removeItem("formData");
-    
-            // Redirect to the applications page
-            navigate("/nanny/applications");
-    
+
+            // Redirect to the advertisements page
+            navigate("/nanny/advertisments");
+
         } catch (error) {
-            console.error("Error submitting application: ", error);
+            console.error("Error submitting advertisement: ", error);
             // Handle submission error (e.g., show a message to the user)
         }
     };
