@@ -100,14 +100,14 @@ const ParentForm5 = () => {
                     extra: formData?.form3?.extra,
                 },
                 nanny: {
-                    name: "ΚΟΥΚΟΥΛΗ ΜΑΙΡΑ",
-                    age: "21 Έτη",
-                    education: "ΔΕΥΤ/ΒΑΘΜΙΑ",
-                    firstAid: "ΝΑΙ",
-                    maritalStatus: "ΑΓΑΜΗ",
-                    employment: "ΠΛΗΡΗΣ",
-                    contact: "69788488388",
-                    fee: "5$/ΩΡΑ"
+                    uid: `${formData?.form4?.nanny?.id}`,
+                    name: `${formData?.form4?.nanny?.name} ${formData?.form4?.nanny?.surname}`,
+                    age: `${formData?.form4?.nanny?.birthdate}`,
+                    education: `${formData?.form4?.nanny?.subcollection[0]?.education}`,
+                    // wlocation: ,
+                    // experience: ,
+                    // payment: ,
+                    EMAIL: `${formData?.form4?.nanny?.EMAIL}`,
                 },
                 createdAt: new Date(),
             });
