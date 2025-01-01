@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import {Time} from "@internationalized/date";
+import { I18nProvider } from "@react-aria/i18n";
 
 // Components
 import NannyNavBar from '../../components/NannyNavBar';
-import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
+import {Breadcrumbs, BreadcrumbItem, DateRangePicker} from "@nextui-org/react";
 import { Progress, Textarea } from "@nextui-org/react";
 import { Form, Button } from '@nextui-org/react';
 import { TimeInput } from "@nextui-org/react";
@@ -21,17 +22,22 @@ const parseTimeString = (timeString) => {
     return new Time(hours, minutes); // Return a Time object
 };
 
+
+
 const days = ["ΔΕΥΤΕΡΑ", "ΤΡΙΤΗ", "ΤΕΤΑΡΤΗ", "ΠΕΜΠΤΗ", "ΠΑΡΑΣΚΕΥΗ", "ΣΑΒΒΑΤΟ", "ΚΥΡΙΑΚΗ"];
 
 const ParentForm3 = () => {
     const { user, userData, kidsData } = useAuth();
     const { formData, updateForm } = useFormContext();
+    const [workExperience, setWorkExperience] = useState(
+        formData?.form3?.workExperience || null
+      );
 
     const onSubmit = (e) => {
         e.preventDefault();
     
         const data = Object.fromEntries(new FormData(e.currentTarget));
-        updateForm('form3', {...data} );
+        updateForm('form3', {...data, workExperience} );
 
         setSubmitted(data);
     }
@@ -101,6 +107,22 @@ const ParentForm3 = () => {
                     </div>
                     <h1 className="text-sm font-bold">ΤΟΠΟΘΕΣΙΑ/ΑΜΟΙΒΗ</h1>
                     <div className='flex flex-wrap md:flex-nowrap md:mb-0 gap-4'>
+                        <I18nProvider locale="el-GR">
+                            <DateRangePicker
+                                isRequired
+                                showMonthAndYearPickers 
+                                size='sm'
+                                variant="faded"
+                                radius='sm'
+                                label="ΠΡΟΥΠΗΡΕΣΙΑ"
+                                labelPlacement='outside-left'
+                                name="workExperience"
+                                value={workExperience}
+                                onChange={setWorkExperience}
+
+                            />
+                        </I18nProvider>
+
                         <Autocomplete
                             isRequired
                             defaultItems={placeOfWork}

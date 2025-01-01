@@ -26,7 +26,7 @@ export const streets = [
 
 export const placeOfWork = [
     {label: "ΟΙΚΙΑ ΜΟΥ", key: "ΟΙΚΙΑ ΜΟΥ"},
-    {label: "ΟΙΚΕΙΑ ΚΗΔΕΜΟΝΑ", key: "ΟΙΚΕΙΑ ΚΗΔΕΜΟΝΑ"},
+    {label: "ΟΙΚΙΑ ΚΗΔΕΜΟΝΑ", key: "ΟΙΚΙΑ ΚΗΔΕΜΟΝΑ"},
 ];
 
 export const meetingDay = [

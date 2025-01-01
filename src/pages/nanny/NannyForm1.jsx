@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../../config/AuthContext';
 import NannyNavBar from '../../components/NannyNavBar';
 import { Progress } from "@nextui-org/react";
-import { Form, Input, Button } from '@nextui-org/react';
+import { Form, Input, Button, Textarea } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react';
 import { cities, dimoi, genders, nomoi, perifereies, streets} from '../../data/formData';
@@ -50,7 +50,7 @@ const NannyForm1 = () => {
                 {/* Form Content */}
                 <Form className="flex flex-col gap-4" validationBehavior="native" onSubmit={onSubmit}>
                     <h1 className="text-sm font-bold">ΠΡΟΣΩΠΙΚΑ ΣΤΟΙΧΕΙΑ</h1>
-                    <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <div className='flex flex-wrap md:flex-nowrap mb-2 md:mb-0 gap-4'>
                         <Input
                             isReadOnly
                             size='sm'
@@ -126,8 +126,8 @@ const NannyForm1 = () => {
                             {(genders) => <AutocompleteItem key={genders.key}>{genders.label}</AutocompleteItem>}
                         </Autocomplete>
                     </div>
-                    <h1 className="text-sm font-bold mt-4">ΣΤΟΙΧΕΙΑ ΕΠΙΚΟΙΝΩΝΙΑΣ</h1>
-                    <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <h1 className="text-sm font-bold">ΣΤΟΙΧΕΙΑ ΕΠΙΚΟΙΝΩΝΙΑΣ</h1>
+                    <div className='flex flex-wrap md:flex-nowrap mb-2 md:mb-0 gap-4'>
                         <Input
                             isRequired
                             size='sm'
@@ -173,8 +173,8 @@ const NannyForm1 = () => {
                             type="email"
                         />
                     </div>
-                    <h1 className="text-sm font-bold mt-4">ΤΟΠΟΘΕΣΙΑ/ΔΙΕΥΘΥΝΣΗ ΚΑΤΟΙΚΙΑΣ</h1>
-                    <div className='flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <h1 className="text-sm font-bold">ΤΟΠΟΘΕΣΙΑ/ΔΙΕΥΘΥΝΣΗ ΚΑΤΟΙΚΙΑΣ</h1>
+                    <div className='flex flex-wrap md:flex-nowrap md:mb-0 gap-4'>
                         <Autocomplete
                             isRequired
                             defaultItems={perifereies}
@@ -262,7 +262,21 @@ const NannyForm1 = () => {
                             defaultValue={formData?.form1?.zipcode || ''}
                         />
                     </div>
-                    <div className="flex py-9 justify-end w-full">
+
+                    <h1 className="text-sm font-bold">ΣΥΝΤΟΜΗ ΠΕΡΙΓΡΑΦΗ</h1>
+                    <div className='flex flex-wrap w-full md:flex-nowrap md:mb-0 gap-4 '>
+                        <Textarea
+                            isRequired
+                            size='sm'
+                            variant='faded'
+                            radius='sm'
+                            labelPlacement="outside"
+                            label="ΠΕΡΙΓΡΑΦΗ"
+                            name="bio"
+                            defaultValue={formData?.form1?.bio || ''}
+                        />
+                    </div>
+                    <div className="flex justify-end w-full">
                     <Button
                         type="submit"
                         variant="solid"

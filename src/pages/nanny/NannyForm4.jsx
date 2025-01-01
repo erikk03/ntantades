@@ -35,6 +35,7 @@ const NannyForm4 = () => {
 
             // Create a new ad document in the "adv" subcollection
             await addDoc(advCollectionRef, {
+                bio: formData?.form1?.bio,
                 gender: formData?.form1?.gender,
                 homephone: formData?.form1?.homephone,
                 cellphone1: formData?.form1?.cellphone1,
@@ -46,7 +47,7 @@ const NannyForm4 = () => {
                 address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
                 city: formData?.form1?.city,
                 zipcode: formData?.form1?.zipcode,
-                pay: formData?.form4?.pay || "5$",
+                payment: formData?.form3?.payment,
                 certificates: {
                     pathologist: formData?.form2?.pathologistCertificate,
                     dermatologist: formData?.form2?.dermatologistCertificate,
@@ -136,7 +137,7 @@ const NannyForm4 = () => {
                 </h1>
 
                 <div className="grid grid-cols-3 gap-4 m-2">
-                    {/* Parent Info */}
+                    {/* Certificates */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΠΙΣΤΟΠΟΙΗΤΙΚΑ</h2>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Παθολόγου" readOnly defaultValue={formData?.form2?.pathologistCertificate}/>
@@ -159,7 +160,7 @@ const NannyForm4 = () => {
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={formData?.form1?.city}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Οδός" readOnly defaultValue={formData?.form1?.streetnumber}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΤΚ" readOnly defaultValue={formData?.form1?.zipcode}/>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" readOnly defaultValue={formData?.form3?.payment} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" readOnly defaultValue={`${formData?.form3?.payment} €`} />
                     </div>
 
                     {/* Days and Hours */}
@@ -208,7 +209,7 @@ const NannyForm4 = () => {
                 {/* Buttons */}
                 <div className="flex justify-end items-end w-full">
                     <Button variant="solid" color="default" size='sm' radius='md'>
-                        <Link to="/nanny/form4">ΠΙΣΩ</Link>
+                        <Link to="/nanny/form3">ΠΙΣΩ</Link>
                     </Button>
                     <Button
                         variant="solid"
