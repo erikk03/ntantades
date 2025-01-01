@@ -26,15 +26,6 @@ const NannyForm4 = () => {
     const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
 
-    const [pay, setPay] = useState(formData?.form4?.pay || '5$'); // Default pay value
-
-    const onPayChange = (e) => {
-        const value = e.target.value;
-        setPay(value);
-        updateForm('form4', { pay: value }); // Update the form context with pay
-    };
-
-
     const onSubmit = async (e) => {
         
         try {
@@ -168,7 +159,7 @@ const NannyForm4 = () => {
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={formData?.form1?.city}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Οδός" readOnly defaultValue={formData?.form1?.streetnumber}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΤΚ" readOnly defaultValue={formData?.form1?.zipcode}/>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" value={pay} onChange={onPayChange} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή Ανά Ώρα" readOnly defaultValue={formData?.form3?.payment} />
                     </div>
 
                     {/* Days and Hours */}
@@ -217,7 +208,7 @@ const NannyForm4 = () => {
                 {/* Buttons */}
                 <div className="flex justify-end items-end w-full">
                     <Button variant="solid" color="default" size='sm' radius='md'>
-                        <Link to="/parent/applications/form4">ΠΙΣΩ</Link>
+                        <Link to="/nanny/form4">ΠΙΣΩ</Link>
                     </Button>
                     <Button
                         variant="solid"

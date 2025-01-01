@@ -65,8 +65,9 @@ const ParentForm3 = () => {
                 </h1>
 
                 {/* Form Content */}
-                <Form className="flex flex-col gap-4" validationBehavior="native" onSubmit={onSubmit}>
+                <Form className="flex flex-col gap-2" validationBehavior="native" onSubmit={onSubmit}>
                     {/* Day and Time Fields */}
+                    <h1 className="text-sm font-bold">ΔΙΑΘΕΣΙΜΟΤΗΤΑ ΦΡΟΝΤΙΔΑΣ</h1>
                     <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
                         {days.map((day) => (
                             <div key={day} className="flex flex-col items-center">
@@ -98,57 +99,70 @@ const ParentForm3 = () => {
                             </div>
                         ))}
                     </div>
+                    <h1 className="text-sm font-bold">ΤΟΠΟΘΕΣΙΑ/ΑΜΟΙΒΗ</h1>
                     <div className='flex flex-wrap md:flex-nowrap md:mb-0 gap-4'>
-                    <Autocomplete
+                        <Autocomplete
                             isRequired
                             defaultItems={placeOfWork}
                             size='sm'
                             variant='faded'
                             radius='sm'
                             label="ΤΟΠΟΘΕΣΙΑ ΕΡΓΑΣΙΑΣ"
-                            labelPlacement="outside"
+                            labelPlacement="outside-left"
                             name="placeOfWork"
                             defaultInputValue={formData?.form3?.placeOfWork || ''}
                         >
                             {(placeOfWork) => <AutocompleteItem key={placeOfWork.key}>{placeOfWork.label}</AutocompleteItem>}
                         </Autocomplete>
+
+                        <Input
+                            isRequired
+                            size='sm'
+                            variant='faded'
+                            radius='sm'
+                            labelPlacement="outside-left"
+                            label="AMOIBH/ΩΡΑ"
+                            name="payment"
+                            defaultValue={formData?.form3?.payment || ''}
+                            placeholder="0.00"
+                            type="number"
+                            endContent={
+                                <div className="pointer-events-none flex items-center">
+                                  <span className="text-default-400 text-small">€</span>
+                                </div>
+                            }
+                        />
                     </div>
 
-                    <div>
-                        <h3 className="text-m font-bold mb-5 text-left translate-y-4 mt-3">
-                            ΔΙΑΘΕΣΙΜΟΤΗΤΑ ΡΑΝΤΕΒΟΥ ΓΝΩΡΙΜΙΑΣ
-                        </h3>
-
-                        <div className='flex flex-wrap md:flex-nowrap md:mb-0 gap-4 mt-1 items-center'>
+                    <h1 className="text-sm font-bold">ΔΙΑΘΕΣΙΜΟΤΗΤΑ ΡΑΝΤΕΒΟΥ ΓΝΩΡΙΜΙΑΣ</h1>
+                    <div className='flex flex-wrap md:flex-nowrap md:mb-0 gap-4'>
                         <Autocomplete
-                                defaultItems={meetingDay}
-                                size='sm'
-                                variant='faded'
-                                radius='sm'
-                                label="ΗΜΕΡΑ"
-                                labelPlacement="outside"
-                                name="meetingDay"
-                                defaultInputValue={formData?.form3?.meetingDay || ''}
-                            >
-                                {(meetingDay) => <AutocompleteItem key={meetingDay.key}>{meetingDay.label}</AutocompleteItem>}
-                            </Autocomplete>
+                            defaultItems={meetingDay}
+                            size='sm'
+                            variant='faded'
+                            radius='sm'
+                            label="ΗΜΕΡΑ"
+                            labelPlacement="outside-left"
+                            name="meetingDay"
+                            defaultInputValue={formData?.form3?.meetingDay || ''}
+                        >
+                            {(meetingDay) => <AutocompleteItem key={meetingDay.key}>{meetingDay.label}</AutocompleteItem>}
+                        </Autocomplete>
 
-                            <TimeInput
-                                className='mt-5'
-                                label="ΩΡΑ"
-                                name= "meetingTime"
-                                size="sm"
-                                variant="faded"
-                                radius='sm'
-                                hourCycle={24}
-                                labelPlacement='outside-left'
-                                defaultValue={parseTimeString(formData?.form3?.meetingTime)}
-                            />
-                        </div>
+                        <TimeInput
+                            label="ΩΡΑ"
+                            name= "meetingTime"
+                            size="sm"
+                            variant="faded"
+                            radius='sm'
+                            hourCycle={24}
+                            labelPlacement='outside-left'
+                            defaultValue={parseTimeString(formData?.form3?.meetingTime)}
+                        />
                     </div>
-                    <h3 className="text-m font-bold mb-0 text-left translate-y-2 mt-3">
-                           ΤΡΟΠΟΙ ΕΠΙΚΟΙΝΩΝΙΑΣ
-                        </h3>
+                    
+                    
+                    <h1 className="text-sm font-bold">ΤΡΟΠΟΙ ΕΠΙΚΟΙΝΩΝΙΑΣ</h1>
                     <div className='flex flex-wrap md:flex-nowrap md:mb-0 gap-2 mt-0 items-center'>
                         <div className="relative">
                             <Input

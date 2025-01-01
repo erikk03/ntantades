@@ -4,9 +4,12 @@ import NannyNavBar from '../../components/NannyNavBar';
 import { Progress } from "@nextui-org/react";
 import { Form, Input, Button } from '@nextui-org/react';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react';
 import { Paperclip } from 'lucide-react';
 import { useFormContext } from '../../config/FormContext';
 import { Link } from 'react-router-dom';
+import { educationLevel } from '../../data/formData';
+
 
 const NannyForm2 = () => {
     const { user, userData } = useAuth();
@@ -74,28 +77,29 @@ const NannyForm2 = () => {
             <NannyNavBar />
 
             {/* Main Content */}
-            <main className="flex-grow p-4 rounded-lg">
+            <main className="flex-grow ml-4 mr-4 rounded-lg">
                 {/* Progress Bar */}
-                <div className="w-full mb-2">
-                    <h1 className="text-xs font-bold text-center mb-2">
-                        ΠΡΟΟΔΟΣ ΑΙΤΗΣΗΣ
-                    </h1>
+                <div className="w-full mb-2 flex flex-col items-center justify-center">
+                    <Breadcrumbs className='m-1' size="sm" >
+                        <BreadcrumbItem href="/nanny/form1">Στοιχεία</BreadcrumbItem>
+                        <BreadcrumbItem href="/nanny/form2">Πιστοποιητικά</BreadcrumbItem>
+                    </Breadcrumbs>
                     <Progress
                         aria-label="Progress"
                         color="danger"
                         size="sm"
-                        value={40}
-                        className="w-1/4 mx-auto"
+                        value={80}
+                        className="w-1/4"
                     />
                 </div>
 
                 {/* Form Title */}
-                <h1 className="text-xl font-bold text-center mb-4">
+                <h1 className="text-xl font-bold text-center mb-2">
                     ΠΡΟΣΘΗΚΗ ΠΙΣΤΟΠΟΙΗΤΙΚΩΝ
                 </h1>
 
                 {/* Form Content */}
-                <Form className="flex flex-col gap-5" validationBehavior="native" onSubmit={onSubmit}>
+                <Form className="flex flex-col gap-2" validationBehavior="native" onSubmit={onSubmit}>
                     <h1 className="text-sm font-bold">ΠΙΣΤΟΠΟΙΗΤΙΚΑ ΥΓΕΙΑΣ</h1>
                     <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
                      {/* Input with Attachment */}
@@ -311,6 +315,21 @@ const NannyForm2 = () => {
                             {errors.firstAidCertificate && (
                                 <p className="text-red-500 text-xs mt-1">{errors.firstAidCertificate}</p>
                             )}
+                        </div>
+                        <div className='relative w-full'>
+                            <Autocomplete
+                                isRequired
+                                defaultItems={educationLevel}
+                                size='sm'
+                                variant='faded'
+                                radius='sm'
+                                label="Εκπαίδευση"
+                                labelPlacement="outside"
+                                name="educationLevel"
+                                defaultInputValue={formData?.form3?.educationLevel || ''}
+                            >
+                                {(educationLevel) => <AutocompleteItem key={educationLevel.key}>{educationLevel.label}</AutocompleteItem>}
+                            </Autocomplete>
                         </div>
                     </div>
                     <h1 className="text-sm font-bold mt-4">ΑΠΟΣΠΑΣΜΑ ΠΟΙΝΙΚΟΥ ΜΗΤΡΩΟΥ</h1>

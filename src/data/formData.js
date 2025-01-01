@@ -39,12 +39,10 @@ export const meetingDay = [
     {label: "ΚΥΡΙΑΚΗ", key: "ΚΥΡΙΑΚΗ"},
 ];
 
-
-export const animals = [
-    {label: "Cat", key: "cat", description: "The second most popular pet in the world"},
-    {label: "Dog", key: "dog", description: "The most popular pet in the world"},
-    {label: "Elephant", key: "elephant", description: "The largest land animal"},
-    {label: "Lion", key: "lion", description: "The king of the jungle"},
-    {label: "Tiger", key: "tiger", description: "The largest cat species"},
-    {label: "Giraffe", key: "giraffe", description: "The tallest land animal"},
+export const educationLevel = [
+    {label: "ΚΑΜΙΑ", key: "ΚΑΜΙΑ"},
+    {label: "ΔΗΜΟΤΙΚΟ", key: "ΔΗΜΟΤΙΚΟ"},
+    {label: "ΓΥΜΝΑΣΙΟ", key: "ΓΥΜΝΑΣΙΟ"},
+    {label: "ΛΥΚΕΙΟ", key: "ΛΥΚΕΙΟ"},
+    {label: "ΠΑΝΕΠΙΣΤΗΜΙΟ", key: "ΠΑΝΕΠΙΣΤΗΜΙΟ"},
 ];
