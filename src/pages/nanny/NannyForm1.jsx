@@ -19,21 +19,6 @@ const NannyForm1 = () => {
     const [nextRoute, setNextRoute] = useState(null);
     const navigate = useNavigate();
 
-    const saveFormDataToFirebase = async () => {
-        try {
-            const advCollectionRef = collection(db, `users/${user.uid}/adv`);
-            const data = { ...formData.form1, status: "SAVED", createdAt: new Date() };
-
-            await addDoc(advCollectionRef, data);
-            console.log("Form data saved as draft!");
-            setIsDirty(false); // Reset the dirty flag after saving
-            updateForm('form1', {});
-            localStorage.removeItem("formData");
-        } catch (error) {
-            console.error("Error saving form data:", error);
-        }
-    };
-
     const handleNavigation = (path) => {
         if (isDirty) {
             setNextRoute(path);
@@ -65,27 +50,40 @@ const NannyForm1 = () => {
         };
     }, [isDirty]);
 
-   const handleSaveAndProceed = async () => {
-    try {
-        // Step 1: Get the form data from the DOM
-        const formElement = document.querySelector('form'); // Adjust selector if needed
-        const data = Object.fromEntries(new FormData(formElement));
-        console.log("Extracted form data:", data); // Debugging: Check the extracted data
-        // Step 2: Update form1 in the context with the current form data
-        updateForm('form1', data);
-
-        // Step 3: Save the updated form1 data to the database
-        await saveFormDataToFirebase(data);
-
-        // Step 4: Proceed with navigation or other actions
-        setShowSaveModal(false);
-        if (nextRoute) {
-            navigate(nextRoute);
+    const saveFormDataToFirebase = async (formDataToSave) => {
+        try {
+            const advCollectionRef = collection(db, `users/${user.uid}/adv`);
+            const data = { ...formDataToSave, status: "SAVED", createdAt: new Date() };
+    
+            await addDoc(advCollectionRef, data);
+            console.log("Form data saved as draft!");
+            setIsDirty(false); // Reset the dirty flag after saving
+        } catch (error) {
+            console.error("Error saving form data:", error);
         }
-    } catch (error) {
-        console.error("Error saving data:", error);
-    }
-};
+    };
+    
+    const handleSaveAndProceed = async () => {
+        try {
+            const formElement = document.querySelector('form'); 
+            const data = Object.fromEntries(new FormData(formElement));
+            console.log("Extracted form data:", data);
+    
+            updateForm('form1', data);
+    
+            await saveFormDataToFirebase(data);
+    
+            setShowSaveModal(false);
+            if (nextRoute) {
+                navigate(nextRoute);
+            }
+    
+            updateForm('form1', {});
+            localStorage.removeItem("formData");
+        } catch (error) {
+            console.error("Error saving data:", error);
+        }
+    };
 
 
     const handleDiscardAndProceed = () => {
@@ -211,6 +209,7 @@ const NannyForm1 = () => {
                             name="gender"
                             defaultInputValue={ formData?.form1?.gender || user?.gender}
                             onInput={handleInputChange}
+                            onSelectionChange={handleInputChange}
                         >
                             {(genders) => <AutocompleteItem key={genders.key}>{genders.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -279,6 +278,7 @@ const NannyForm1 = () => {
                             name="perifereia"
                             defaultInputValue={formData?.form1?.perifereia || ''}
                             onInput={handleInputChange}
+                            onSelectionChange={handleInputChange}
                         >
                             {(perifereia) => <AutocompleteItem key={perifereia.key}>{perifereia.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -293,6 +293,7 @@ const NannyForm1 = () => {
                             name="nomos"
                             defaultInputValue={formData?.form1?.nomos || ''}
                             onInput={handleInputChange}
+                            onSelectionChange={handleInputChange}
                         >
                             {(nomos) => <AutocompleteItem key={nomos.key}>{nomos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -307,6 +308,7 @@ const NannyForm1 = () => {
                             name="dimos"
                             defaultInputValue={formData?.form1?.dimos || ''}
                             onInput={handleInputChange}
+                            onSelectionChange={handleInputChange}
                         >
                             {(dimos) => <AutocompleteItem key={dimos.key}>{dimos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -321,6 +323,7 @@ const NannyForm1 = () => {
                             name="city"
                             defaultInputValue={formData?.form1?.city || ''}
                             onInput={handleInputChange}
+                            onSelectionChange={handleInputChange}
                         >
                             {(city) => <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -335,6 +338,7 @@ const NannyForm1 = () => {
                             name="street"
                             defaultInputValue={formData?.form1?.street || ''}
                             onInput={handleInputChange}
+                            onSelectionChange={handleInputChange}
                         >
                             {(street) => <AutocompleteItem key={street.key}>{street.label}</AutocompleteItem>}
                         </Autocomplete>
