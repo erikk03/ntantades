@@ -158,7 +158,7 @@ const ParentForm4 = () => {
                 return (
                 <div className="flex flex-col">
                     <p className="text-bold text-small capitalize">{cellValue}</p>
-                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.wlocation}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.placeOfWork}</p>
                 </div>
                 );
             case "payment":

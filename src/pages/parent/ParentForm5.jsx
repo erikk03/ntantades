@@ -7,6 +7,7 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';  // Import Firebase Firestore
 import { collection, addDoc } from 'firebase/firestore';
+import { query, where, getDocs, updateDoc } from 'firebase/firestore';
 
 // Components
 import {  Progress } from "@nextui-org/react";
@@ -30,6 +31,22 @@ const ParentForm5 = () => {
         try {
             // Prevent the default form submission
             e.preventDefault();
+
+            // Step 1: Query for existing active applications for the parent
+            const activeApplicationsQuery = query(
+                collection(db, "applications"),
+                where("parent.uid", "==", user.uid),
+                where("status", "==", "active")
+            );
+
+            const activeApplicationsSnapshot = await getDocs(activeApplicationsQuery);
+
+            // Step 2: Update the status of each active application to "finished"
+            const updatePromises = activeApplicationsSnapshot.docs.map((doc) =>
+                updateDoc(doc.ref, { status: "completed" })
+            );
+
+            await Promise.all(updatePromises);
 
             // Submit the data to Firestore
             const docRef = await addDoc(collection(db, "applications"), {
@@ -102,15 +119,20 @@ const ParentForm5 = () => {
                 nanny: {
                     uid: `${formData?.form4?.nannyData?.id}`,
                     name: `${formData?.form4?.nannyData?.name} ${formData?.form4?.nannyData?.surname}`,
-                    age: `${formData?.form4?.nannyData?.birthdate}`,
-                    education: `${formData?.form4?.nannyData?.activeAd?.education}`,
-                    wlocation: `${formData?.form4?.nannyData?.activeAd?.wlocation}`,
-                    experience: `${formData?.form4?.nannyData?.activeAd?.experience}`,
-                    payment: `${formData?.form4?.nannyData?.activeAd?.payment}`,
-                    cellphone1: `${formData?.form4?.nannyData?.activeData?.cellphone1}`,
+                    birthdate: `${formData?.form4?.nannyData?.birthdate}`,
+                    AFM: `${formData?.form4?.nannyData?.AFM}`,
+                    AMKA: `${formData?.form4?.nannyData?.AMKA}`,
+                    AT: `${formData?.form4?.nannyData?.AT}`,
                     EMAIL: `${formData?.form4?.nanny?.EMAIL}`,
+                    education: `${formData?.form4?.nannyData?.activeAd?.education}`,
+                    wlocation: `${formData?.form4?.nannyData?.activeAd?.placeOfWork}`,
+                    experience: `${formData?.form4?.nannyData?.activeAd?.workExperience}`,
+                    payment: `${formData?.form4?.nannyData?.activeAd?.payment}`,
+                    homephone: `${formData?.form4?.nannyData?.activeData?.homephone}`,
+                    cellphone1: `${formData?.form4?.nannyData?.activeData?.cellphone1}`,   
                     bio: `${formData?.form4?.nannyData?.activeAd?.bio}`,
                 },
+                status: "active",
                 createdAt: new Date(),
             });
 
