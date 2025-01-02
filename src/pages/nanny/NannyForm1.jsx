@@ -17,6 +17,7 @@ const NannyForm1 = () => {
     const [isDirty, setIsDirty] = useState(false);
     const [showSaveModal, setShowSaveModal] = useState(false);
     const [nextRoute, setNextRoute] = useState(null);
+    const [submitted, setSubmitted] = React.useState(null);
     const navigate = useNavigate();
 
     const handleNavigation = (path) => {
@@ -99,6 +100,10 @@ const NannyForm1 = () => {
         const data = Object.fromEntries(new FormData(e.currentTarget));
         updateForm('form1', data);
         setIsDirty(false);
+
+        setSubmitted(data);
+
+        window.location.href = '/nanny/form2';
     };
 
     return (
