@@ -6,7 +6,7 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { query, where, getDocs } from 'firebase/firestore';
+import { query, where, getDocs, updateDoc  } from 'firebase/firestore';
 
 // Components
 import { link, Progress } from '@nextui-org/react';
@@ -39,7 +39,7 @@ const NannyForm4 = () => {
     
             // Update the status of each active advertisement to "ΙΣΤΟΡΙΚΟ"
             const updatePromises = activeAdsSnapshot.docs.map(doc => {
-                return doc.ref.update({ status: "ΙΣΤΟΡΙΚΟ" });
+                updateDoc(doc.ref, { status: "ΙΣΤΟΡΙΚΟ" })
             });
             await Promise.all(updatePromises);
     
