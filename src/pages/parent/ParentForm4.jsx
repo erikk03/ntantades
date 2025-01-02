@@ -4,7 +4,6 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from '../../config/firebase';
-// import { query, where } from "firebase/firestore";
 
 // Components
 import ParentNavBar from '../../components/ParentNavBar';
@@ -13,6 +12,7 @@ import { Form, Button } from '@nextui-org/react';
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, User, Pagination} from "@nextui-org/react";
 import { EllipsisVertical, Search, ChevronDown } from 'lucide-react';
+import {Modal,ModalContent, ModalBody, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/react";
 
 export const columns = [
     {name: "ID", uid: "id", sortable: true},
@@ -51,9 +51,17 @@ const INITIAL_VISIBLE_COLUMNS = ["name", "education", "status", "actions"];
 const ParentForm4 = () => {
     const { user } = useAuth();
     const { formData, updateForm } = useFormContext();
-    // const [nannies, setNannies] = useState([]);
     const [ users, setNannies ] = useState([]);
-    const [selectedNanny, setSelectedNanny] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const handleAction = (key, user) => {
+        if (key === "view") {
+            setSelectedUser(user); // Set the user to view
+            onOpen();
+
+        }
+    };
 
     //////////////////////////
     const [filterValue, setFilterValue] = React.useState("");
@@ -183,12 +191,13 @@ const ParentForm4 = () => {
                         <EllipsisVertical className="text-default-300" />
                         </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
+                    <DropdownMenu onAction={(key) => handleAction(key, user)}>
                         <DropdownItem key="view">View</DropdownItem>
                         <DropdownItem key="edit">Edit</DropdownItem>
                         <DropdownItem key="delete">Delete</DropdownItem>
                     </DropdownMenu>
                     </Dropdown>
+
                 </div>
                 );
             default:
@@ -503,6 +512,29 @@ const onSubmit = async (e) => {
                 </Form>
             </main>
 
+            {/* Modal to show selected user details */}
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalContent>
+                <ModalHeader className="flex flex-col gap-1">User Details</ModalHeader>
+                <ModalBody>
+                    {selectedUser ? (
+                    <>
+                        <p><strong>Name:</strong> {selectedUser.surname}</p>
+                        <p><strong>Email:</strong> {selectedUser.EMAIL}</p>
+                        <p><strong>AMKA:</strong> {selectedUser.AMKA}</p>
+                        <p><strong>AT:</strong> {selectedUser.AT}</p>
+                        {/* Add more user fields as necessary */}
+                    </>
+                    ) : (
+                    <p>No user selected.</p>
+                    )}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" variant="light" onClick={onClose}>Close</Button>
+                    <Button color="primary" onClick={onClose}>Action</Button>
+                </ModalFooter>
+                </ModalContent>
+            </Modal>
         </div>
     );
 };
