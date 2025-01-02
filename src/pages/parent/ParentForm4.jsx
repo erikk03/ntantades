@@ -116,48 +116,83 @@ const ParentForm4 = () => {
         const cellValue = user[columnKey];
     
         switch (columnKey) {
-          case "name":
-            return (
-              <User
-                avatarProps={{radius: "lg", src: user.avatar}}
-                description={user.EMAIL}
-                name={cellValue}
-              >
-                {user.EMAIL}
-              </User>
-            );
-          case "education":
-            return (
-              <div className="flex flex-col">
-                <p className="text-bold text-small capitalize">{cellValue}</p>
-                <p className="text-bold text-tiny capitalize text-default-400">{user.education}</p>
-              </div>
-            );
-          case "status":
-            return (
-              <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-                {cellValue}
-              </Chip>
-            );
-          case "actions":
-            return (
-              <div className="relative flex justify-end items-center gap-2">
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button isIconOnly size="sm" variant="light">
-                      <EllipsisVertical className="text-default-300" />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu>
-                    <DropdownItem key="view">View</DropdownItem>
-                    <DropdownItem key="edit">Edit</DropdownItem>
-                    <DropdownItem key="delete">Delete</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </div>
-            );
-          default:
-            return cellValue;
+            case "name":
+                return (
+                <User
+                    avatarProps={{radius: "lg", src: user?.avatar}}
+                    description={user?.EMAIL}
+                    name={`${user?.name} ${user?.surname}`}
+                >
+                    {user?.EMAIL}
+                </User>
+                );
+            case "age":
+                return (
+                <div className="flex flex-col">
+                    <p className="text-bold text-small capitalize">{cellValue}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.birthdate}</p>
+                </div>
+                );
+            case "education":
+                return (
+                <div className="flex flex-col">
+                    <p className="text-bold text-small capitalize">{cellValue}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.education}</p>
+                </div>
+                );
+            case "experience":
+                return (
+                <div className="flex flex-col">
+                    <p className="text-bold text-small capitalize">{cellValue}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.experience}</p>
+                </div>
+                );
+            case "communication":
+                return (
+                <div className="flex flex-col">
+                    <p className="text-bold text-small capitalize">{cellValue}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.cellphone1}</p>
+                </div>
+                );
+            case "wlocation":
+                return (
+                <div className="flex flex-col">
+                    <p className="text-bold text-small capitalize">{cellValue}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.wlocation}</p>
+                </div>
+                );
+            case "payment":
+                return (
+                <div className="flex flex-col">
+                    <p className="text-bold text-small capitalize">{cellValue}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.payment}</p>
+                </div>
+                );
+            case "status":
+                return (
+                <Chip className="capitalize" color={statusColorMap[user?.status]} size="sm" variant="flat">
+                    {cellValue}
+                </Chip>
+                );
+            case "actions":
+                return (
+                <div className="relative flex justify-end items-center gap-2">
+                    <Dropdown>
+                    <DropdownTrigger>
+                        <Button isIconOnly size="sm" variant="light">
+                        <EllipsisVertical className="text-default-300" />
+                        </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                        <DropdownItem key="view">View</DropdownItem>
+                        <DropdownItem key="edit">Edit</DropdownItem>
+                        <DropdownItem key="delete">Delete</DropdownItem>
+                    </DropdownMenu>
+                    </Dropdown>
+                </div>
+                );
+            default:
+                return cellValue;
         }
     }, []);
 
@@ -301,25 +336,41 @@ const ParentForm4 = () => {
         );
     }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
-    // Fetch nannies from Firebase
     useEffect(() => {
-        const fetchNannies = async () => {
+        const fetchNanniesWithActiveAd = async () => {
             try {
                 const q = query(collection(db, "users"), where("professional", "==", true));
                 const querySnapshot = await getDocs(q);
-
-                const fetchedNannies = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
+    
+                const fetchedNannies = await Promise.all(
+                    querySnapshot.docs.map(async (doc) => {
+                        const nannyData = { id: doc.id, ...doc.data() };
+    
+                        // Fetch active advertisement for this nanny
+                        const subcollectionRef = collection(db, `users/${doc.id}/adv`);
+                        const activeAdQuery = query(subcollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
+                        const activeAdSnapshot = await getDocs(activeAdQuery);
+    
+                        const activeAd = activeAdSnapshot.docs[0]
+                            ? { id: activeAdSnapshot.docs[0].id, ...activeAdSnapshot.docs[0].data() }
+                            : null;
+    
+                        return {
+                            ...nannyData,
+                            activeAd,
+                        };
+                    })
+                );
+    
                 setNannies(fetchedNannies);
             } catch (error) {
-                console.error("Error fetching nannies:", error);
+                console.error("Error fetching nannies with active ads:", error);
             }
         };
-
-        fetchNannies();
+    
+        fetchNanniesWithActiveAd();
     }, []);
+    
 
 const onSubmit = async (e) => {
     e.preventDefault();
@@ -344,33 +395,15 @@ const onSubmit = async (e) => {
     }
 
     try {
-        // Create a query to fetch only the 'ΕΝΕΡΓΗ' advertisements
-        const subcollectionRef = collection(db, `users/${selectedNannyId}/adv`);
-        const activeAdsQuery = query(subcollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
 
-        const subcollectionSnapshot = await getDocs(activeAdsQuery);
-
-        const subcollectionData = subcollectionSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-
-        const nannyDataWithSubcollection = {
-            ...selectedNanny,
-            subcollection: subcollectionData,
+        const nannyData = {
+            ...selectedNanny
         };
 
         const existingFormData = JSON.parse(localStorage.getItem('form4')) || {};
 
-        const updatedFormData = {
-            ...existingFormData,
-            nanny: nannyDataWithSubcollection,
-        };
-
-        // localStorage.setItem('form4', JSON.stringify(updatedFormData));
-
         // const data = Object.fromEntries(new FormData(e.currentTarget));
-        updateForm('form4', { ...updatedFormData });
+        updateForm('form4', { ...existingFormData, nannyData });
 
         window.location.href = '/parent/applications/form5';
     } catch (error) {
