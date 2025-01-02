@@ -6,10 +6,10 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { useState } from 'react';
+import { query, where, getDocs } from 'firebase/firestore';
 
 // Components
-import { Progress } from '@nextui-org/react';
+import { link, Progress } from '@nextui-org/react';
 import { Input, TimeInput, Button } from '@nextui-org/react';
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react';
 import NannyNavBar from '../../components/NannyNavBar';
@@ -45,19 +45,20 @@ const NannyForm4 = () => {
     
             // Create a new ad document in the "adv" subcollection
             await addDoc(advCollectionRef, {
+                //form1
                 bio: formData?.form1?.bio,
                 gender: formData?.form1?.gender,
                 homephone: formData?.form1?.homephone,
                 cellphone1: formData?.form1?.cellphone1,
                 cellphone2: formData?.form1?.cellphone2,
-                EMAIL: formData?.form1?.EMAIL,
+                email: formData?.form1?.EMAIL,
                 perifereia: formData?.form1?.perifereia,
                 nomos: formData?.form1?.nomos,
                 dimos: formData?.form1?.dimos,
                 address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
                 city: formData?.form1?.city,
                 zipcode: formData?.form1?.zipcode,
-                payment: formData?.form3?.payment,
+                //form2
                 certificates: {
                     pathologist: formData?.form2?.pathologistCertificate,
                     dermatologist: formData?.form2?.dermatologistCertificate,
@@ -68,6 +69,8 @@ const NannyForm4 = () => {
                     criminalRecord: formData?.form2?.criminalRecordCertificate,
                     letter: formData?.form2?.letterCertificate, 
                 },
+                education: formData?.form2?.educationLevel,
+                //form3
                 schedule: {
                     monday: {
                         from: formData?.form3?.δευτερα_from,
@@ -99,6 +102,15 @@ const NannyForm4 = () => {
                     },
                     extra: formData?.form3?.extra,
                 },
+                payment: formData?.form3?.payment,
+                facebook: formData?.form3?.facebook,
+                instagram: formData?.form3?.instagram,
+                linkedin: formData?.form3?.linkedin,
+                meetingDays: formData?.form3?.meetingDay,
+                meetingTime: formData?.form3?.meetingTime,
+                placeOfWork: formData?.form3?.placeOfWork,
+                workExperience: formData?.form3?.workExperience,
+                // Additional fields
                 status: "ΕΝΕΡΓΗ", // Default status for a new ad
                 createdAt: new Date(),
             });
