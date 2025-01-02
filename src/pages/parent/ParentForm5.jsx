@@ -120,16 +120,16 @@ const ParentForm5 = () => {
                     uid: `${formData?.form4?.nannyData?.id}`,
                     name: `${formData?.form4?.nannyData?.name} ${formData?.form4?.nannyData?.surname}`,
                     birthdate: `${formData?.form4?.nannyData?.birthdate}`,
-                    AFM: `${formData?.form4?.nannyData?.AFM}`,
+                    AFM: `${formData?.form4?.nannyData?.AFM}`, 
                     AMKA: `${formData?.form4?.nannyData?.AMKA}`,
                     AT: `${formData?.form4?.nannyData?.AT}`,
-                    EMAIL: `${formData?.form4?.nanny?.EMAIL}`,
+                    EMAIL: `${formData?.form4?.nannyData?.EMAIL}`,
                     education: `${formData?.form4?.nannyData?.activeAd?.education}`,
                     wlocation: `${formData?.form4?.nannyData?.activeAd?.placeOfWork}`,
                     experience: `${formData?.form4?.nannyData?.activeAd?.workExperience}`,
                     payment: `${formData?.form4?.nannyData?.activeAd?.payment}`,
-                    homephone: `${formData?.form4?.nannyData?.activeData?.homephone}`,
-                    cellphone1: `${formData?.form4?.nannyData?.activeData?.cellphone1}`,   
+                    homephone: `${formData?.form4?.nannyData?.activeAd?.homephone}`,
+                    cellphone1: `${formData?.form4?.nannyData?.activeAd?.cellphone1}`,   
                     bio: `${formData?.form4?.nannyData?.activeAd?.bio}`,
                 },
                 status: "active",
@@ -255,14 +255,14 @@ const ParentForm5 = () => {
                     {/* Nanny Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΣΤΟΙΧΕΙΑ ΕΠΙΜΕΛΗΤΗ/ΤΡΙΑΣ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue="ΚΟΥΚΟΥΛΗ ΜΑΙΡΑ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue="21 Έτη" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Εκπαίδευση" readOnly defaultValue="ΔΕΥΤ/ΒΑΘΜΙΑ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πρώτες Βοήθειες" readOnly defaultValue="ΝΑΙ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Κατάσταση" readOnly defaultValue="ΑΓΑΜΗ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Απασχόληση" readOnly defaultValue="ΠΛΗΡΗΣ" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Επικοινωνία" readOnly defaultValue="69788488388" />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή" readOnly defaultValue="5$/ΩΡΑ" />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${formData?.form4?.nannyData?.name} ${formData?.form4?.nannyData?.surname}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αριθμός Αστυνομικής Ταυτότητας" readOnly defaultValue={`${formData?.form4?.nannyData?.AT}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={`${formData?.form4?.nannyData?.birthdate}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Εκπαίδευση" readOnly defaultValue={`${formData?.form4?.nannyData?.activeAd?.education}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Email" readOnly defaultValue={`${formData?.form4?.nannyData?.EMAIL}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Σταθερό" readOnly defaultValue={`${formData?.form4?.nannyData?.activeAd?.homephone}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Τηλέφωνο" readOnly defaultValue={`${formData?.form4?.nannyData?.activeAd?.cellphone1} ${formData?.form4?.nannyData?.activeAd?.cellphone2}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή/Ώρα" readOnly defaultValue={`${formData?.form4?.nannyData?.activeAd?.payment} €`} />
                     </div>
                 </div>
                     

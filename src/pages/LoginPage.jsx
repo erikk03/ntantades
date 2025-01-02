@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import {Checkbox, Input, Link, Button} from "@nextui-org/react";
+
+import { Mail, Lock } from 'lucide-react';
 
 const LoginPage = ({onLoginSuccess}) => {
   const [email, setEmail] = useState('');
@@ -41,22 +44,47 @@ const LoginPage = ({onLoginSuccess}) => {
 
   return (
     <div>
-      <h1>Login Page</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin}>
-        <input
+      <form onSubmit={handleLogin} className='flex flex-col space-y-8'>
+        <Input
+          endContent={
+            <Mail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+          }
           type="email"
-          placeholder="Enter email"
+          label="Email"
+          labelPlacement='outside'
+          // placeholder="Enter your email"
+          variant="bordered"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
+        <Input
+          endContent={
+            <Lock className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+          }
           type="password"
-          placeholder="Enter password"
+          label="Κωδικός"
+          labelPlacement='outside'
+          // placeholder="Enter your password"
+          variant="bordered"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <div className="flex py-2 px-1 justify-between">
+          <Checkbox
+            classNames={{
+              label: "text-small",
+            }}
+          >
+            Να με θυμάσαι
+          </Checkbox>
+          <Link color="primary" href="#" size="sm">
+            Ξέχασα τον κωδικό μου
+          </Link>
+        </div>
+        
+        {/*  */}
+        <Button type="submit">Σύνδεση</Button>
       </form>
     </div>
   );

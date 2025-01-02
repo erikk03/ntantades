@@ -52,7 +52,7 @@ const ParentForm2 = () => {
                         aria-label="Progress"
                         color="danger"
                         size="sm"
-                        value={80}
+                        value={40}
                         className="w-1/4"
                     />
                 </div>

@@ -8,7 +8,7 @@ import { useAuth } from '../config/AuthContext';
 import { Card, CardBody} from "@nextui-org/react"
 import { Button } from '@nextui-org/react';
 import { Navbar, NavbarBrand} from "@nextui-org/react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
 import LoginPage from './LoginPage';
 
 export const AcmeLogo = () => {
@@ -73,11 +73,6 @@ const HomePage = () => {
                     <ModalBody>
                       <LoginPage onLoginSuccess={() => handleLoginSuccess('/parent')} />
                     </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" variant="light" onPress={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
                   </>
                 )}
               </ModalContent>
@@ -93,11 +88,6 @@ const HomePage = () => {
                     <ModalBody>
                       <LoginPage onLoginSuccess={() => handleLoginSuccess('/nanny')} />
                     </ModalBody>
-                    <ModalFooter>
-                      <Button color="danger" variant="light" onPress={onClose}>
-                        Close
-                      </Button>
-                    </ModalFooter>
                   </>
                 )}
               </ModalContent>
