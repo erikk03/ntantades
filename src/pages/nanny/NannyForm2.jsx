@@ -9,6 +9,7 @@ import { Paperclip } from 'lucide-react';
 import { useFormContext } from '../../config/FormContext';
 import { Link } from 'react-router-dom';
 import { educationLevel } from '../../data/formData';
+import { useNavigate } from 'react-router-dom';
 
 
 const NannyForm2 = () => {
@@ -17,6 +18,8 @@ const NannyForm2 = () => {
     const [fileAttachments, setFileAttachments] = useState({});
     const [errors, setErrors] = useState({}); 
     const { formData, updateForm } = useFormContext();
+    const [isDirty, setIsDirty] = useState(false);
+    const navigate = useNavigate();
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -69,12 +72,19 @@ const NannyForm2 = () => {
         e.target.value = '';
     };
     
-    
+    const handleNavigation = (path) => {
+        if (isDirty) {
+            setNextRoute(path);
+            setShowSaveModal(true);
+        } else {
+            navigate(path);
+        }
+    };
 
     return (
         <div className="h-screen bg-pink-100 flex flex-col">
             {/* Navigation */}
-            <NannyNavBar />
+            <NannyNavBar handleNavigation={handleNavigation} />
 
             {/* Main Content */}
             <main className="flex-grow ml-4 mr-4 rounded-lg">

@@ -15,6 +15,7 @@ import { placeOfWork, meetingDay} from '../../data/formData';
 import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
 import { Phone,  Mail, Facebook, Instagram, Linkedin  } from 'lucide-react';
 import { Input } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 
 const parseTimeString = (timeString) => {
     if (!timeString) return null; // Handle null or empty values
@@ -29,6 +30,8 @@ const days = ["ΔΕΥΤΕΡΑ", "ΤΡΙΤΗ", "ΤΕΤΑΡΤΗ", "ΠΕΜΠΤΗ", 
 const ParentForm3 = () => {
     const { user, userData, kidsData } = useAuth();
     const { formData, updateForm } = useFormContext();
+    const [isDirty, setIsDirty] = useState(false);
+    const navigate = useNavigate();
     const [workExperience, setWorkExperience] = useState(
         formData?.form3?.workExperience || null
       );
@@ -42,10 +45,19 @@ const ParentForm3 = () => {
         setSubmitted(data);
     }
 
+    const handleNavigation = (path) => {
+        if (isDirty) {
+            setNextRoute(path);
+            setShowSaveModal(true);
+        } else {
+            navigate(path);
+        }
+    };
+
     return (
         <div className="h-screen bg-pink-100 flex flex-col">
             {/* Navigation */}
-            <NannyNavBar />
+            <NannyNavBar handleNavigation={handleNavigation} />
 
             {/* Main Content */}
             <main className="flex-grow ml-4 mr-4 rounded-lg">

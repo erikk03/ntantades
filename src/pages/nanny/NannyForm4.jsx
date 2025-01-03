@@ -7,6 +7,7 @@ import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { query, where, getDocs, updateDoc  } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 
 // Components
 import { link, Progress } from '@nextui-org/react';
@@ -20,10 +21,22 @@ const parseTimeString = (timeString) => {
     return new Time(hours, minutes); // Return a Time object
 };
 
+
+
 const NannyForm4 = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
+    const [isDirty, setIsDirty] = useState(false);
+
+    const handleNavigation = (path) => {
+        if (isDirty) {
+            setNextRoute(path);
+            setShowSaveModal(true);
+        } else {
+            navigate(path);
+        }
+    };
 
     const onSubmit = async (e) => {
         try {
@@ -132,7 +145,7 @@ const NannyForm4 = () => {
     return (
         <div className="h-screen bg-pink-100 flex flex-col">
             {/* Navigation */}
-            <NannyNavBar />
+            <NannyNavBar handleNavigation={handleNavigation}/>
 
             {/* Main Content */}
             <main className="flex-grow ml-4 mr-4 rounded-lg">
