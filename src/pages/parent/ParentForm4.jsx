@@ -11,8 +11,10 @@ import {  Progress } from "@nextui-org/react";
 import { Form, Button } from '@nextui-org/react';
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, User, Pagination} from "@nextui-org/react";
-import { EllipsisVertical, Search, ChevronDown } from 'lucide-react';
+import { EllipsisVertical, Search, ChevronDown, Eye } from 'lucide-react';
+import {Phone, Mail, Facebook, Instagram, Linkedin} from 'lucide-react';
 import {Modal,ModalContent, ModalBody, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/react";
+import {Popover, PopoverTrigger, PopoverContent, Link as MLink} from "@nextui-org/react";
 
 export const columns = [
     {name: "ID", uid: "id", sortable: true},
@@ -28,14 +30,54 @@ export const columns = [
 ];
 
 export const statusOptions = [
-    {name: "ΔΙΑΘΕΣΙΜΟΣ", uid: "active"},
-    {name: "ΑΠΑΣΧΟΛΗΜΕΝΟΣ", uid: "paused"},
-    {name: "ΑΔΕΙΑ", uid: "vacation"},
+    {name: "ΔΙΑΘΕΣΙΜΟΙ", uid: "Διαθέσιμη"},
+    {name: "ΑΠΑΣΧΟΛΗΜΕΝΟΙ", uid: "Απασχολημένη"},
+    {name: "ΣΕ ΑΔΕΙΑ", uid: "Σε άδεια"},
 ];
 
 export function capitalize(s) {
     return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
+
+// Helper function to calculate age or months
+const calculateAge = (birthdate) => {
+    if (!birthdate) return 'N/A';
+    const birthDateObj = new Date(birthdate);
+    const today = new Date();
+  
+    // Calculate the total difference in months
+    const totalMonths = (today.getFullYear() - birthDateObj.getFullYear()) * 12 + (today.getMonth() - birthDateObj.getMonth());
+  
+    // Calculate age in years
+    let age = Math.floor(totalMonths / 12);
+    return `${age}  Ετών`;
+};
+
+export function formatWorkExperience(workExperience) {
+    if (!workExperience || !workExperience.start || !workExperience.end) {
+      return "Μη διαθέσιμες πληροφορίες.";
+    }
+  
+    const start = workExperience.start;
+    const end = workExperience.end;
+  
+    // Validate that both start and end dates have the required fields
+    const requiredFields = ["year", "month", "day"];
+    for (const field of requiredFields) {
+      if (!(field in start) || !(field in end)) {
+        return "Ελλειπή δεδομένα.";
+      }
+    }
+  
+    // Format dates as "DD/MM/YYYY"
+    const formatDate = (date) =>
+      `${String(date.day).padStart(2, "0")}/${String(date.month).padStart(2, "0")}/${date.year}`;
+  
+    const startDateString = formatDate(start);
+    const endDateString = formatDate(end);
+  
+    return `${startDateString} - ${endDateString}`;
+  }
 
 const statusColorMap = {
     Διαθέσιμος: "success",
@@ -45,7 +87,7 @@ const statusColorMap = {
     Άδεια: "warning",
 };
   
-const INITIAL_VISIBLE_COLUMNS = ["name", "education", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["name", "education", "status", "payment", "actions"];
   
 
 const ParentForm4 = () => {
@@ -138,7 +180,7 @@ const ParentForm4 = () => {
                 return (
                 <div className="flex flex-col">
                     <p className="text-bold text-small capitalize">{cellValue}</p>
-                    <p className="text-bold text-tiny capitalize text-default-400">{user?.birthdate}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{calculateAge(user?.birthdate)}</p>
                 </div>
                 );
             case "education":
@@ -152,7 +194,7 @@ const ParentForm4 = () => {
                 return (
                 <div className="flex flex-col">
                     <p className="text-bold text-small capitalize">{cellValue}</p>
-                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.experience}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{formatWorkExperience(user?.activeAd?.workExperience)}</p>
                 </div>
                 );
             case "communication":
@@ -173,7 +215,7 @@ const ParentForm4 = () => {
                 return (
                 <div className="flex flex-col">
                     <p className="text-bold text-small capitalize">{cellValue}</p>
-                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.payment}</p>
+                    <p className="text-bold text-tiny capitalize text-default-400">{user?.activeAd?.payment}€ / Ώρα</p>
                 </div>
                 );
             case "status":
@@ -192,9 +234,9 @@ const ParentForm4 = () => {
                         </Button>
                     </DropdownTrigger>
                     <DropdownMenu onAction={(key) => handleAction(key, user)}>
-                        <DropdownItem key="view">View</DropdownItem>
-                        <DropdownItem key="edit">Edit</DropdownItem>
-                        <DropdownItem key="delete">Delete</DropdownItem>
+                        <DropdownItem key="view">Προβολή</DropdownItem>
+                        <DropdownItem key="edit">Επικοινωνία</DropdownItem>
+                        <DropdownItem key="delete" color='danger'>Διαγραφή</DropdownItem>
                     </DropdownMenu>
                     </Dropdown>
 
@@ -385,13 +427,13 @@ const onSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedKeys.size) {
-        alert("Please select a nanny to proceed.");
+        alert("Παρακαλώ επιλέξτε έναν επιμελητή για να συνεχίσετε.");
         return;
     }
 
     if (!(e.currentTarget instanceof HTMLFormElement)) {
         console.error("Error: e.currentTarget is not a form element.");
-        alert("An error occurred while processing the form. Please try again.");
+        alert("Αποτυχία επιλογής επιμελητή. Παρακαλώ δοκιμάστε ξανά.");
         return;
     }
 
@@ -399,7 +441,7 @@ const onSubmit = async (e) => {
     const selectedNanny = users.find((nanny) => nanny.id.toString() === selectedNannyId);
 
     if (!selectedNanny) {
-        alert("An error occurred while selecting the nanny. Please try again.");
+        alert("Αποτυχία επιλογής επιμελητή. Παρακαλώ δοκιμάστε ξανά.");
         return;
     }
 
@@ -417,7 +459,7 @@ const onSubmit = async (e) => {
         window.location.href = '/parent/applications/form5';
     } catch (error) {
         console.error("Error fetching nanny's subcollection:", error);
-        alert("Failed to fetch additional nanny details. Please try again.");
+        alert("Αποτυχία επιλογής επιμελητή. Παρακαλώ δοκιμάστε ξανά.");
     }
 };
 
@@ -513,26 +555,96 @@ const onSubmit = async (e) => {
             </main>
 
             {/* Modal to show selected user details */}
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} >
                 <ModalContent>
-                <ModalHeader className="flex flex-col gap-1">User Details</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">
+                    <User
+                        avatarProps={{radius: "lg", src: selectedUser?.avatar}}
+                        description={selectedUser?.EMAIL}
+                        name={`${selectedUser?.name} ${selectedUser?.surname}`}
+                    >
+                        {selectedUser?.EMAIL}
+                    </User>
+                </ModalHeader>
+                <hr/>
                 <ModalBody>
                     {selectedUser ? (
                     <>
-                        <p><strong>Name:</strong> {selectedUser.surname}</p>
-                        <p><strong>Email:</strong> {selectedUser.EMAIL}</p>
-                        <p><strong>AMKA:</strong> {selectedUser.AMKA}</p>
-                        <p><strong>AT:</strong> {selectedUser.AT}</p>
-                        {/* Add more user fields as necessary */}
+                        <p className='bg-gray-200 rounded-lg pl-1'><strong>AT:</strong> {selectedUser?.AT}</p>
+                        <p className='bg-gray-200 rounded-lg pl-1'><strong>ΑΦΜ:</strong> {selectedUser?.AFM}</p>
+                        <p className='bg-gray-200 rounded-lg pl-1'><strong>ΔΙΕΥΘΥΝΣΗ:</strong> {selectedUser?.activeAd?.address}, {selectedUser?.activeAd?.city} {selectedUser?.activeAd?.nomos} {selectedUser?.activeAd?.zipcode}</p>
+                        <p className='flex items-center justify-between bg-gray-200 rounded-lg pl-1 pr-1'><strong>ΣΥΣΤΑΤΙΚΕΣ ΕΠΙΣΤΟΛΕΣ:</strong> {selectedUser.activeAd?.certificates?.letter} <Eye size="15px"/></p>
+                        <div className='bg-gray-200 rounded-lg'><strong className='flex justify-center'>ΣΥΝΤΟΜΗ ΠΕΡΙΓΡΑΦΗ</strong> <p>{selectedUser?.activeAd?.bio}</p></div>                        
+                        <div className='bg-gray-200 rounded-lg'>
+                            <strong className='flex justify-center'>ΤΡΟΠΟΙ ΕΠΙΚΟΙΝΩΝΙΑΣ</strong>
+                            <p className='flex items-center justify-center mt-1 mb-1 gap-2'>
+                                {selectedUser?.EMAIL &&
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                        <PopoverTrigger>
+                                            <Mail size="20px" className='mr-1 cursor-pointer'/>
+                                        </PopoverTrigger>
+                                        <PopoverContent>
+                                            <MLink><p className='p-2'>{selectedUser?.EMAIL}</p></MLink>
+                                        </PopoverContent>
+                                    </Popover> 
+                                }
+                                {(selectedUser?.activeAd?.cellphone1) && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                        <PopoverTrigger>
+                                            <Phone size="20px" className='mr-1 cursor-pointer'/>
+                                        </PopoverTrigger>
+                                        <PopoverContent>
+                                            <p className='p-2'>{selectedUser?.activeAd?.homephone}</p>
+                                            <p className='p-2'>{selectedUser?.activeAd?.cellphone1}</p>
+                                            <p className='p-2'>{selectedUser?.activeAd?.cellphone2}</p>
+                                        </PopoverContent>
+                                    </Popover>
+                                }
+                                {selectedUser?.activeAd?.facebook && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                    <PopoverTrigger>
+                                        <Facebook size="20px" className='mr-1 cursor-pointer'/>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <MLink><p className='p-2'>@{selectedUser?.activeAd?.facebook}</p></MLink>
+                                    </PopoverContent>
+                                </Popover>
+                                }
+                                {selectedUser?.activeAd?.instagram && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                    <PopoverTrigger>
+                                        <Instagram size="20px" className='mr-1 cursor-pointer'/>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <MLink><p className='p-2'>@{selectedUser?.activeAd?.instagram}</p></MLink>
+                                    </PopoverContent>
+                                </Popover>
+                                }
+                                {selectedUser?.activeAd?.linkedin && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                    <PopoverTrigger>
+                                        <Linkedin size="20px" className='mr-1 cursor-pointer'/>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <MLink><p className='p-2'>@{selectedUser?.activeAd?.linkedin}</p></MLink>
+                                    </PopoverContent>
+                                </Popover>
+                                }
+                            </p>
+                        </div>
+                        <div className='bg-gray-200 rounded-lg'>
+
+                        </div>
+
                     </>
                     ) : (
-                    <p>No user selected.</p>
+                    <p>Δεν έχει επιλεγεί επιμελητής/τρια.</p>
                     )}
                 </ModalBody>
-                <ModalFooter>
+                {/* <ModalFooter>
                     <Button color="danger" variant="light" onClick={onClose}>Close</Button>
                     <Button color="primary" onClick={onClose}>Action</Button>
-                </ModalFooter>
+                </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </div>
