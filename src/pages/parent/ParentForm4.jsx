@@ -11,8 +11,10 @@ import {  Progress } from "@nextui-org/react";
 import { Form, Button } from '@nextui-org/react';
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, User, Pagination} from "@nextui-org/react";
-import { EllipsisVertical, Search, ChevronDown } from 'lucide-react';
+import { EllipsisVertical, Search, ChevronDown, Eye } from 'lucide-react';
+import {Phone, Mail, Facebook, Instagram, Linkedin} from 'lucide-react';
 import {Modal,ModalContent, ModalBody, ModalHeader, ModalFooter, useDisclosure} from "@nextui-org/react";
+import {Popover, PopoverTrigger, PopoverContent, Link as MLink} from "@nextui-org/react";
 
 export const columns = [
     {name: "ID", uid: "id", sortable: true},
@@ -232,9 +234,9 @@ const ParentForm4 = () => {
                         </Button>
                     </DropdownTrigger>
                     <DropdownMenu onAction={(key) => handleAction(key, user)}>
-                        <DropdownItem key="view">View</DropdownItem>
-                        <DropdownItem key="edit">Edit</DropdownItem>
-                        <DropdownItem key="delete">Delete</DropdownItem>
+                        <DropdownItem key="view">Προβολή</DropdownItem>
+                        <DropdownItem key="edit">Επικοινωνία</DropdownItem>
+                        <DropdownItem key="delete" color='danger'>Διαγραφή</DropdownItem>
                     </DropdownMenu>
                     </Dropdown>
 
@@ -553,26 +555,96 @@ const onSubmit = async (e) => {
             </main>
 
             {/* Modal to show selected user details */}
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} >
                 <ModalContent>
-                <ModalHeader className="flex flex-col gap-1">User Details</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">
+                    <User
+                        avatarProps={{radius: "lg", src: selectedUser?.avatar}}
+                        description={selectedUser?.EMAIL}
+                        name={`${selectedUser?.name} ${selectedUser?.surname}`}
+                    >
+                        {selectedUser?.EMAIL}
+                    </User>
+                </ModalHeader>
+                <hr/>
                 <ModalBody>
                     {selectedUser ? (
                     <>
-                        <p><strong>Name:</strong> {selectedUser.surname}</p>
-                        <p><strong>Email:</strong> {selectedUser.EMAIL}</p>
-                        <p><strong>AMKA:</strong> {selectedUser.AMKA}</p>
-                        <p><strong>AT:</strong> {selectedUser.AT}</p>
-                        {/* Add more user fields as necessary */}
+                        <p className='bg-gray-200 rounded-lg pl-1'><strong>AT:</strong> {selectedUser?.AT}</p>
+                        <p className='bg-gray-200 rounded-lg pl-1'><strong>ΑΦΜ:</strong> {selectedUser?.AFM}</p>
+                        <p className='bg-gray-200 rounded-lg pl-1'><strong>ΔΙΕΥΘΥΝΣΗ:</strong> {selectedUser?.activeAd?.address}, {selectedUser?.activeAd?.city} {selectedUser?.activeAd?.nomos} {selectedUser?.activeAd?.zipcode}</p>
+                        <p className='flex items-center justify-between bg-gray-200 rounded-lg pl-1 pr-1'><strong>ΣΥΣΤΑΤΙΚΕΣ ΕΠΙΣΤΟΛΕΣ:</strong> {selectedUser.activeAd?.certificates?.letter} <Eye size="15px"/></p>
+                        <div className='bg-gray-200 rounded-lg'><strong className='flex justify-center'>ΣΥΝΤΟΜΗ ΠΕΡΙΓΡΑΦΗ</strong> <p>{selectedUser?.activeAd?.bio}</p></div>                        
+                        <div className='bg-gray-200 rounded-lg'>
+                            <strong className='flex justify-center'>ΤΡΟΠΟΙ ΕΠΙΚΟΙΝΩΝΙΑΣ</strong>
+                            <p className='flex items-center justify-center mt-1 mb-1 gap-2'>
+                                {selectedUser?.EMAIL &&
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                        <PopoverTrigger>
+                                            <Mail size="20px" className='mr-1 cursor-pointer'/>
+                                        </PopoverTrigger>
+                                        <PopoverContent>
+                                            <MLink><p className='p-2'>{selectedUser?.EMAIL}</p></MLink>
+                                        </PopoverContent>
+                                    </Popover> 
+                                }
+                                {(selectedUser?.activeAd?.cellphone1) && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                        <PopoverTrigger>
+                                            <Phone size="20px" className='mr-1 cursor-pointer'/>
+                                        </PopoverTrigger>
+                                        <PopoverContent>
+                                            <p className='p-2'>{selectedUser?.activeAd?.homephone}</p>
+                                            <p className='p-2'>{selectedUser?.activeAd?.cellphone1}</p>
+                                            <p className='p-2'>{selectedUser?.activeAd?.cellphone2}</p>
+                                        </PopoverContent>
+                                    </Popover>
+                                }
+                                {selectedUser?.activeAd?.facebook && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                    <PopoverTrigger>
+                                        <Facebook size="20px" className='mr-1 cursor-pointer'/>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <MLink><p className='p-2'>@{selectedUser?.activeAd?.facebook}</p></MLink>
+                                    </PopoverContent>
+                                </Popover>
+                                }
+                                {selectedUser?.activeAd?.instagram && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                    <PopoverTrigger>
+                                        <Instagram size="20px" className='mr-1 cursor-pointer'/>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <MLink><p className='p-2'>@{selectedUser?.activeAd?.instagram}</p></MLink>
+                                    </PopoverContent>
+                                </Popover>
+                                }
+                                {selectedUser?.activeAd?.linkedin && 
+                                    <Popover showArrow={true} color='foreground' backdrop='opaque'> 
+                                    <PopoverTrigger>
+                                        <Linkedin size="20px" className='mr-1 cursor-pointer'/>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <MLink><p className='p-2'>@{selectedUser?.activeAd?.linkedin}</p></MLink>
+                                    </PopoverContent>
+                                </Popover>
+                                }
+                            </p>
+                        </div>
+                        <div className='bg-gray-200 rounded-lg'>
+
+                        </div>
+
                     </>
                     ) : (
-                    <p>No user selected.</p>
+                    <p>Δεν έχει επιλεγεί επιμελητής/τρια.</p>
                     )}
                 </ModalBody>
-                <ModalFooter>
+                {/* <ModalFooter>
                     <Button color="danger" variant="light" onClick={onClose}>Close</Button>
                     <Button color="primary" onClick={onClose}>Action</Button>
-                </ModalFooter>
+                </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </div>
