@@ -32,21 +32,21 @@ const ParentForm5 = () => {
             // Prevent the default form submission
             e.preventDefault();
 
-            // Step 1: Query for existing active applications for the parent
-            const activeApplicationsQuery = query(
-                collection(db, "applications"),
-                where("parent.uid", "==", user.uid),
-                where("status", "==", "active")
-            );
+            // // Step 1: Query for existing active applications for the parent
+            // const activeApplicationsQuery = query(
+            //     collection(db, "applications"),
+            //     where("parent.uid", "==", user.uid),
+            //     where("status", "==", "ΕΝΕΡΓΗ")
+            // );
 
-            const activeApplicationsSnapshot = await getDocs(activeApplicationsQuery);
+            // const activeApplicationsSnapshot = await getDocs(activeApplicationsQuery);
 
-            // Step 2: Update the status of each active application to "finished"
-            const updatePromises = activeApplicationsSnapshot.docs.map((doc) =>
-                updateDoc(doc.ref, { status: "completed" })
-            );
+            // // Step 2: Update the status of each active application to "finished"
+            // const updatePromises = activeApplicationsSnapshot.docs.map((doc) =>
+            //     updateDoc(doc.ref, { status: "ΟΛΟΚΛΗΡΩΜΕΝΗ" })
+            // );
 
-            await Promise.all(updatePromises);
+            // await Promise.all(updatePromises);
 
             // Submit the data to Firestore
             const docRef = await addDoc(collection(db, "applications"), {
@@ -132,7 +132,7 @@ const ParentForm5 = () => {
                     cellphone1: `${formData?.form4?.nannyData?.activeAd?.cellphone1}`,   
                     bio: `${formData?.form4?.nannyData?.activeAd?.bio}`,
                 },
-                status: "active",
+                status: "YΠΟΒΕΒΛΗΜΕΝΗ",
                 createdAt: new Date(),
             });
 
@@ -186,7 +186,7 @@ const ParentForm5 = () => {
                     {/* Parent Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΣΤΟΙΧΕΙΑ ΓΟΝΕΑ/ΚΗΔΕΜΟΝΑ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${formData?.form1?.name} ${formData?.form1?.surname}`}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${formData?.form1?.name} ${formData?.form1?.surname} `}/>
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={formData?.form1?.birthdate} />
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αριθμός Αστυνομικής Ταυτότητας" readOnly defaultValue={formData?.form1?.AT} />
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑΦΜ" readOnly defaultValue={formData?.form1?.AFM} />
@@ -206,7 +206,6 @@ const ParentForm5 = () => {
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Δυσαρέσκειες" readOnly defaultValue={formData?.form2?.dislikes || "-"} />
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αρέσκειες" readOnly defaultValue={formData?.form2?.likes || "-"} />
                         <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Διατροφή" readOnly defaultValue={formData?.form2?.diet || "-"} />
-                        {/* <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Σχόλια" readOnly defaultValue={formData?.form2?.extra || "-"} /> */}
                     </div>
 
                     {/* Days and Hours */}

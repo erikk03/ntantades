@@ -1,6 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../config/AuthContext';
+import { db } from '../../config/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 // Components
 import ParentNavBar from '../../components/ParentNavBar';
@@ -8,6 +10,44 @@ import { Button } from '@nextui-org/react';
 
 const ParentPage = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+    const [activeApplications, setActiveApplications] = useState([]);
+
+    // Fetch advertisements from Firestore
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'applications'));
+                const fetchedApplications = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                // Filter applications by parent.id === user.id
+                const userApplications = fetchedApplications.filter(app => app.parent?.uid === user.uid);
+
+                // Separate applications based on status
+                const active = userApplications.filter(app =>
+                    app.status === 'ΕΝΕΡΓΗ' || app.status === 'ΥΠΟΒΕΒΛΗΜΕΝΗ'
+                );
+
+                setActiveApplications(active);
+            } catch (error) {
+                console.error('Error fetching applications:', error);
+            }
+        };
+
+        fetchApplications();
+    }, []);
+
+    const handleNewApplication = () => {
+        if (activeApplications.length > 0) {
+            alert('Δεν μπορείτε να δημιουργήσετε νέα αίτηση καθώς υπάρχει αίτηση σε εξέλιξη.');
+            return;
+        }
+
+        navigate('/parent/applications/form1');
+    };
 
     return (
     <div className="flex flex-col min-h-screen bg-pink-100">
@@ -64,8 +104,8 @@ const ParentPage = () => {
                     </div>
 
                     {/* Button */}
-                    <Button color="danger" variant="solid" size='md'>
-                        <Link to="/parent/applications/form1">ΔΗΜΙΟΥΡΓΙΑ ΑΙΤΗΣΗΣ</Link>
+                    <Button color="danger" variant="solid" size='md' onClick={handleNewApplication}>
+                        ΔΗΜΙΟΥΡΓΙΑ ΑΙΤΗΣΗΣ
                     </Button>
                 </div>
             </main>

@@ -641,10 +641,6 @@ const onSubmit = async (e) => {
                     <p>Δεν έχει επιλεγεί επιμελητής/τρια.</p>
                     )}
                 </ModalBody>
-                {/* <ModalFooter>
-                    <Button color="danger" variant="light" onClick={onClose}>Close</Button>
-                    <Button color="primary" onClick={onClose}>Action</Button>
-                </ModalFooter> */}
                 </ModalContent>
             </Modal>
         </div>
