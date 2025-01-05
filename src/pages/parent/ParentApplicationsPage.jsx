@@ -39,7 +39,7 @@ const ParentApplicationsPage = () => {
                 }));
 
                 // Filter applications by parent.id === user.id
-                const userApplications = fetchedApplications.filter(app => app.parent?.uid === user.uid);
+                const userApplications = fetchedApplications.filter(app => app?.parent?.uid === user?.uid);
 
                 // Separate applications based on status
                 const active = userApplications.filter(app =>
@@ -192,9 +192,16 @@ const ParentApplicationsPage = () => {
                                             >
                                                 {app?.status}
                                             </h3>
-                                            <Button size="sm" onClick={() => handleEdit(app)}>
-                                                ΕΠΕΞΕΡΓΑΣΙΑ
-                                            </Button>
+                                            { app?.status === "ΑΠΟΘΗΚΕΥΜΕΝΗ" || app?.status === "ΥΠΟΒΕΒΛΗΜΕΝΗ"  && (
+                                                <Button size="sm" onClick={() => handleEdit(app)}>
+                                                    ΕΠΕΞΕΡΓΑΣΙΑ
+                                                </Button>
+                                            )}
+                                            { app?.status === "ΕΝΕΡΓΗ" && (
+                                                <Button size="sm" onClick={() => handlePreview(app.id)}>
+                                                    ΠΡΟΕΠΙΣΚΟΠΗΣΗ
+                                                </Button>
+                                            )}
                                             <Button size="sm" color="danger" onClick={() => handleCancel(app.id)}>
                                                 ΑΚΥΡΩΣΗ
                                             </Button>
