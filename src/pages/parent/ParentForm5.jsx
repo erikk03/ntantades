@@ -32,22 +32,6 @@ const ParentForm5 = () => {
             // Prevent the default form submission
             e.preventDefault();
 
-            // // Step 1: Query for existing active applications for the parent
-            // const activeApplicationsQuery = query(
-            //     collection(db, "applications"),
-            //     where("parent.uid", "==", user.uid),
-            //     where("status", "==", "ΕΝΕΡΓΗ")
-            // );
-
-            // const activeApplicationsSnapshot = await getDocs(activeApplicationsQuery);
-
-            // // Step 2: Update the status of each active application to "finished"
-            // const updatePromises = activeApplicationsSnapshot.docs.map((doc) =>
-            //     updateDoc(doc.ref, { status: "ΟΛΟΚΛΗΡΩΜΕΝΗ" })
-            // );
-
-            // await Promise.all(updatePromises);
-
             // Submit the data to Firestore
             const docRef = await addDoc(collection(db, "applications"), {
                 parent: {

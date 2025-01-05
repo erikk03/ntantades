@@ -172,10 +172,10 @@ const ParentApplicationsPage = () => {
                     {/* Active Applications */}
                     <h2 className="text-md font-bold mb-2">ΟΙ ΑΙΤΗΣΕΙΣ ΜΟΥ</h2>
                     <ScrollShadow hideScrollBar className="w-full max-h-[250px]">
-                        {activeApplications.map((app, index) => (
-                            <Card className=' mb-4' shadow='sm'>
+                        {activeApplications.map((app) => (
+                            <Card key={app.id} className=' mb-4' shadow='sm'>
                                 <CardBody>
-                                    <div key={index} className='flex flex-col-3 justify-between items-center gap-2'>
+                                    <div className='flex flex-col-3 justify-between items-center gap-2'>
                                         <div className='flex flex-col-2 gap-4'>
                                             <div>
                                                 <p className="text-sm font-semibold">ΚΩΔ.ΑΙΤΗΣΗΣ: {app?.id}</p>
@@ -208,10 +208,10 @@ const ParentApplicationsPage = () => {
                     {/* Application History */}
                     <h2 className="text-md font-bold mb-2">ΙΣΤΟΡΙΚΟ ΑΙΤΗΣΕΩΝ</h2>
                     <ScrollShadow hideScrollBar className="w-full max-h-[250px]">
-                        {historyApplications.map((app, index) => (
-                            <Card className='mb-4' shadow='sm'>
+                        {historyApplications.map((app) => (
+                            <Card key={app.id} className='mb-4' shadow='sm'>
                                 <CardBody>
-                                    <div key={index} className='flex flex-col-3 justify-between items-center gap-2'>
+                                    <div className='flex flex-col-3 justify-between items-center gap-2'>
                                         <div className='flex flex-col-2 gap-4'>
                                             <div>
                                                 <p className="text-sm font-semibold">ΚΩΔ.ΑΙΤΗΣΗΣ: {app?.id}</p>
