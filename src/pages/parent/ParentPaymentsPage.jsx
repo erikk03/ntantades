@@ -62,7 +62,7 @@ const ParentPaymentsPage = () => {
                     if (payments) {
                         // Iterate over the payments map
                         Object.values(payments).forEach(payment => {
-                            if (payment.status === 'ΕΚΡΕΜΕΙ') {
+                            if (payment.status === 'ΕΚΡΕΜΕΙ' && payment?.period?.from?.seconds < Date.now() / 1000) {
                                 allPendingPayments.push(payment);
                             } else if (payment.status === 'ΕΞΟΦΛΗΜΕΝΗ') {
                                 allPaidPayments.push(payment);
@@ -164,7 +164,7 @@ const ParentPaymentsPage = () => {
                     )}
                     {/* Active Applications */}
                     <h2 className="text-md font-bold mb-2">ΕΚΡΕΜΕΙΣ ΠΛΗΡΩΜΕΣ</h2>
-                    <ScrollShadow hideScrollBar className="w-full max-h-[100px]">
+                    <ScrollShadow hideScrollBar className="w-full max-h-[200px]">
                         {pendingPayments.map((payment, index) => (
                             <Card key={index} className=' mb-4' shadow='sm'>
                                 <CardBody>

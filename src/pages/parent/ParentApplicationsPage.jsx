@@ -183,12 +183,12 @@ const ParentApplicationsPage = () => {
                                             </div>
                                             <div>
                                                 <p className="text-sm font-semibold">{app?.nanny?.name}</p>
-                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {app?.employmentDate || "-"}</p>
+                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {`${formatTimestamp(app?.applicationPeriod?.from)} - ${formatTimestamp(app?.applicationPeriod?.to)}`|| "-"}</p>
                                             </div>
                                         </div>
                                         <div className='flex items-center gap-4'>
                                             <h3
-                                                className={`text-sm font-semibold mr-20 ${app?.status === "ΕΝΕΡΓΗ" ? "text-green-500" : "text-gray-800"}`}
+                                                className={`text-sm font-semibold mr-10 ${app?.status === "ΕΝΕΡΓΗ" ? "text-green-500" : "text-gray-800"}`}
                                             >
                                                 {app?.status}
                                             </h3>
@@ -226,12 +226,12 @@ const ParentApplicationsPage = () => {
                                             </div>
                                             <div>
                                                 <p className="text-sm font-semibold">{app?.nanny?.name}</p>
-                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {app?.employmentDate || "-"}</p>
+                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {`${formatTimestamp(app?.applicationPeriod?.from)} - ${formatTimestamp(app?.applicationPeriod?.to)}`|| "-"}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <h3
-                                                className={`text-sm font-semibold mr-5 text-red-600`}
+                                                className={`text-sm font-semibold mr-5 ${app?.status === "ΑΚΥΡΩΜΕΝΗ" ? "text-red-600" : "text-gray-800"}`}
                                             >
                                                 {app?.status}
                                             </h3>
