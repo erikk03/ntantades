@@ -467,7 +467,7 @@ const onSubmit = async (e) => {
     
 
     return (
-        <div className="h-screen bg-stone-50 flex flex-col">
+        <div className="h-screen bg-[#F2E9EB] flex flex-col">
             {/* Navigation */}
             <ParentNavBar />
 

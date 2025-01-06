@@ -25,7 +25,7 @@ const ParentForm1 = () => {
     }
 
     return (
-        <div className="h-screen bg-pink-100 flex flex-col">
+        <div className="h-screen bg-[#F2E9EB] flex flex-col">
             {/* Navigation */}
             <ParentNavBar />
 

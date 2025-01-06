@@ -50,7 +50,7 @@ const ParentPage = () => {
     };
 
     return (
-    <div className="flex flex-col min-h-screen bg-pink-100">
+    <div className="flex flex-col min-h-screen bg-[#F2E9EB]">
         {/* Navigation */}
         <ParentNavBar />
 
@@ -58,15 +58,12 @@ const ParentPage = () => {
         <main className="flex-grow flex justify-center items-center flex-col">
                 {/* Title */}
                 <h1 className="text-xl font-bold m-2">
-                    Είσαι επιμελητής/τρια που αναζητά εργασία;
+                    Είσαι γονέας και ψάχνεις για βοήθεια;
                 </h1>
 
                 <div className='flex justify-center'>
-                    {/* Oval Placeholder for Image */}
-                    <div
-                        className=" w-[500px] h-[350px] border-4 border-gray-400 bg-white rounded-full flex items-center justify-center m-2"
-                    >
-                        <p className="text-center text-gray-500 text-sm">φωτογραφία γονέα</p>
+                    <div className=" w-[500px] h-[350px] flex items-center justify-center m-2">
+                        <img src="/icons/parent.png" alt="Eligible"/>
                     </div>
 
                     {/* Text Blocks */}
@@ -100,7 +97,7 @@ const ParentPage = () => {
 
                     {/* png Arrow */}
                     <div className="">
-                        <img src="../../public/icons/arrow.png" alt="Eligible" className="w-15 h-12 -translate-x-[10px] -translate-y-[10px]"/>
+                        <img src="/icons/arrow.png" alt="Eligible" className="w-15 h-12 -translate-x-[10px] -translate-y-[10px]"/>
                     </div>
 
                     {/* Button */}
@@ -116,8 +113,7 @@ const ParentPage = () => {
                     <p className="font-bold">ΧΡΕΙΑΖΕΣΑΙ ΒΟΗΘΕΙΑ;</p>
                     <p className="text-sm">
                         Μπορείς να <a href="#" className="text-pink-500 underline">επικοινωνήσεις</a> μαζί μας ή να
-                        δεις τις <a href="#" className="text-pink-500 underline">οδηγίες</a> για την εγγραφή στο
-                        σύστημα
+                        δεις τις <a href="#" className="text-pink-500 underline">οδηγίες</a> για την χρήση της πλατφόρμας.
                     </p>
                 </div>
             </footer>

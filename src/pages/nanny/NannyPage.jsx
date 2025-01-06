@@ -22,9 +22,9 @@ const NannyPage = () => {
 
                 {/* Oval Placeholder for Image */}
                 <div
-                    className="absolute top-28 left-20 w-[200px] h-[300px] border-4 border-gray-400 bg-white rounded-full flex items-center justify-center"
+                    className="absolute top-28 left-20 w-[200px] h-[300px] flex items-center justify-center"
                 >
-                    <p className="text-center text-gray-500 text-sm">φωτογραφία νταντας</p>
+                    <img src="../../public/icons/nanny.png" alt="Eligible"/>
                 </div>
 
                 {/* Text Blocks */}
