@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-org/react";
 import { Avatar, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 import { Wallet, HomeIcon, NotepadText, PencilLine } from "lucide-react";
@@ -22,6 +22,7 @@ export const AcmeLogo = () => {
 const NannyNavBar = ({ handleNavigation }) => {
     const { user, userData, logout } = useAuth();
     const location = useLocation();
+    const navigate = useNavigate();
 
     const nannyFormPaths = ['/nanny/form1', '/nanny/form2', '/nanny/form3', '/nanny/form4'];
 
@@ -44,8 +45,12 @@ const NannyNavBar = ({ handleNavigation }) => {
         }
     };
 
-    const isParentRoute = location.pathname.startsWith('/parent');
-    const isNannyRoute = location.pathname.startsWith('/nanny');
+    const isParentRoute = location.pathname.includes('/parent');
+    const isNannyRoute = location.pathname.includes('/nanny');
+    const isHomeRoute = location.pathname === '/nanny';
+    const isNannyPaymentsRoute = location.pathname.includes('/nanny/payments');
+    const isNannyApplicationsRoute = location.pathname.includes('/nanny/applications');
+    const isNannyAdvertismentsRoute = location.pathname.includes('/nanny/advertisments');
 
     return (
         <div>
@@ -53,7 +58,7 @@ const NannyNavBar = ({ handleNavigation }) => {
             <div className="flex justify-center items-center h-5 gap-4 bg-gray-400">
                 <div>
                     <MyButton
-                        color={isParentRoute ? 'default' : 'light'}
+                        variant={isParentRoute ? 'solid' : 'light'}
                         size="xs"
                         onClick={(e) => handleNavClick(e, '/parent')}
                     >
@@ -62,7 +67,7 @@ const NannyNavBar = ({ handleNavigation }) => {
                 </div>
                 <div>
                     <MyButton
-                        color={isNannyRoute ? 'default' : 'light'}
+                        variant={isNannyRoute ? 'solid' : 'light'}
                         size="xs"
                         onClick={(e) => handleNavClick(e, '/nanny')}
                     >
@@ -93,6 +98,7 @@ const NannyNavBar = ({ handleNavigation }) => {
                                 <Wallet />
                             </Link>
                             <span className="text-xs font-semibold">ΠΛΗΡΩΜΕΣ</span>
+                            {isNannyPaymentsRoute && <hr className="w-5 border-black" />}
                         </div>
                     </NavbarItem>
                     <NavbarItem>
@@ -105,6 +111,7 @@ const NannyNavBar = ({ handleNavigation }) => {
                                 <HomeIcon />
                             </Link>
                             <span className="text-xs font-semibold">ΑΡΧΙΚΗ</span>
+                            {isHomeRoute && <hr className="w-5 border-black" />}
                         </div>
                     </NavbarItem>
                     <NavbarItem>
@@ -117,6 +124,7 @@ const NannyNavBar = ({ handleNavigation }) => {
                                 <NotepadText />
                             </Link>
                             <span className="text-xs font-semibold">ΑΙΤΗΣΕΙΣ</span>
+                            {isNannyApplicationsRoute && <hr className="w-5 border-black" />}
                         </div>
                     </NavbarItem>
                     <NavbarItem>
@@ -129,6 +137,7 @@ const NannyNavBar = ({ handleNavigation }) => {
                                 <PencilLine />
                             </Link>
                             <span className="text-xs font-semibold">ΑΓΓΕΛΙΕΣ</span>
+                            {isNannyAdvertismentsRoute && <hr className="w-5 border-black" />}
                         </div>
                     </NavbarItem>
                 </NavbarContent>

@@ -244,7 +244,7 @@ const NannyForm4 = () => {
                 {/* Buttons */}
                 <div className="flex justify-end items-end w-full">
                     <Button variant="solid" color="default" size='sm' radius='md'>
-                        <Link to="/nanny/form3">ΠΙΣΩ</Link>
+                        <Link to="/nanny/advertisments/form3">ΠΙΣΩ</Link>
                     </Button>
                     <Button
                         variant="solid"

@@ -28,21 +28,23 @@ const HomePage = () => {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [path, setPath] = React.useState('');
 
   // Close modal and redirect to a specific page
-  const handleLoginSuccess = (redirectPath) => {
+  const handleLoginSuccess = () => {
       onOpenChange(false); // Close the modal
-      navigate(redirectPath); // Redirect to the desired page
+      navigate(path); // Redirect to the desired page
   };
 
-    // Handle button click and set the corresponding redirect path
-    const handleButtonClick = (path) => {
-      if (user) {
-          navigate(path);  // If user is already authenticated, navigate immediately
-      } else {
-          onOpen();  // Open the modal
-      }
-    };
+  // Handle button click and set the corresponding redirect path
+  const handleButtonClick = (paramenter) => {
+    if (user) {
+        navigate(paramenter);   // If user is already authenticated, navigate immediately
+    } else {
+        setPath(paramenter);    // Set the redirect path
+        onOpen();                     // Open the modal
+    }
+  };
 
   return (
     <div>
@@ -65,36 +67,23 @@ const HomePage = () => {
         <section className="button-section">
           <div>
             <Button className="font-semibold" color='default' variant='solid' onPress={() => handleButtonClick('/parent')}>Συνέχεια ως γονέας/κηδεμόνας</Button>
-            <Modal isOpen={isOpen} onClose={onOpenChange}>
-              <ModalContent>
-                {(onClose) => (
-                  <>
-                    <ModalHeader>Είσοδος με διαπιστευτήρια</ModalHeader>
-                    <ModalBody>
-                      <LoginPage onLoginSuccess={() => handleLoginSuccess('/parent')} />
-                    </ModalBody>
-                  </>
-                )}
-              </ModalContent>
-            </Modal>
           </div>
           <div>
             <Button className="font-semibold" color='default' variant='solid' onPress={() => handleButtonClick('/nanny')}>Συνέχεια ως επιμελητής/τρια</Button>
-            <Modal isOpen={isOpen} onClose={onOpenChange}>
-              <ModalContent>
-                {(onClose) => (
-                  <>
-                    <ModalHeader>Είσοδος με διαπιστευτήρια</ModalHeader>
-                    <ModalBody>
-                      <LoginPage onLoginSuccess={() => handleLoginSuccess('/nanny')} />
-                    </ModalBody>
-                  </>
-                )}
-              </ModalContent>
-            </Modal>
           </div>
         </section>
       </main>
+      <Modal isOpen={isOpen} onClose={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody>
+                <LoginPage onLoginSuccess={() => handleLoginSuccess()} />
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       <footer className="footer">
         <p>© 2024 ntantades.gr - All Rights Reserved.</p>

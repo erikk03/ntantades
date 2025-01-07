@@ -1,7 +1,6 @@
 // General
 import React from 'react';
 import {Time} from "@internationalized/date";
-import { useFormContext } from '../config/FormContext';
 import { Input, TimeInput } from '@nextui-org/react';
 
 const parseTimeString = (timeString) => {
@@ -10,8 +9,7 @@ const parseTimeString = (timeString) => {
     return new Time(hours, minutes); // Return a Time object
 };
 
-const AppPreview = () => {
-    const { formData } = useFormContext();
+const AppPreview = ({app}) => {
 
     return (
         <div className="h-auto bg-[#F2E9EB] flex flex-col">
@@ -28,26 +26,26 @@ const AppPreview = () => {
                     {/* Parent Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΣΤΟΙΧΕΙΑ ΓΟΝΕΑ/ΚΗΔΕΜΟΝΑ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${formData?.parent?.name} ${formData?.parent?.surname}`}/>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={formData?.parent?.birthdate} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑAT" readOnly defaultValue={formData?.parent?.AT} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑΦΜ" readOnly defaultValue={formData?.parent?.AFM} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Διεύθυνση" readOnly defaultValue={formData?.parent?.address} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={formData?.parent?.city} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ταχυδρομικός Κώδικας." readOnly defaultValue={formData?.parent?.zipcode} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={`${app?.parent?.name} ${app?.parent?.surname}`}/>
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={app?.parent?.birthdate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑAT" readOnly defaultValue={app?.parent?.AT} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑΦΜ" readOnly defaultValue={app?.parent?.AFM} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Διεύθυνση" readOnly defaultValue={app?.parent?.address} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Πόλη" readOnly defaultValue={app?.parent?.city} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ταχυδρομικός Κώδικας." readOnly defaultValue={app?.parent?.zipcode} />
                     </div>
 
                     {/* Child Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΣΤΟΙΧΕΙΑ ΠΑΙΔΙΟΥ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={` ${formData?.child?.name} ${formData?.child?.surname}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={formData?.child?.birthdate} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑΜΚΑ." readOnly defaultValue={formData?.child?.AMKA} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αλλεργίες" readOnly defaultValue={formData?.child?.allergies} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Δυσκολίες" readOnly defaultValue={formData?.child?.difficulties} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Δυσαρέσκειες" readOnly defaultValue={formData?.child?.dislikes} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αρέσκειες" readOnly defaultValue={formData?.child?.likes} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Διατροφή" readOnly defaultValue={formData?.child?.diet} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={` ${app?.child?.name} ${app?.child?.surname}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={app?.child?.birthdate} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑΜΚΑ" readOnly defaultValue={app?.child?.AMKA} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αλλεργίες" readOnly defaultValue={app?.child?.allergies} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Δυσκολίες" readOnly defaultValue={app?.child?.difficulties} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Δυσαρέσκειες" readOnly defaultValue={app?.child?.dislikes} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αρέσκειες" readOnly defaultValue={app?.child?.likes} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Διατροφή" readOnly defaultValue={app?.child?.diet} />
                     </div>
 
                     {/* Days and Hours */}
@@ -74,7 +72,7 @@ const AppPreview = () => {
                                         hourCycle={24}
                                         aria-label={`Από (${key})`}
                                         labelPlacement='inside'
-                                        defaultValue={parseTimeString(formData?.schedule?.[`${key}`]?.from)}
+                                        defaultValue={parseTimeString(app?.schedule?.[`${key}`]?.from)}
                                     />
                                     <TimeInput
                                         label="Έως"
@@ -85,7 +83,7 @@ const AppPreview = () => {
                                         hourCycle={24}
                                         aria-label={`Έως (${key})`}
                                         labelPlacement='inside'
-                                        defaultValue={parseTimeString(formData?.schedule?.[`${key}`]?.to)}
+                                        defaultValue={parseTimeString(app?.schedule?.[`${key}`]?.to)}
                                     />
                                 </div>
                             </div>
@@ -96,14 +94,14 @@ const AppPreview = () => {
                     {/* Nanny Info */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
                         <h2 className="font-bold text-md text-center mb-1">ΣΤΟΙΧΕΙΑ ΕΠΙΜΕΛΗΤΗ/ΤΡΙΑΣ</h2>
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={formData?.nanny?.name} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑTT" readOnly defaultValue={`${formData?.nanny?.AT}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={`${formData?.nanny?.birthdate}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Εκπαίδευση" readOnly defaultValue={`${formData?.nanny?.education}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Email" readOnly defaultValue={`${formData?.nanny?.EMAIL}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Σταθερό" readOnly defaultValue={`${formData?.nanny?.homephone}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Τηλέφωνο" readOnly defaultValue={`${formData?.nanny?.cellphone1} ${formData?.nanny?.cellphone2}`} />
-                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή/Ώρα" readOnly defaultValue={`${formData?.nanny?.payment} €`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ονοματεπώνυμο" readOnly defaultValue={app?.nanny?.name} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="ΑTT" readOnly defaultValue={`${app?.nanny?.AT}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Ημερομηνία Γέννησης" readOnly defaultValue={`${app?.nanny?.birthdate}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Εκπαίδευση" readOnly defaultValue={`${app?.nanny?.education}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Email" readOnly defaultValue={`${app?.nanny?.EMAIL}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Σταθερό" readOnly defaultValue={`${app?.nanny?.homephone}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Τηλέφωνο" readOnly defaultValue={`${app?.nanny?.cellphone1} ${app?.nanny?.cellphone2}`} />
+                        <Input size="sm" variant='faded' radius='sm' labelPlacement="outside" label="Αμοιβή/Ώρα" readOnly defaultValue={`${app?.nanny?.payment} €`} />
                     </div>
                 </div>
                     

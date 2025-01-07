@@ -53,7 +53,7 @@ const NannyForm2 = () => {
 
         setSubmitted(data);
 
-        window.location.href = '/nanny/form3';
+        window.location.href = '/nanny/advertisments/form3';
     }
 
     const handleFileChange = (e, fieldName) => {
@@ -418,7 +418,7 @@ const NannyForm2 = () => {
                     </div>
                     <div className="flex justify-end items-end w-full">
                         <Button variant="solid" color="default" size='sm' radius='md'>
-                            <Link to="/nanny/form1">ΠΙΣΩ</Link>
+                            <Link to="/nanny/advertisments/form1">ΠΙΣΩ</Link>
                         </Button>
                         <Button
                             type="submit"

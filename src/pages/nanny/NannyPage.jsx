@@ -58,7 +58,7 @@ const NannyPage = () => {
                     </div>
 
                     {/* Button */}
-                    <Button color="success" variant="solid" size="md" onClick={() => (window.location.href = '/nanny/form1')}>
+                    <Button color="success" variant="solid" size="md" onClick={() => (window.location.href = '/nanny/advertisments/form1')}>
                         ΔΗΜΙΟΥΡΓΙΑ ΑΙΤΗΣΗΣ
                     </Button>
                 </div>

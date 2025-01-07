@@ -31,7 +31,7 @@ const LoginPage = ({onLoginSuccess}) => {
         const userData = userDocSnap.data();
         console.log('User profile data:', userData);
         onLoginSuccess(userData); // Pass user data to the parent component
-        alert('Login successful!');
+        // alert('Login successful!');
       } else {
         console.log('No user profile found in Firestore!');
         alert('No additional user profile found!');
@@ -44,33 +44,35 @@ const LoginPage = ({onLoginSuccess}) => {
 
   return (
     <div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleLogin} className='flex flex-col space-y-8'>
-        <Input
-          endContent={
-            <Mail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-          }
-          type="email"
-          label="Email"
-          labelPlacement='outside'
-          // placeholder="Enter your email"
-          variant="bordered"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          endContent={
-            <Lock className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-          }
-          type="password"
-          label="Κωδικός"
-          labelPlacement='outside'
-          // placeholder="Enter your password"
-          variant="bordered"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="flex py-2 px-1 justify-between">
+      <h2 className='flex items-center justify-center font-semibold'>Είσοδος με διαπιστευτήρια TAXIS</h2>
+      <form onSubmit={handleLogin} className='flex flex-col'>
+        <div className='space-y-8'>
+          <Input
+            endContent={
+              <Mail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            }
+            type="email"
+            label="Email"
+            labelPlacement='outside'
+            // placeholder="Enter your email"
+            variant="bordered"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            endContent={
+              <Lock className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+            }
+            type="password"
+            label="Κωδικός"
+            labelPlacement='outside'
+            // placeholder="Enter your password"
+            variant="bordered"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="flex py-2 px-1 justify-between mb-8">
           <Checkbox
             classNames={{
               label: "text-small",
@@ -84,6 +86,7 @@ const LoginPage = ({onLoginSuccess}) => {
         </div>
         
         {/*  */}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <Button type="submit">Σύνδεση</Button>
       </form>
     </div>

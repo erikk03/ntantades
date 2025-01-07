@@ -27,6 +27,7 @@ const ParentApplicationsPage = () => {
     const [activeApplications, setActiveApplications] = useState([]);
     const [historyApplications, setHistoryApplications] = useState([]);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedApp, setSelectedApp] = useState(null);
 
     // Fetch advertisements from Firestore
     useEffect(() => {
@@ -141,17 +142,16 @@ const ParentApplicationsPage = () => {
             alert('Δεν μπορείτε να δημιουργήσετε νέα αίτηση καθώς υπάρχει αίτηση σε εξέλιξη.');
             return;
         }
-
         navigate('/parent/applications/form1');
     };
 
     const handlePreview = (app) => {
-        localStorage.setItem('formData', JSON.stringify(app));
+        setSelectedApp(app);
         onOpen(); // Open the modal
     };
 
     const closeModal = () => {
-        localStorage.removeItem('formData');
+        setSelectedApp(null); // Clear the selected application
         onOpenChange(false); // Close the modal
     };
 
@@ -198,7 +198,7 @@ const ParentApplicationsPage = () => {
                                                 </Button>
                                             )}
                                             { app?.status === "ΕΝΕΡΓΗ" && (
-                                                <Button size="sm" onClick={() => handlePreview(app.id)}>
+                                                <Button size="sm" onClick={() => handlePreview(app)}>
                                                     ΠΡΟΕΠΙΣΚΟΠΗΣΗ
                                                 </Button>
                                             )}
@@ -255,7 +255,7 @@ const ParentApplicationsPage = () => {
             <Modal size='5xl' placement='center' isDismissable={false} isKeyboardDismissDisabled={true} hideCloseButton={true} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalBody>
-                        <AppPreview />
+                        <AppPreview app={selectedApp} />
                     </ModalBody>
                     <ModalFooter>
                         <Button color="danger" variant="light" onPress={closeModal}>

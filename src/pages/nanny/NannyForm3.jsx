@@ -285,7 +285,7 @@ const ParentForm3 = () => {
                     </div>
                     <div className="flex justify-end items-end w-full">
                         <Button variant="solid" color="default" size='sm' radius='md'>
-                            <Link to="/nanny/form2">ΠΙΣΩ</Link>
+                            <Link to="/nanny/advertisments/form2">ΠΙΣΩ</Link>
                         </Button>
                         <Button
                             type="submit"
@@ -298,7 +298,7 @@ const ParentForm3 = () => {
                                 const formElement = e.currentTarget.closest('form'); // Get the form element
                                 if (formElement.checkValidity()) {
                                     // If the form is valid, navigate to the next page
-                                    window.location.href = "/nanny/form4"; // Or use navigate if using React Router
+                                    window.location.href = "/nanny/advertisments/form4"; // Or use navigate if using React Router
                                 } else {
                                     // If the form is invalid, trigger the browser's native validation UI
                                     formElement.reportValidity();

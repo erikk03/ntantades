@@ -49,6 +49,7 @@ const NannyApplicationsPage = () => {
     const [activeApplications, setActiveApplications] = useState([]);
     const [historyApplications, setHistoryApplications] = useState([]);
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedApp, setSelectedApp] = useState(null);
 
     // Fetch advertisements from Firestore
     useEffect(() => {
@@ -195,12 +196,12 @@ const NannyApplicationsPage = () => {
     };
 
     const handlePreview = (app) => {
-        localStorage.setItem('formData', JSON.stringify(app));
+        setSelectedApp(app); // Set the selected application
         onOpen(); // Open the modal
     };
 
     const closeModal = () => {
-        localStorage.removeItem('formData');
+        setSelectedApp(null); // Clear the selected application
         onOpenChange(false); // Close the modal
     };
 
@@ -241,7 +242,7 @@ const NannyApplicationsPage = () => {
                                                     ΑΠΟΔΟΧΗ
                                                 </Button>
                                             )}
-                                            <Button size="sm" onClick={() => handlePreview(app.id)}>
+                                            <Button size="sm" onClick={() => handlePreview(app)}>
                                                 ΠΡΟΕΠΙΣΚΟΠΗΣΗ
                                             </Button>
                                             <Button size="sm" color="danger" onClick={() => handleCancel(app.id)}>
@@ -294,7 +295,7 @@ const NannyApplicationsPage = () => {
             <Modal size='5xl' placement='center' isDismissable={false} isKeyboardDismissDisabled={true} hideCloseButton={true} isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     <ModalBody>
-                        <AppPreview />
+                        <AppPreview app={selectedApp}/>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="danger" variant="light" onPress={closeModal}>

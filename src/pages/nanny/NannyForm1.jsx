@@ -103,7 +103,7 @@ const NannyForm1 = () => {
 
         setSubmitted(data);
 
-        window.location.href = '/nanny/form2';
+        window.location.href = '/nanny/advertisments/form2';
     };
 
     return (

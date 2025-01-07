@@ -52,10 +52,10 @@ const App = () => {
         <Route path="/nanny/payments" element={<ProtectedRoute> <NannyPaymentsPage /> </ProtectedRoute>} />
         <Route path="/nanny/applications" element={<ProtectedRoute> <NannyApplicationsPage /> </ProtectedRoute>} />
         <Route path="/nanny/advertisments" element={<ProtectedRoute> <NannyAdvertismentsPage /> </ProtectedRoute>} />
-        <Route path="/nanny/form1" element={<ProtectedRoute> <NannyForm1 /> </ProtectedRoute>} />
-        <Route path="/nanny/form2" element={<ProtectedRoute> <NannyForm2 /> </ProtectedRoute>} />
-        <Route path="/nanny/form3" element={<ProtectedRoute> <NannyForm3 /> </ProtectedRoute>} />
-        <Route path="/nanny/form4" element={<ProtectedRoute> <NannyForm4 /> </ProtectedRoute>} />
+        <Route path="/nanny/advertisments/form1" element={<ProtectedRoute> <NannyForm1 /> </ProtectedRoute>} />
+        <Route path="/nanny/advertisments/form2" element={<ProtectedRoute> <NannyForm2 /> </ProtectedRoute>} />
+        <Route path="/nanny/advertisments/form3" element={<ProtectedRoute> <NannyForm3 /> </ProtectedRoute>} />
+        <Route path="/nanny/advertisments/form4" element={<ProtectedRoute> <NannyForm4 /> </ProtectedRoute>} />
       </Routes>
     </div>
   );
