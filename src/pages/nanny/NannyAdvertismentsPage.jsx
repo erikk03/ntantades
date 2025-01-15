@@ -14,7 +14,7 @@ const renderStars = (rating) => {
     ));
 };
 
-const Section = ({ title, ads, userDetails, onView, onEdit, onDelete }) => (
+const Section = ({ title, ads, userDetails, onView, onEdit, onDelete, statusOffset }) => (
     <div className="p-2 rounded-lg mb-2 max-h-[calc(28vh)] overflow-hidden bg-gray-100 shadow-sm">
         <h2 className="text-sm font-semibold mb-2">{title}</h2>
         {ads.map((ad, index) => (
@@ -33,28 +33,50 @@ const Section = ({ title, ads, userDetails, onView, onEdit, onDelete }) => (
                         </p>
                     )}
                 </div>
-                <div className="flex gap-1">
+
+                <div className="flex items-center">
+                    <p
+                        className={`text-sm font-semibold ${
+                            ad.status === "ΕΝΕΡΓΗ"
+                                ? "text-green-500"
+                                : ad.status === "SAVED"
+                                ? "text-yellow-500"
+                                : ad.status === "ΙΣΤΟΡΙΚΟ"
+                                ? "text-gray-500"
+                                : ""
+                        }`}
+                        style={{ marginLeft: statusOffset || 'auto' }} 
+                    >
+                        {ad.status === "SAVED"
+                            ? "ΑΠΟΘΗΚΕΥΜΕΝΗ"
+                            : ad.status === "ΙΣΤΟΡΙΚΟ"
+                            ? "ΙΣΤΟΡΙΚΟ"
+                            : ad.status}
+                    </p>
+                </div>
+
+                <div className="flex gap-4 items-center">
                     {ad.status === "ΕΝΕΡΓΗ" && (
                         <>
-                            <Button size="sm" variant="ghost" color="success" onClick={() => onView(ad)}>
-                                ΠΡΟΒΟΛΗ
+                            <Button size="sm" variant="solid" onClick={() => onView(ad)}>
+                                ΠΡΟΕΠΙΣΚΟΠΗΣΗ
                             </Button>
-                            <Button size="sm" variant="ghost" color="danger" onClick={() => onDelete(ad)}>
+                            <Button size="sm" variant="solid" color="danger" onClick={() => onDelete(ad)}>
                                 ΔΙΑΓΡΑΦΗ
                             </Button>
                         </>
                     )}
                     {ad.status === "ΙΣΤΟΡΙΚΟ" && (
-                        <Button size="sm" variant="ghost" color="success" onClick={() => onView(ad)}>
-                            ΠΡΟΒΟΛΗ
+                        <Button size="sm" variant="solid" onClick={() => onView(ad)}>
+                            ΠΡΟΕΠΙΣΚΟΠΗΣΗ
                         </Button>
                     )}
                     {ad.status === "SAVED" && (
                         <>
-                            <Button size="sm" variant="ghost" color="primary" onClick={() => onEdit(ad)}>
+                            <Button size="sm" variant="solid" onClick={() => onEdit(ad)}>
                                 ΕΠΕΞΕΡΓΑΣΙΑ
                             </Button>
-                            <Button size="sm" variant="ghost" color="danger" onClick={() => onDelete(ad)}>
+                            <Button size="sm" variant="solid" color="danger" onClick={() => onDelete(ad)}>
                                 ΔΙΑΓΡΑΦΗ
                             </Button>
                         </>
@@ -64,6 +86,8 @@ const Section = ({ title, ads, userDetails, onView, onEdit, onDelete }) => (
         ))}
     </div>
 );
+
+
 
 const NannyAdvertismentsPage = () => {
     const { user } = useAuth();
@@ -224,7 +248,7 @@ const NannyAdvertismentsPage = () => {
                 <Button size="sm" color="danger" className="mb-2 w-auto mx-auto" onClick={handleCreate}>
                     ΔΗΜΙΟΥΡΓΙΑ ΑΓΓΕΛΙΑΣ
                 </Button>
-
+                
                 <div className="flex flex-col gap-2 flex-grow">
                     <Section
                         title="ΕΝΕΡΓΗ ΑΓΓΕΛΙΑ"
@@ -233,6 +257,7 @@ const NannyAdvertismentsPage = () => {
                         onView={handleView}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        statusOffset="30rem"
                     />
                     <Section
                         title="ΠΡΟΣΩΡΙΝΑ ΑΠΟΘΗΚΕΥΜΕΝΕΣ"
@@ -241,6 +266,7 @@ const NannyAdvertismentsPage = () => {
                         onView={handleView}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        statusOffset="32rem"
                     />
                     <Section
                         title="ΙΣΤΟΡΙΚΟ ΑΓΓΕΛΙΩΝ"
@@ -249,6 +275,7 @@ const NannyAdvertismentsPage = () => {
                         onView={handleView}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
+                        statusOffset="25rem"
                     />
                 </div>
             </main>
