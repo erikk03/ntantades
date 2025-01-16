@@ -7,6 +7,8 @@ import { collection, getDocs } from 'firebase/firestore';
 // Components
 import ParentNavBar from '../../components/ParentNavBar';
 import { Button } from '@nextui-org/react';
+import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
+
 
 const ParentPage = () => {
     const { user } = useAuth();
@@ -48,6 +50,21 @@ const ParentPage = () => {
 
         navigate('/parent/applications/form1');
     };
+    const openWalkthrough = () => {
+        return (
+            <Popover placement="right">
+              <PopoverTrigger>
+                <Button>Open Popover</Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="px-1 py-2">
+                  <div className="text-small font-bold">Popover Content</div>
+                  <div className="text-tiny">This is the popover content</div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          );
+    }
 
     return (
     <div className="flex flex-col min-h-screen bg-[#F2E9EB]">
@@ -111,10 +128,35 @@ const ParentPage = () => {
             <footer className=" p-4 text-gray-600">
                 <div className="text-center">
                     <p className="font-bold">ΧΡΕΙΑΖΕΣΑΙ ΒΟΗΘΕΙΑ;</p>
-                    <p className="text-sm">
-                        Μπορείς να <a href="#" className="text-pink-500 underline">επικοινωνήσεις</a> μαζί μας ή να
-                        δεις τις <a href="#" className="text-pink-500 underline">οδηγίες</a> για την χρήση της πλατφόρμας.
-                    </p>
+                    <div className="text-sm flex flex-center justify-center">
+                        <span>Μπορείς να </span>
+                        <Popover placement="top" showArrow={true} offset={20} backdrop="opaque">
+                            <PopoverTrigger>
+                                <span className="text-pink-500 underline cursor-pointer ml-1 mr-1">επικοινωνήσεις</span>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <div className="px-1 py-2">
+                                    <div className="text-small font-bold">Επικοινωνία</div>
+                                    <div className="text-tiny">helpdesk@ntantades.gr</div>
+                                    <div className="text-tiny">210 1244257</div>
+                                    <div className='text-tiny'>210 2315364</div>
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                        <span> μαζί μας ή να δεις τις </span>
+                        <Popover placement="top" showArrow={true} offset={20} backdrop="opaque">
+                            <PopoverTrigger>
+                                <span className="text-pink-500 underline cursor-pointer ml-1 mr-1"> οδηγίες </span>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[1080px]">
+                                <div>
+                                    <img src="/images/parent_help.png" alt="Eligible" />
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                        <span> για την χρήση της πλατφόρμας.</span>
+                    </div>
+
                 </div>
             </footer>
     </div>
