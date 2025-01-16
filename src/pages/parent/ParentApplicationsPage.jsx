@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import { useAuth } from '../../config/AuthContext';
-import ParentNavBar from '../../components/ParentNavBar';
-import { Button, Card, CardBody, ScrollShadow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 import {collection, getDocs, updateDoc, doc} from 'firebase/firestore';
 import { db } from '../../config/firebase';
+
+// components
 import AppPreview from '../../components/AppPreview';
+import ParentNavBar from '../../components/ParentNavBar';
+import { Button, Card, CardBody, ScrollShadow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
+import { Info } from 'lucide-react';
 
 const formatTimestamp = (timestamp) => {
     if (!timestamp) return 'N/A'; // Handle cases where timestamp is undefined or null
@@ -162,11 +166,31 @@ const ParentApplicationsPage = () => {
 
             {/* Main Content */}
             <main className="flex-grow ml-4 mr-4 rounded-lg">
-                <header className="m-2 flex justify-center items-center">
-                    <Button color="danger" size="sm" radius='full' onClick={handleNewApplication}>
-                        ΝΕΑ ΑΙΤΗΣΗ
-                    </Button>
+                <header className="m-2">
+                    <div className='flex justify-center items-center'>
+                        <Button color="danger" size="sm" radius='full' onClick={handleNewApplication}>
+                            ΝΕΑ ΑΙΤΗΣΗ
+                        </Button>
+                    </div>
+                    <div className='flex justify-end items-center'>
+                        <Popover placement="left" showArrow={true} backdrop='opaque'>
+                            <PopoverTrigger>
+                                <Info className='cursor-pointer text-gray-700'/>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                <div className="px-1 py-2">
+                                    <div className="text-tiny"><b>ΕΝΕΡΓΗ:</b> Η αίτηση έχει υποβληθεί οριστικά και έχει εγκριθεί απο τον/την επιμελητή/τρια, δηλαδή είναι σε ισχύ.</div>
+                                    <div className="text-tiny"><b>ΑΠΟΘΗΚΕΥΜΕΝΗ:</b> Η αίτηση έχει αποθηκευτεί προσωρινά και μπορεί να επεξεργαστεί.</div>
+                                    <div className="text-tiny"><b>ΥΠΟΒΕΒΛΗΜΕΝΗ:</b> Η αίτηση έχει υποβληθεί οριστικά και αναμένει απάντηση απο τον/την επιμελητή/τρια.</div>
+                                    <div className="text-tiny"><b>ΟΛΟΚΛΗΡΩΜΕΝΗ:</b> Η αίτηση έχει ολοκληρωθεί, δηλαδή δεν είναι σε ισχύ. Μπορεί να ανανεωθεί, αρκεί να μην υπάρχει άλλη αίτηση σε ισχύ.</div>
+                                    <div className="text-tiny"><b>ΑΚΥΡΩΜΕΝΗ:</b> Η αίτηση έχει ακυρωθεί, είτε απο τον χρήστη, είτε απο τον/την επιμελητή/τρια.</div>
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                    </div>
                 </header>
+                
+                
 
                 <div className="flex-row">
                     {/* Active Applications */}
