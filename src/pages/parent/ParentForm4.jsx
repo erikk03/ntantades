@@ -506,7 +506,7 @@ const onSubmit = async (e) => {
                         classNames={{
                             wrapper: "max-h-[350px]",
                         }}
-                        selectedKeys={selectedKeys}
+                        selectedKeys={selectedKeys || formData?.form4?.nannyData?.id}
                         selectionMode="single"
                         sortDescriptor={sortDescriptor}
                         topContent={topContent}

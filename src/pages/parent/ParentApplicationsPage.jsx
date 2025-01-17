@@ -133,15 +133,76 @@ const ParentApplicationsPage = () => {
             alert('Σφάλμα κατά την ακύρωση της αίτησης.');
         }
     };
-
+    
     const handleEdit = (app) => {
-        // Save application data to localStorage
-        localStorage.setItem('formData', JSON.stringify(app));
-        
-        // Ensure data is stored before navigating
-        setTimeout(() => {
-        navigate('/parent/applications/form1');
-        }, 0); // Minimal delay for consistency
+        try {
+
+            // Transform the data into the correct structure
+            const transformedData = {
+                form1: {
+                    gender: app?.parent?.gender || '',
+                    homephone: app?.parent?.homephone || '',
+                    cellphone1: app?.parent?.cellphone1 || '',
+                    cellphone2: app?.parent?.cellphone2 || '',
+                    EMAIL: app?.parent?.EMAIL || '',
+                    perifereia: app?.parent?.perifereia || '',
+                    nomos: app?.parent?.nomos || '',
+                    dimos: app?.parent?.dimos || '',
+                    city: app?.parent?.city || '',
+                    street: app?.parent?.address?.split(' ')[0] || '',
+                    streetnumber: app?.parent?.address?.split(' ')[1] || '',
+                    zipcode: app?.parent?.zipcode || '',
+                },
+                form2: {
+                    selectedKid: [ app?.child?.selectedKid[0] || ''],
+                    name: app?.child?.name || '',
+                    surname: app?.child?.surname || '',
+                    AMKA: app?.child?.AMKA || '',
+                    AT: app?.child?.AT || '',
+                    birthday: app?.child?.birthday || '',
+                    gender: app?.child?.gender || '',
+                    allergies: app?.child?.allergies || '',
+                    diet: app?.child?.diet || '',
+                    difficulties: app?.child?.difficulties || '',
+                    dislikes: app?.child?.dislikes || '',
+                    likes: app?.child?.likes || '',
+                    extra: app?.child?.extra || '',
+                },
+                form3: {
+                    δευτερα_from: app?.schedule?.monday?.from || '',
+                    δευτερα_to: app?.schedule?.monday?.to || '',
+                    τριτη_from: app?.schedule?.tuesday?.from || '',
+                    τριτη_to: app?.schedule?.tuesday?.to || '',
+                    τεταρτη_from: app?.schedule?.wednesday?.from || '',
+                    τεταρτη_to: app?.schedule?.wednesday?.to || '',
+                    πεμπτη_from: app?.schedule?.thursday?.from || '',
+                    πεμπτη_to: app?.schedule?.thursday?.to || '',
+                    παρασκευη_from: app?.schedule?.friday?.from || '',
+                    παρασκευη_to: app?.schedule?.friday?.to || '',
+                    σαββατο_from: app?.schedule?.saturday?.from || '',
+                    σαββατο_to: app?.schedule?.saturday?.to || '',
+                    κυριακη_from: app?.schedule?.sunday?.from || '',
+                    κυριακη_to: app?.schedule?.sunday?.to || '',
+                    extra: app?.schedule?.extra || '',
+                },
+                form4: {
+                    nannyData:{
+                        id: app?.nanny?.uid || '',
+                    }
+                },
+            };
+
+            // Store the application ID in localStorage
+            localStorage.setItem('applicationId', app.id); // Store the ID for edit mode
+
+            // Store the transformed data in localStorage
+            localStorage.setItem('formData', JSON.stringify(transformedData));
+
+            // Perform a hard redirect to the form1 page
+            window.location.assign('/parent/applications/form1');
+        } catch (error) {
+            console.error("Unexpected error", error);
+        }
     };
     
 

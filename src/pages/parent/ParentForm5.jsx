@@ -1,5 +1,5 @@
 // General
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {Time} from "@internationalized/date";
 
@@ -7,7 +7,7 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';  // Import Firebase Firestore
 import { collection, addDoc } from 'firebase/firestore';
-import { query, where, getDocs, updateDoc } from 'firebase/firestore';
+import { query, where, getDocs, updateDoc , doc} from 'firebase/firestore';
 
 // Components
 import {  Progress } from "@nextui-org/react";
@@ -25,6 +25,41 @@ const ParentForm5 = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
+    const [activeApplications, setActiveApplications] = useState([]);
+    const [applicationId, setApplicationId] = useState(null); // Track application ID for edit mode
+
+    // Fetch advertisements from Firestore
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'applications')); // Replace 'applications' with your Firestore collection name
+                const fetchedApplications = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+
+                // Filter applications by parent.id === user.id
+                const userApplications = fetchedApplications.filter(app => app?.parent?.uid === user?.uid);
+
+                // Separate applications based on status
+                const active = userApplications.filter(app =>
+                    app.status === 'ΕΝΕΡΓΗ'
+                );
+
+                setActiveApplications(active);
+            } catch (error) {
+                console.error('Error fetching applications:', error);
+            }
+        };
+
+        const storedId = localStorage.getItem('applicationId');
+        setApplicationId(storedId); // Set the ID if in edit mode
+
+        fetchApplications();
+
+        
+
+    }, []);
 
     const onSubmit = async (e, status) => {
         
@@ -32,8 +67,14 @@ const ParentForm5 = () => {
             // Prevent the default form submission
             e.preventDefault();
 
+            // Check if there's an active application
+            if (status == 'ΥΠΟΒΕΒΛΗΜΕΝΗ' && activeApplications.length > 0) {
+                alert('Δεν μπορείτε να ανανεώσετε την αίτηση καθώς υπάρχει αίτηση σε εξέλιξη.');
+                return;
+            }
+
             // Submit the data to Firestore
-            const docRef = await addDoc(collection(db, "applications"), {
+            const appData = {
                 parent: {
                     uid: user.uid, // Example: parent uid from authentication
                     name: formData?.form1?.name,
@@ -118,14 +159,25 @@ const ParentForm5 = () => {
                 },
                 status: status, // dynamic status
                 createdAt: new Date(),
-            });
+            };
+            
+            let docRef; // Declare docRef outside to make it accessible throughout the function
+            if (applicationId) {
+                // Update existing document
+                const docRef = doc(db, 'applications', applicationId);
+                await updateDoc(docRef, appData);
+                console.log('Application updated:', applicationId);
+            } else {
+                // Create new document
+                const docRef = await addDoc(collection(db, 'applications'), appData);
+                console.log('Application created with ID:', docRef.id);
+            }
 
-        
-            console.log("Document written with ID: ", docRef.id);
             // setSubmitted(data); // Update the form submission status
 
             // Optionally, clear the local storage after submitting
             localStorage.removeItem("formData");
+            localStorage.removeItem("applicationId");
 
             // Redirect to the applications page
             navigate("/parent/applications");
