@@ -134,12 +134,16 @@ const ParentApplicationsPage = () => {
         }
     };
 
-    // const handleEdit = (app) => {
-    //     // Save application data to localStorage
-    //     localStorage.setItem('formData', JSON.stringify(app));
-    //     // Navigate to the edit form
-    //     navigate('/parent/applications/form1');
-    // };
+    const handleEdit = (app) => {
+        // Save application data to localStorage
+        localStorage.setItem('formData', JSON.stringify(app));
+        
+        // Ensure data is stored before navigating
+        setTimeout(() => {
+        navigate('/parent/applications/form1');
+        }, 0); // Minimal delay for consistency
+    };
+    
 
     const handleNewApplication = () => {
         if (activeApplications.length > 0) {
@@ -216,7 +220,7 @@ const ParentApplicationsPage = () => {
                                             >
                                                 {app?.status}
                                             </h3>
-                                            { app?.status === "ΑΠΟΘΗΚΕΥΜΕΝΗ" || app?.status === "ΥΠΟΒΕΒΛΗΜΕΝΗ"  && (
+                                            { (app?.status === "ΑΠΟΘΗΚΕΥΜΕΝΗ" || app?.status === "ΥΠΟΒΕΒΛΗΜΕΝΗ")  && (
                                                 <Button size="sm" onClick={() => handleEdit(app)}>
                                                     ΕΠΕΞΕΡΓΑΣΙΑ
                                                 </Button>

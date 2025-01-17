@@ -26,7 +26,7 @@ const ParentForm5 = () => {
     const navigate = useNavigate();
     const { formData, updateForm } = useFormContext();
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e, status) => {
         
         try {
             // Prevent the default form submission
@@ -116,7 +116,7 @@ const ParentForm5 = () => {
                     cellphone1: `${formData?.form4?.nannyData?.activeAd?.cellphone1}`,   
                     bio: `${formData?.form4?.nannyData?.activeAd?.bio}`,
                 },
-                status: 'ΥΠΟΒΕΒΛΗΜΕΝΗ',
+                status: status, // dynamic status
                 createdAt: new Date(),
             });
 
@@ -254,16 +254,28 @@ const ParentForm5 = () => {
                     <Button variant="solid" color="default" size='sm' radius='md'>
                         <Link to="/parent/applications/form4">ΠΙΣΩ</Link>
                     </Button>
-                    <Button
-                        variant="solid"
-                        color="danger"
-                        size='sm'
-                        radius='md'
-                        className="ml-auto"
-                        onClick={onSubmit}
-                    >
-                        ΥΠΟΒΟΛΗ
-                    </Button>
+                    <div className='ml-auto'>
+                        <Button
+                            variant="solid"
+                            color="default"
+                            size='sm'
+                            radius='md'
+                            className="mr-2"
+                            onClick={(e) => onSubmit(e, 'ΑΠΟΘΗΚΕΥΜΕΝΗ')}
+                        >
+                            ΠΡΟΣΩΡΙΝΗ ΑΠΟΘΗΚΕΥΣΗ
+                        </Button>
+                        <Button
+                            variant="solid"
+                            color="danger"
+                            size='sm'
+                            radius='md'
+                            className="mr-2"
+                            onClick={(e) => onSubmit(e, 'ΥΠΟΒΕΒΛΗΜΕΝΗ')}
+                        >
+                            ΥΠΟΒΟΛΗ
+                        </Button>
+                    </div>
                 </div>
             </main>
 
