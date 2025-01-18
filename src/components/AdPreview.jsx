@@ -84,7 +84,7 @@ const AdPreview = ({ selectedAd }) => {
                     </div>
                     {/* Schedule - Part 1 */}
                     <div className="bg-white p-4 rounded-lg shadow-lg">
-                        <h3 className="font-bold text-md text-center mb-5">ΩΡΑΡΙΟ (ΜΕΡΟΣ 1)</h3>
+                        <h3 className="font-bold text-md text-center mb-5">ΩΡΑΡΙΟ</h3>
                         {[
                             { key: "monday", label: "Δ" },
                             { key: "tuesday", label: "Τ" },
@@ -129,9 +129,9 @@ const AdPreview = ({ selectedAd }) => {
 
                     {/* Schedule - Part 2 */}
                     <div className="bg-white p-3 rounded-lg shadow-md">
-                        <h3 className="font-bold text-md text-center mb-2">ΩΡΑΡΙΟ (ΜΕΡΟΣ 2)</h3>
+                        <h3 className="font-bold text-md text-center mb-2">ΕΠΙΠΛΕΟΝ ΠΛΗΡΟΦΟΡΙΕΣ</h3>
                      
-                        <Input
+                        <Textarea
                             size="sm"
                             variant="faded"
                             radius="sm"
@@ -139,6 +139,9 @@ const AdPreview = ({ selectedAd }) => {
                             label="Πρόσθετες Πληροφορίες"
                             readOnly
                             defaultValue={selectedAd.extra || "N/A"}
+                            minRows={1}
+                            maxRows={5}
+                            autoResize
                         />
                         <Input
                             size="sm"

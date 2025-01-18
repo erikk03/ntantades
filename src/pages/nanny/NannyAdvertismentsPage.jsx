@@ -15,12 +15,12 @@ const renderStars = (rating) => {
 };
 
 const Section = ({ title, ads, userDetails, onView, onEdit, onDelete, statusOffset }) => (
-    <div className="p-2 rounded-lg mb-2 max-h-[calc(28vh)] overflow-hidden bg-gray-100 shadow-sm">
+    <div className="p-2 rounded-lg mb-2 max-h-[calc(27vh)] overflow-hidden  ">
         <h2 className="text-sm font-semibold mb-2">{title}</h2>
         {ads.map((ad, index) => (
             <div
                 key={index}
-                className="bg-white p-2 rounded-lg shadow-sm mb-2 flex justify-between items-center"
+                className="bg-white p-2 rounded-lg mb-2 flex justify-between items-center"
             >
                 <div className="text-xs">
                     <h3 className="font-bold mb-1">
