@@ -21,35 +21,35 @@ const NannyForm1 = () => {
     const navigate = useNavigate();
 
     const handleNavigation = (path) => {
-        if (isDirty) {
-            setNextRoute(path);
-            setShowSaveModal(true);
-        } else {
+        // if (isDirty) {
+        //     setNextRoute(path);
+        //     setShowSaveModal(true);
+        // } else {
             navigate(path);
-        }
+        // }
     };
 
-    const handleInputChange = () => {
-        if (!isDirty) {
-            setIsDirty(true);
-        }
-    };
+    // const handleInputChange = () => {
+    //     // if (!isDirty) {
+    //     //     setIsDirty(true);
+    //     // }
+    // };
 
-    useEffect(() => {
-        const handleBeforeUnload = (event) => {
-            if (isDirty) {
-                event.preventDefault();
-                event.returnValue = ""; // Trigger browser's native dialog
-                setShowSaveModal(true); // Show the custom modal
-            }
-        };
+    // useEffect(() => {
+    //     // const handleBeforeUnload = (event) => {
+    //     //     if (isDirty) {
+    //     //         event.preventDefault();
+    //     //         event.returnValue = ""; // Trigger browser's native dialog
+    //     //         setShowSaveModal(true); // Show the custom modal
+    //     //     }
+    //     // };
 
-        window.addEventListener("beforeunload", handleBeforeUnload);
+    //     window.addEventListener("beforeunload", handleBeforeUnload);
 
-        return () => {
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-        };
-    }, [isDirty]);
+    //     return () => {
+    //         window.removeEventListener("beforeunload", handleBeforeUnload);
+    //     };
+    // }, [isDirty]);
 
     const saveFormDataToFirebase = async (formDataToSave) => {
         try {
@@ -74,10 +74,10 @@ const NannyForm1 = () => {
     
             await saveFormDataToFirebase(data);
     
-            setShowSaveModal(false);
-            if (nextRoute) {
-                navigate(nextRoute);
-            }
+            // setShowSaveModal(false);
+            // if (nextRoute) {
+            //     navigate(nextRoute);
+            // }
     
             updateForm('form1', {});
             localStorage.removeItem("formData");
@@ -87,13 +87,13 @@ const NannyForm1 = () => {
     };
 
 
-    const handleDiscardAndProceed = () => {
-        setShowSaveModal(false);
-        setIsDirty(false); // Discard unsaved changes
-        if (nextRoute) {
-            navigate(nextRoute);
-        }
-    };
+    // const handleDiscardAndProceed = () => {
+    //     setShowSaveModal(false);
+    //     setIsDirty(false); // Discard unsaved changes
+    //     if (nextRoute) {
+    //         navigate(nextRoute);
+    //     }
+    // };
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -145,7 +145,7 @@ const NannyForm1 = () => {
                             label="ΟΝΟΜΑ"
                             name="name"
                             defaultValue={userData?.name}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isReadOnly
@@ -156,7 +156,7 @@ const NannyForm1 = () => {
                             label="ΕΠΩΝΥΜΟ"
                             name="surname"
                             defaultValue={userData?.surname}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isReadOnly
@@ -167,7 +167,7 @@ const NannyForm1 = () => {
                             label="ΗΜΕΡΟΜΗΝΙΑ ΓΕΝΝΗΣΗΣ"
                             name="birthdate"
                             defaultValue={userData?.birthdate}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
 
                         <Input
@@ -179,7 +179,7 @@ const NannyForm1 = () => {
                             label="ΑΡΙΘΜΟΣ ΤΑΥΤΟΤΗΤΑΣ"
                             name="am"
                             defaultValue={userData?.AT}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isReadOnly
@@ -190,7 +190,7 @@ const NannyForm1 = () => {
                             label="ΑΦΜ"
                             name="afm"
                             defaultValue={userData?.AFM}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isReadOnly
@@ -201,7 +201,7 @@ const NannyForm1 = () => {
                             label="ΑΜΚΑ"
                             name="amka"
                             defaultValue={userData?.AMKA}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Autocomplete
                             isRequired
@@ -213,8 +213,8 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="gender"
                             defaultInputValue={ formData?.form1?.gender || user?.gender}
-                            onInput={handleInputChange}
-                            onSelectionChange={handleInputChange}
+                            // onInput={handleInputChange}
+                            // onSelectionChange={handleInputChange}
                         >
                             {(genders) => <AutocompleteItem key={genders.key}>{genders.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -231,7 +231,7 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="homephone"
                             defaultValue={formData?.form1?.homephone || ''}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isRequired
@@ -243,7 +243,7 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="cellphone1"
                             defaultValue={formData?.form1?.cellphone1 || ''}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             size='sm'
@@ -254,7 +254,7 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="cellphone2"
                             defaultValue={formData?.form1?.cellphone2 || ''}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isRequired
@@ -267,7 +267,7 @@ const NannyForm1 = () => {
                             name="EMAIL"
                             defaultValue={ formData?.form1?.EMAIL || user?.email || ''}
                             type="email"
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                     </div>
                     <h1 className="text-sm font-bold">ΤΟΠΟΘΕΣΙΑ/ΔΙΕΥΘΥΝΣΗ ΚΑΤΟΙΚΙΑΣ</h1>
@@ -282,8 +282,8 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="perifereia"
                             defaultInputValue={formData?.form1?.perifereia || ''}
-                            onInput={handleInputChange}
-                            onSelectionChange={handleInputChange}
+                            // onInput={handleInputChange}
+                            // onSelectionChange={handleInputChange}
                         >
                             {(perifereia) => <AutocompleteItem key={perifereia.key}>{perifereia.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -297,8 +297,8 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="nomos"
                             defaultInputValue={formData?.form1?.nomos || ''}
-                            onInput={handleInputChange}
-                            onSelectionChange={handleInputChange}
+                            // onInput={handleInputChange}
+                            // onSelectionChange={handleInputChange}
                         >
                             {(nomos) => <AutocompleteItem key={nomos.key}>{nomos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -312,8 +312,8 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="dimos"
                             defaultInputValue={formData?.form1?.dimos || ''}
-                            onInput={handleInputChange}
-                            onSelectionChange={handleInputChange}
+                            // onInput={handleInputChange}
+                            // onSelectionChange={handleInputChange}
                         >
                             {(dimos) => <AutocompleteItem key={dimos.key}>{dimos.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -327,8 +327,8 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="city"
                             defaultInputValue={formData?.form1?.city || ''}
-                            onInput={handleInputChange}
-                            onSelectionChange={handleInputChange}
+                            // onInput={handleInputChange}
+                            // onSelectionChange={handleInputChange}
                         >
                             {(city) => <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -342,8 +342,8 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="street"
                             defaultInputValue={formData?.form1?.street || ''}
-                            onInput={handleInputChange}
-                            onSelectionChange={handleInputChange}
+                            // onInput={handleInputChange}
+                            // onSelectionChange={handleInputChange}
                         >
                             {(street) => <AutocompleteItem key={street.key}>{street.label}</AutocompleteItem>}
                         </Autocomplete>
@@ -356,7 +356,7 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="streetnumber"
                             defaultValue={formData?.form1?.streetnumber || ''}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                         <Input
                             isRequired
@@ -368,7 +368,7 @@ const NannyForm1 = () => {
                             labelPlacement="outside"
                             name="zipcode"
                             defaultValue={formData?.form1?.zipcode || ''}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                     </div>
 
@@ -383,7 +383,7 @@ const NannyForm1 = () => {
                             label="ΠΕΡΙΓΡΑΦΗ"
                             name="bio"
                             defaultValue={formData?.form1?.bio || ''}
-                            onChange={handleInputChange}
+                            // onChange={handleInputChange}
                         />
                     </div>
                     <div className="flex justify-end w-full">
@@ -401,7 +401,7 @@ const NannyForm1 = () => {
                 </Form>
 
                 {/* Save Confirmation Modal */}
-                <Modal
+                {/* <Modal
                     isOpen={showSaveModal}
                     onClose={() => setShowSaveModal(false)}
                 >
@@ -417,7 +417,7 @@ const NannyForm1 = () => {
                             </NextUIButton>
                         </div>
                     </ModalContent>
-                </Modal>
+                </Modal> */}
             </main>
         </div>
     );

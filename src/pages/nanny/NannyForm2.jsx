@@ -73,12 +73,12 @@ const NannyForm2 = () => {
     };
     
     const handleNavigation = (path) => {
-        if (isDirty) {
-            setNextRoute(path);
-            setShowSaveModal(true);
-        } else {
+        // if (isDirty) {
+        //     setNextRoute(path);
+        //     setShowSaveModal(true);
+        // } else {
             navigate(path);
-        }
+        // }
     };
 
     return (

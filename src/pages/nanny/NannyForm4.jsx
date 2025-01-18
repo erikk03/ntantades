@@ -38,101 +38,183 @@ const NannyForm4 = () => {
         }
     };
 
-    const onSubmit = async (e) => {
+    const onSubmit = async (e, status) => {
         try {
             // Prevent the default form submission
             e.preventDefault();
     
-            // Reference the "adv" subcollection for the logged-in user
-            const advCollectionRef = collection(db, `users/${user.uid}/adv`);
-    
-            // Fetch all documents with status "ΕΝΕΡΓΗ"
-            const activeAdsQuery = query(advCollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
-            const activeAdsSnapshot = await getDocs(activeAdsQuery);
-    
-            // Update the status of each active advertisement to "ΙΣΤΟΡΙΚΟ"
-            const updatePromises = activeAdsSnapshot.docs.map(doc => {
-                updateDoc(doc.ref, { status: "ΙΣΤΟΡΙΚΟ" })
-            });
-            await Promise.all(updatePromises);
-    
-            // Create a new ad document in the "adv" subcollection
-            await addDoc(advCollectionRef, {
-                //form1
-                bio: formData?.form1?.bio,
-                gender: formData?.form1?.gender,
-                homephone: formData?.form1?.homephone,
-                cellphone1: formData?.form1?.cellphone1,
-                cellphone2: formData?.form1?.cellphone2,
-                email: formData?.form1?.EMAIL,
-                perifereia: formData?.form1?.perifereia,
-                nomos: formData?.form1?.nomos,
-                dimos: formData?.form1?.dimos,
-                address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
-                city: formData?.form1?.city,
-                zipcode: formData?.form1?.zipcode,
-                //form2
-                certificates: {
-                    pathologist: formData?.form2?.pathologistCertificate,
-                    dermatologist: formData?.form2?.dermatologistCertificate,
-                    psychologist: formData?.form2?.psychologistCertificate,
-                    course: formData?.form2?.courseCertificate,
-                    language: formData?.form2?.languageCertificate,
-                    firstAid: formData?.form2?.firstAidCertificate,
-                    criminalRecord: formData?.form2?.criminalRecordCertificate,
-                    letter: formData?.form2?.letterCertificate, 
-                },
-                education: formData?.form2?.educationLevel,
-                //form3
-                schedule: {
-                    monday: {
-                        from: formData?.form3?.δευτερα_from,
-                        to: formData?.form3?.δευτερα_to,
+            if(status == 'ΥΠΟΒΕΒΛΗΜΕΝΗ'){
+                // Reference the "adv" subcollection for the logged-in user
+                const advCollectionRef = collection(db, `users/${user.uid}/adv`);
+        
+                // Fetch all documents with status "ΕΝΕΡΓΗ"
+                const activeAdsQuery = query(advCollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
+                const activeAdsSnapshot = await getDocs(activeAdsQuery);
+        
+                // Update the status of each active advertisement to "ΙΣΤΟΡΙΚΟ"
+                const updatePromises = activeAdsSnapshot.docs.map(doc => {
+                    updateDoc(doc.ref, { status: "ΙΣΤΟΡΙΚΟ" })
+                });
+                await Promise.all(updatePromises);
+            
+                // Create a new ad document in the "adv" subcollection
+                await addDoc(advCollectionRef, {
+                    //form1
+                    bio: formData?.form1?.bio,
+                    gender: formData?.form1?.gender,
+                    homephone: formData?.form1?.homephone,
+                    cellphone1: formData?.form1?.cellphone1,
+                    cellphone2: formData?.form1?.cellphone2,
+                    email: formData?.form1?.EMAIL,
+                    perifereia: formData?.form1?.perifereia,
+                    nomos: formData?.form1?.nomos,
+                    dimos: formData?.form1?.dimos,
+                    address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
+                    city: formData?.form1?.city,
+                    zipcode: formData?.form1?.zipcode,
+                    //form2
+                    certificates: {
+                        pathologist: formData?.form2?.pathologistCertificate,
+                        dermatologist: formData?.form2?.dermatologistCertificate,
+                        psychologist: formData?.form2?.psychologistCertificate,
+                        course: formData?.form2?.courseCertificate,
+                        language: formData?.form2?.languageCertificate,
+                        firstAid: formData?.form2?.firstAidCertificate,
+                        criminalRecord: formData?.form2?.criminalRecordCertificate,
+                        letter: formData?.form2?.letterCertificate, 
                     },
-                    tuesday: {
-                        from: formData?.form3?.τριτη_from,
-                        to: formData?.form3?.τριτη_to,
+                    education: formData?.form2?.educationLevel,
+                    //form3
+                    schedule: {
+                        monday: {
+                            from: formData?.form3?.δευτερα_from,
+                            to: formData?.form3?.δευτερα_to,
+                        },
+                        tuesday: {
+                            from: formData?.form3?.τριτη_from,
+                            to: formData?.form3?.τριτη_to,
+                        },
+                        wednesday: {
+                            from: formData?.form3?.τεταρτη_from,
+                            to: formData?.form3?.τεταρτη_to,
+                        },
+                        thursday: {
+                            from: formData?.form3?.πεμπτη_from,
+                            to: formData?.form3?.πεμπτη_to,
+                        },
+                        friday: {
+                            from: formData?.form3?.παρασκευη_from,
+                            to: formData?.form3?.παρασκευη_to,
+                        },
+                        saturday: {
+                            from: formData?.form3?.σαββατο_from,
+                            to: formData?.form3?.σαββατο_to,
+                        },
+                        sunday: {
+                            from: formData?.form3?.κυριακη_from,
+                            to: formData?.form3?.κυριακη_to,
+                        },
+                        extra: formData?.form3?.extra,
                     },
-                    wednesday: {
-                        from: formData?.form3?.τεταρτη_from,
-                        to: formData?.form3?.τεταρτη_to,
-                    },
-                    thursday: {
-                        from: formData?.form3?.πεμπτη_from,
-                        to: formData?.form3?.πεμπτη_to,
-                    },
-                    friday: {
-                        from: formData?.form3?.παρασκευη_from,
-                        to: formData?.form3?.παρασκευη_to,
-                    },
-                    saturday: {
-                        from: formData?.form3?.σαββατο_from,
-                        to: formData?.form3?.σαββατο_to,
-                    },
-                    sunday: {
-                        from: formData?.form3?.κυριακη_from,
-                        to: formData?.form3?.κυριακη_to,
-                    },
-                    extra: formData?.form3?.extra,
-                },
-                payment: formData?.form3?.payment,
-                facebook: formData?.form3?.facebook,
-                instagram: formData?.form3?.instagram,
-                linkedin: formData?.form3?.linkedin,
-                meetingDays: formData?.form3?.meetingDay,
-                meetingTime: formData?.form3?.meetingTime,
-                placeOfWork: formData?.form3?.placeOfWork,
-                workExperience: formData?.form3?.workExperience,
-                // Additional fields
-                status: "ΕΝΕΡΓΗ", // Default status for a new ad
-                createdAt: new Date(),
-            });
-    
-            console.log("Advertisement successfully created and previous active ads updated to history!");
-    
-            // Optionally, clear the local storage after submitting
-            localStorage.removeItem("formData");
-    
+                    payment: formData?.form3?.payment,
+                    facebook: formData?.form3?.facebook,
+                    instagram: formData?.form3?.instagram,
+                    linkedin: formData?.form3?.linkedin,
+                    meetingDays: formData?.form3?.meetingDay,
+                    meetingTime: formData?.form3?.meetingTime,
+                    placeOfWork: formData?.form3?.placeOfWork,
+                    workExperience: formData?.form3?.workExperience,
+                    // Additional fields
+                    status: "ΕΝΕΡΓΗ", // Default status for a new ad
+                    createdAt: new Date(),
+                });
+        
+                console.log("Advertisement successfully created and previous active ads updated to history!");
+        
+                // Optionally, clear the local storage after submitting
+                localStorage.removeItem("formData");
+            }
+            else if(status == 'ΑΠΟΘΗΚΕΥΜΕΝΗ') {
+                 // Reference the "adv" subcollection for the logged-in user
+                 const advCollectionRef = collection(db, `users/${user.uid}/adv`);
+         
+                 // Create a new ad document in the "adv" subcollection
+                 await addDoc(advCollectionRef, {
+                     //form1
+                     bio: formData?.form1?.bio,
+                     gender: formData?.form1?.gender,
+                     homephone: formData?.form1?.homephone,
+                     cellphone1: formData?.form1?.cellphone1,
+                     cellphone2: formData?.form1?.cellphone2,
+                     email: formData?.form1?.EMAIL,
+                     perifereia: formData?.form1?.perifereia,
+                     nomos: formData?.form1?.nomos,
+                     dimos: formData?.form1?.dimos,
+                     address: `${formData?.form1?.street} ${formData?.form1?.streetnumber}`,
+                     city: formData?.form1?.city,
+                     zipcode: formData?.form1?.zipcode,
+                     //form2
+                     certificates: {
+                         pathologist: formData?.form2?.pathologistCertificate,
+                         dermatologist: formData?.form2?.dermatologistCertificate,
+                         psychologist: formData?.form2?.psychologistCertificate,
+                         course: formData?.form2?.courseCertificate,
+                         language: formData?.form2?.languageCertificate,
+                         firstAid: formData?.form2?.firstAidCertificate,
+                         criminalRecord: formData?.form2?.criminalRecordCertificate,
+                         letter: formData?.form2?.letterCertificate, 
+                     },
+                     education: formData?.form2?.educationLevel,
+                     //form3
+                     schedule: {
+                         monday: {
+                             from: formData?.form3?.δευτερα_from,
+                             to: formData?.form3?.δευτερα_to,
+                         },
+                         tuesday: {
+                             from: formData?.form3?.τριτη_from,
+                             to: formData?.form3?.τριτη_to,
+                         },
+                         wednesday: {
+                             from: formData?.form3?.τεταρτη_from,
+                             to: formData?.form3?.τεταρτη_to,
+                         },
+                         thursday: {
+                             from: formData?.form3?.πεμπτη_from,
+                             to: formData?.form3?.πεμπτη_to,
+                         },
+                         friday: {
+                             from: formData?.form3?.παρασκευη_from,
+                             to: formData?.form3?.παρασκευη_to,
+                         },
+                         saturday: {
+                             from: formData?.form3?.σαββατο_from,
+                             to: formData?.form3?.σαββατο_to,
+                         },
+                         sunday: {
+                             from: formData?.form3?.κυριακη_from,
+                             to: formData?.form3?.κυριακη_to,
+                         },
+                         extra: formData?.form3?.extra,
+                     },
+                     payment: formData?.form3?.payment,
+                     facebook: formData?.form3?.facebook,
+                     instagram: formData?.form3?.instagram,
+                     linkedin: formData?.form3?.linkedin,
+                     meetingDays: formData?.form3?.meetingDay,
+                     meetingTime: formData?.form3?.meetingTime,
+                     placeOfWork: formData?.form3?.placeOfWork,
+                     workExperience: formData?.form3?.workExperience,
+                     // Additional fields
+                     status: "SAVED", // Default status for a new ad
+                     createdAt: new Date(),
+                 });
+         
+                 console.log("Advertisement successfully created and set to saved!");
+         
+                // Optionally, clear the local storage after submitting
+                localStorage.removeItem("formData");
+            }
             // Redirect to the advertisements page
             navigate("/nanny/advertisments");
     
@@ -246,16 +328,28 @@ const NannyForm4 = () => {
                     <Button variant="solid" color="default" size='sm' radius='md'>
                         <Link to="/nanny/advertisments/form3">ΠΙΣΩ</Link>
                     </Button>
-                    <Button
-                        variant="solid"
-                        color="danger"
-                        size='sm'
-                        radius='md'
-                        className="ml-auto"
-                        onClick={onSubmit}
-                    >
-                        ΥΠΟΒΟΛΗ
-                    </Button>
+                    <div className='ml-auto'>
+                        <Button
+                            variant="solid"
+                            color="default"
+                            size='sm'
+                            radius='md'
+                            className="mr-2"
+                            onClick={(e) => onSubmit(e, 'ΑΠΟΘΗΚΕΥΜΕΝΗ')}
+                        >
+                            ΠΡΟΣΩΡΙΝΗ ΑΠΟΘΗΚΕΥΣΗ
+                        </Button>
+                        <Button
+                            variant="solid"
+                            color="danger"
+                            size='sm'
+                            radius='md'
+                            className="mr-2"
+                            onClick={(e) => onSubmit(e, 'ΥΠΟΒΕΒΛΗΜΕΝΗ')}
+                        >
+                            ΥΠΟΒΟΛΗ
+                        </Button>
+                    </div>
                 </div>
             </main>
 
