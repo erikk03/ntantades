@@ -72,6 +72,7 @@ const AppPreview = ({app}) => {
                                         hourCycle={24}
                                         aria-label={`Από (${key})`}
                                         labelPlacement='inside'
+                                        isDisabled
                                         defaultValue={parseTimeString(app?.schedule?.[`${key}`]?.from)}
                                     />
                                     <TimeInput
@@ -83,6 +84,7 @@ const AppPreview = ({app}) => {
                                         hourCycle={24}
                                         aria-label={`Έως (${key})`}
                                         labelPlacement='inside'
+                                        isDisabled
                                         defaultValue={parseTimeString(app?.schedule?.[`${key}`]?.to)}
                                     />
                                 </div>

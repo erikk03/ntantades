@@ -291,7 +291,6 @@ useEffect(() => {
                         </div>
                         <div className="relative">
                             <Input
-                                readOnly
                                 className="w-full pr-10"
                                 size="sm"
                                 variant="faded"

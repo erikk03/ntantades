@@ -14,7 +14,7 @@ const AdPreview = ({ selectedAd }) => {
     }
 
     return (
-        <div className="bg-[#F2E9EB] flex flex-col p-2 max-w-full rounded-lg overflow-y-auto max-h-[80vh]">
+        <div className="bg-[#F2E9EB] flex flex-col p-2 max-w-full rounded-lg">
     
 
             <main className="flex-grow rounded-lg">

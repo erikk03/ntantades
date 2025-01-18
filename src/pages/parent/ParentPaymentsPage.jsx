@@ -160,7 +160,7 @@ const ParentPaymentsPage = () => {
                         <p className='text-xs mb-4'>Αυτοματοποιημένη έκδοση έπειτα απο διασταύρωση στοιχείων και κριτηρίων</p>
                         </>
                     ) : (
-                        <p className="text-sm text-gray-500">No active voucher available</p>
+                        <p className="text-sm text-gray-500">Μη διαθέσιμο voucher καθώς δεν εκρεμμεί λογαριασμός</p>
                     )}
                     {/* Active Applications */}
                     <h2 className="text-md font-bold mb-2">ΕΚΡΕΜΕΙΣ ΠΛΗΡΩΜΕΣ</h2>
