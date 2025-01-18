@@ -6,7 +6,7 @@ import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
 import { db } from '../../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { query, where, getDocs, updateDoc , doc} from 'firebase/firestore';
+import { query, where, getDocs, updateDoc , deleteDoc, doc} from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 // Components
@@ -115,8 +115,42 @@ const NannyForm4 = () => {
                     status: status, // Default status for a new ad
                     createdAt: new Date(),
             };
-
-            if(status == 'ΥΠΟΒΕΒΛΗΜΕΝΗ'){
+            if (status === 'ΕΝΕΡΓΗ' && adId) {
+                // Fetch all documents with status "ΕΝΕΡΓΗ"
+                const activeAdsQuery = query(advCollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
+                const activeAdsSnapshot = await getDocs(activeAdsQuery);
+            
+                // Update the status of each active advertisement to "ΙΣΤΟΡΙΚΟ"
+                const updatePromises = activeAdsSnapshot.docs.map(doc => {
+                    return updateDoc(doc.ref, { status: "ΙΣΤΟΡΙΚΟ" });
+                });
+                await Promise.all(updatePromises);
+            
+                // Delete the specific document with adId and status "SAVED"
+                const savedAdQuery = query(
+                    advCollectionRef,
+                    where("status", "==", "SAVED")
+                );
+            
+                const savedAdSnapshot = await getDocs(savedAdQuery);
+            
+                const deletePromises = savedAdSnapshot.docs
+                    .filter(doc => doc.id === adId) // Ensure the document ID matches adId
+                    .map(doc => deleteDoc(doc.ref));
+            
+                await Promise.all(deletePromises);
+            
+                console.log(`Advertisement with adId: ${adId} and status: SAVED has been deleted.`);
+            
+                // Create a new ad document in the "adv" subcollection
+                await addDoc(advCollectionRef, appData);
+                console.log("Advertisement successfully created and previous active ads updated to history!");
+            
+                // Optionally, clear the local storage after submitting
+                localStorage.removeItem("formData");
+            }
+                        
+            else if(status == 'ΕΝΕΡΓΗ'){
         
                 // Fetch all documents with status "ΕΝΕΡΓΗ"
                 const activeAdsQuery = query(advCollectionRef, where("status", "==", "ΕΝΕΡΓΗ"));
@@ -134,7 +168,7 @@ const NannyForm4 = () => {
         
                 // Optionally, clear the local storage after submitting
                 localStorage.removeItem("formData");
-            } else if (status === 'ΑΠΟΘΗΚΕΥΜΕΝΗ') {
+            } else if (status === 'SAVED') {
                 if (adId) {
                     // Update existing ad
                     const adDocRef = doc(db, `users/${user.uid}/adv`, adId);
