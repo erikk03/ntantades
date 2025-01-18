@@ -214,8 +214,8 @@ const NannyAdvertismentsPage = () => {
                         // Store the transformed data in localStorage
                         localStorage.setItem('formData', JSON.stringify(transformedData));
             
-                        // Redirect to form1
-                        navigate('/nanny/advertisments/form1');
+                        // Perform a hard redirect to the form1 page
+                        window.location.assign('/nanny/advertisments/form1');
                     } else {
                         console.error("No advertisement data found!");
                     }
