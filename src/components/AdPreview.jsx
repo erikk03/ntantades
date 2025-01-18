@@ -13,6 +13,19 @@ const AdPreview = ({ selectedAd }) => {
         return <p>No details available.</p>;
     }
 
+
+
+    const certificateLabels = {
+        pathologist: "Παθολόγος",
+        dermatologist: "Δερματολόγος",
+        psychologist: "Ψυχολόγος",
+        course: "Εκπαίδευση",
+        language: "Γλωσσομάθεια",
+        firstAid: "Πρώτες Βοήθειες",
+        criminalRecord: "Ποινικό Μητρώο",
+        letter: "Συστατική Επιστολή",
+    };
+
     return (
         <div className="bg-[#F2E9EB] flex flex-col p-2 max-w-full rounded-lg">
     
@@ -20,7 +33,7 @@ const AdPreview = ({ selectedAd }) => {
             <main className="flex-grow rounded-lg">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Basic Details */}
-                    <div className="bg-white p-1 rounded-lg shadow-md">
+                    <div className="bg-white p-3 rounded-lg shadow-md">
                         <h3 className="font-bold text-md text-center mb-2">ΣΤΟΙΧΕΙΑ ΕΠΙΜΕΛΗΤΗ</h3>
                         <Textarea
                             size="sm"
@@ -29,7 +42,7 @@ const AdPreview = ({ selectedAd }) => {
                             labelPlacement="outside"
                             label="Βιογραφικό"
                             readOnly
-                            defaultValue={selectedAd.bio || "N/A"}
+                            defaultValue={selectedAd.bio || ""}
                             minRows={1}
                             maxRows={5}
                             autoResize
@@ -51,7 +64,7 @@ const AdPreview = ({ selectedAd }) => {
                                 labelPlacement="outside"
                                 label={label}
                                 readOnly
-                                defaultValue={value || "N/A"}
+                                defaultValue={value || ""}
                             />
                         ))}
                     </div>
@@ -67,9 +80,9 @@ const AdPreview = ({ selectedAd }) => {
                                     variant="faded"
                                     radius="sm"
                                     labelPlacement="outside"
-                                    label={key}
+                                    label={certificateLabels[key] || key}
                                     readOnly
-                                    defaultValue={value || "N/A"}
+                                    defaultValue={value || ""}
                                 />
                             ))}
                         <Input
@@ -79,7 +92,7 @@ const AdPreview = ({ selectedAd }) => {
                             labelPlacement="outside"
                             label="Εκπαίδευση"
                             readOnly
-                            defaultValue={selectedAd.education || "N/A"}
+                            defaultValue={selectedAd.education || ""}
                         />
                     </div>
                     {/* Schedule - Part 1 */}
@@ -138,7 +151,7 @@ const AdPreview = ({ selectedAd }) => {
                             labelPlacement="outside"
                             label="Πρόσθετες Πληροφορίες"
                             readOnly
-                            defaultValue={selectedAd.extra || "N/A"}
+                            defaultValue={selectedAd.extra || ""}
                             minRows={1}
                             maxRows={5}
                             autoResize
@@ -150,7 +163,7 @@ const AdPreview = ({ selectedAd }) => {
                             labelPlacement="outside"
                             label="Αμοιβή (€)"
                             readOnly
-                            defaultValue={selectedAd.payment || "N/A"}
+                            defaultValue={selectedAd.payment || ""}
                         />
                         {[
                             { label: "Facebook", value: selectedAd.facebook },
@@ -167,19 +180,19 @@ const AdPreview = ({ selectedAd }) => {
                                 labelPlacement="outside"
                                 label={label}
                                 readOnly
-                                defaultValue={value || "N/A"}
+                                defaultValue={value || ""}
                             />
                         ))}
                         {selectedAd.workExperience && (
-                            <Input
+                            <Textarea
                                 size="sm"
                                 variant="faded"
                                 radius="sm"
                                 labelPlacement="outside"
                                 label="Προϋπηρεσία"
                                 readOnly
-                                defaultValue={`Από: ${selectedAd.workExperience.start?.day}-${selectedAd.workExperience.start?.month}-${selectedAd.workExperience.start?.year} 
-                                Έως: ${selectedAd.workExperience.end?.day}-${selectedAd.workExperience.end?.month}-${selectedAd.workExperience.end?.year}`}
+                                defaultValue={`Από: ${selectedAd.workExperience.start?.day}-${selectedAd.workExperience.start?.month}-${selectedAd.workExperience.start?.year}\nΈως: ${selectedAd.workExperience.end?.day}-${selectedAd.workExperience.end?.month}-${selectedAd.workExperience.end?.year}`}
+                                style={{ whiteSpace: "pre-wrap" }} // Ensures li${selectedAd.workExperience.end?.day}-${selectedAd.workExperience.end?.month}-${selectedAd.workExperience.end?.year}`}
                             />
                         )}
                     </div>

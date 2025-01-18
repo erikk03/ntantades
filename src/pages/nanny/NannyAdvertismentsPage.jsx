@@ -244,7 +244,6 @@ const NannyAdvertismentsPage = () => {
             <NannyNavBar />
 
             <main className="p-2 flex-grow flex flex-col gap-2">
-                <h1 className="text-lg font-bold text-center mb-2">ΑΓΓΕΛΙΕΣ</h1>
 
                 <Button size="sm" color="danger" className="mb-2 w-auto mx-auto" onClick={handleCreate}>
                     ΔΗΜΙΟΥΡΓΙΑ ΑΓΓΕΛΙΑΣ
