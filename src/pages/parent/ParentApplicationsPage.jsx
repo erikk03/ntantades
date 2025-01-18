@@ -85,10 +85,13 @@ const ParentApplicationsPage = () => {
                 ...doc.data(),
             }));
 
-            const active = fetchedApplications.filter(app =>
+            // Filter applications by parent.id === user.id
+            const userApplications = fetchedApplications.filter(app => app?.parent?.uid === user?.uid);
+
+            const active = userApplications.filter(app =>
                 app.status === 'ΕΝΕΡΓΗ' || app.status === 'ΑΠΟΘΗΚΕΥΜΕΝΗ' || app.status === 'ΥΠΟΒΕΒΛΗΜΕΝΗ'
             );
-            const history = fetchedApplications.filter(app =>
+            const history = userApplications.filter(app =>
                 app.status === 'ΟΛΟΚΛΗΡΩΜΕΝΗ' || app.status === 'ΑΚΥΡΩΜΕΝΗ'
             );
 
@@ -117,10 +120,13 @@ const ParentApplicationsPage = () => {
                 ...doc.data(),
             }));
 
-            const active = fetchedApplications.filter(app =>
+            // Filter applications by parent.id === user.id
+            const userApplications = fetchedApplications.filter(app => app?.parent?.uid === user?.uid);
+
+            const active = userApplications.filter(app =>
                 app.status === 'ΕΝΕΡΓΗ' || app.status === 'ΑΠΟΘΗΚΕΥΜΕΝΗ' || app.status === 'ΥΠΟΒΕΒΛΗΜΕΝΗ'
             );
-            const history = fetchedApplications.filter(app =>
+            const history = userApplications.filter(app =>
                 app.status === 'ΟΛΟΚΛΗΡΩΜΕΝΗ' || app.status === 'ΑΚΥΡΩΜΕΝΗ'
             );
 

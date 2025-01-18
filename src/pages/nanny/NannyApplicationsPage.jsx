@@ -61,7 +61,7 @@ const NannyApplicationsPage = () => {
                     ...doc.data(),
                 }));
 
-                // Filter applications by parent.id === user.id
+                // Filter applications by nanny.id === user.id
                 const userApplications = fetchedApplications.filter(app => app?.nanny?.uid === user?.uid);
 
                 // Separate applications based on status
@@ -145,10 +145,13 @@ const NannyApplicationsPage = () => {
                 ...doc.data(),
             }));
 
-            const active = fetchedApplications.filter(app =>
+            // Filter applications by nanny.id === user.id
+            const userApplications = fetchedApplications.filter(app => app?.nanny?.uid === user?.uid);
+
+            const active = userApplications.filter(app =>
                 app.status === 'ΕΝΕΡΓΗ' || app.status === 'ΥΠΟΒΕΒΛΗΜΕΝΗ'
             );
-            const history = fetchedApplications.filter(app =>
+            const history = userApplications.filter(app =>
                 app.status === 'ΟΛΟΚΛΗΡΩΜΕΝΗ'
             );
 
@@ -178,10 +181,13 @@ const NannyApplicationsPage = () => {
                 ...doc.data(),
             }));
 
-            const active = fetchedApplications.filter(app =>
+            // Filter applications by nanny.id === user.id
+            const userApplications = fetchedApplications.filter(app => app?.nanny?.uid === user?.uid);
+
+            const active = userApplications.filter(app =>
                 app.status === 'ΕΝΕΡΓΗ' || app.status === 'ΥΠΟΒΕΒΛΗΜΕΝΗ'
             );
-            const history = fetchedApplications.filter(app =>
+            const history = userApplications.filter(app =>
                 app.status === 'ΟΛΟΚΛΗΡΩΜΕΝΗ'
             );
 
