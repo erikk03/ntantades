@@ -281,8 +281,10 @@ const NannyAdvertismentsPage = () => {
                 </div>
             </main>
             <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalContent className="max-w-[60vw] w-[60vw] bg-white p-1 rounded-lg overflow-hidden">
-                    <ModalHeader>ΠΡΟΒΟΛΗ ΑΓΓΕΛΙΑΣ</ModalHeader>
+                <ModalContent className="max-w-[70vw] w-[70vw] bg-white p-1 rounded-lg overflow-hidden">
+                    <ModalHeader className="flex justify-center items-center text-lg font-bold">
+                        ΠΡΟΒΟΛΗ ΑΓΓΕΛΙΑΣ
+                    </ModalHeader>
                     <ModalBody>
                         <AdPreview selectedAd={selectedAd} />
                     </ModalBody>
