@@ -145,6 +145,7 @@ const NannyAdvertismentsPage = () => {
     };
 
     const handleEdit = (ad) => {
+        localStorage.setItem("adId", ad.id);
         fetchAdDataAndRedirect(ad);
     };
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../config/AuthContext';
 import { useFormContext } from '../../config/FormContext';
@@ -32,9 +32,42 @@ const ParentForm3 = () => {
     const { formData, updateForm } = useFormContext();
     const [isDirty, setIsDirty] = useState(false);
     const navigate = useNavigate();
-    const [workExperience, setWorkExperience] = useState(
-        formData?.form3?.workExperience || null
-      );
+    const [workExperience, setWorkExperience] = useState(null);
+
+    // Validate and transform workExperience data from localStorage
+useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem('formData'))?.form3?.workExperience;
+    console.log("Loaded workExperience from localStorage:", storedData); // Debugging log
+
+    if (storedData?.start && storedData?.end) {
+        const validStart = storedData.start?.calendar?.identifier === "gregory";
+        const validEnd = storedData.end?.calendar?.identifier === "gregory";
+
+        if (validStart && validEnd) {
+            setWorkExperience({
+                // start: {
+                //     year: storedData.start.year || 2024,
+                //     month: storedData.start.month || 12,
+                //     day: storedData.start.day || 1,
+                //     calendar: { identifier: storedData.start.calendar.identifier },
+                // },
+                // end: {
+                //     year: storedData.end.year || 2025,
+                //     month: storedData.end.month || 1,
+                //     day: storedData.end.day || 1,
+                //     calendar: { identifier: storedData.end.calendar.identifier },
+                // },
+            });
+        } else {
+            console.warn("Invalid calendar identifiers in storedData. Falling back to defaults.");
+            setWorkExperience(null); // Fallback to null if data is invalid
+        }
+    } else {
+        console.warn("Invalid workExperience structure in localStorage. Falling back to defaults.");
+        setWorkExperience(null); // Fallback to null if structure is invalid
+    }
+}, []);
+
 
     const onSubmit = (e) => {
         e.preventDefault();
