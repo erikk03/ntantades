@@ -2,7 +2,7 @@
 
 ## TEAM MEMBERS
 
-ΚΑΓΙΑΤΣΚΑ ΕΡΙΚ - 1115202100043 - sdi2100043\
+ΚΑΓΙΑΤΣΚΑ ΕΡΙΚ - 1115202100043 - sdi2100043
 ΚΑΛΑΜΠΟΚΗΣ ΕΥΑΓΓΕΛΟΣ - 1115202100045 - sdi2100045
 
 ## HOW TO RUN
@@ -48,4 +48,9 @@ https://github.com/erikk03/ntantades.git
 ## WHAT WE IMPLEMENTED
 
 Everything descriped in the project assigment. Also a lot of effort was given to some crucial backend logic.
-Firestore is being used to save all important data. Local Storage used temporary, till the data is ready to be saved on firestore, then cleared from local storage.
+Firestore is being used to save all important data. Local Storage used temporary, till the data is ready to be saved on firestore, then cleared from local storage. Code is designed in a clean and maintanble way to ensure the best possible interaction between nanny and parent users as far as payments and applications go.
+Users can also read the instructions in the main page and learn about the application requirements or communicate via phone or email.
+
+The nannies can create, edit and preview different forms (advertisments) that parents can view to learn about the nannies and communicate with them. The nannies can also receive correctly calculated payments based on the date they signed the agreement with the parent. Lastly, nannies can accept or decline applications (work opportunities), if they dont already have an active application, and see their history of passed work experiences. 
+
+Parents on the other hand, can send the payment vouchers to the nannies on its due date and view previous payments. They can view their application history but can only create a single application per child. 
