@@ -2,7 +2,7 @@
 
 ## TEAM MEMBERS
 
-ΚΑΓΙΑΤΣΚΑ ΕΡΙΚ - 1115202100043 - sdi2100043
+ΚΑΓΙΑΤΣΚΑ ΕΡΙΚ - 1115202100043 - sdi2100043\
 ΚΑΛΑΜΠΟΚΗΣ ΕΥΑΓΓΕΛΟΣ - 1115202100045 - sdi2100045
 
 ## HOW TO RUN
@@ -29,21 +29,21 @@
 
 ## GITHUB REPOSITORY
 
-Clone using the web url:
+Clone using the web url:\
 https://github.com/erikk03/ntantades.git
 
 ## FILE DESCRIPTION
 
-/public folder: Has images that are used in the website
-/src: The code
-.env: Environment variables used to store sensitive data
-/src/components: jsx components build for specific use
-/src/config: Configurative and usefull files for firebase use
-/src/data: js file with data for the dropdown inputs
-/src/pages: main home page, parent and nanny pages
-/src/styles: css file with basic style
-/src/App.jsx: Protected routes and url are here
-/src/main.jsx: The main jsx file
+/public folder: Has images that are used in the website\
+/src: The code\
+.env: Environment variables used to store sensitive data\
+/src/components: jsx components build for specific use\
+/src/config: Configurative and usefull files for firebase use\
+/src/data: js file with data for the dropdown inputs\
+/src/pages: main home page, parent and nanny pages\
+/src/styles: css file with basic style\
+/src/App.jsx: Protected routes and url are here\
+/src/main.jsx: The main jsx file\
 
 ## WHAT WE IMPLEMENTED
 
