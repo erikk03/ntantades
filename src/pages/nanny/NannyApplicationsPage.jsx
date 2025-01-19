@@ -233,8 +233,8 @@ const NannyApplicationsPage = () => {
                                                 <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΒΟΛΗΣ: {formatTimestamp(app?.createdAt)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-sm font-semibold">{app?.nanny?.name}</p>
-                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {app?.employmentDate || "-"}</p>
+                                                <p className="text-sm font-semibold">{`${app?.parent?.name} ${app?.parent?.surname}`}</p>
+                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {`${formatTimestamp(app?.applicationPeriod?.from)} - ${formatTimestamp(app?.applicationPeriod?.to)}`|| "-"}</p>
                                             </div>
                                         </div>
                                         <div className='flex items-center gap-4'>
@@ -274,8 +274,8 @@ const NannyApplicationsPage = () => {
                                                 <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΥΠΟΒΟΛΗΣ: {formatTimestamp(app?.createdAt)}</p>
                                             </div>
                                             <div>
-                                                <p className="text-sm font-semibold">{app?.nanny?.name}</p>
-                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {app?.employmentDate || "-"}</p>
+                                                <p className="text-sm font-semibold">{`${app?.parent?.name} ${app?.parent?.surname}`}</p>
+                                                <p className="text-xs text-gray-500">ΗΜΕΡΟΜΗΝΙΑ ΑΠΑΣΧΟΛΗΣΗΣ: {`${formatTimestamp(app?.applicationPeriod?.from)} - ${formatTimestamp(app?.applicationPeriod?.to)}`|| "-"}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-4">
